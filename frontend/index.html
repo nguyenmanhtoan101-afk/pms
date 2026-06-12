@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hệ thống Quản lý dự án CNTT tỉnh Lào Cai — Sở KHCN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#14366B; --navy2:#0E2A55; --navy3:#1D4585;
+  --red:#C0272D; --red-bg:#FBEAEA;
+  --green:#1A7A4A; --green-bg:#E7F4EC;
+  --amber:#B97A0F; --amber-bg:#FBF3E2;
+  --gold:#C9A227;
+  --bg:#F2F4F7; --card:#FFFFFF;
+  --ink:#1B2430; --mut:#5C6678; --mut2:#8A93A3;
+  --line:#E2E6ED; --line2:#CDD4DE;
+  --serif:'Noto Serif',Georgia,'Times New Roman',serif;
+  --sans:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --rad:10px; --sh:0 1px 2px rgba(16,30,54,.06),0 4px 14px rgba(16,30,54,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:13.5px}
+::selection{background:#D8E4F6}
+
+/* ── LOGIN ── */
+#login{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(158deg,#0C2347 0%,#14366B 52%,#1D4585 100%);overflow:auto;padding:28px}
+#login::before{content:"";position:absolute;inset:0;opacity:.05;
+  background-image:radial-gradient(circle at 1px 1px,#fff 1px,transparent 0);background-size:26px 26px}
+.lg-wrap{position:relative;width:min(880px,100%);}
+.lg-head{text-align:center;color:#fff;margin-bottom:30px}
+.lg-star{width:64px;height:64px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 32% 28%,#E54A50,#B01F26);border:2px solid var(--gold);
+  font-size:30px;color:#FFD64D;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.lg-org{font-size:12.5px;letter-spacing:.16em;font-weight:600;color:#BBCCE8;text-transform:uppercase}
+.lg-title{font-size:25px;font-weight:800;margin:6px 0 4px;letter-spacing:-.01em}
+.lg-sub{font-family:var(--serif);font-style:italic;font-size:14px;color:#C7D5EC}
+.lg-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:760px){.lg-cards{grid-template-columns:1fr}}
+.lg-card{background:#fff;border-radius:14px;padding:22px 20px 18px;text-align:left;border:1px solid rgba(255,255,255,.4);
+  box-shadow:0 10px 34px rgba(4,14,33,.35);transition:transform .16s,box-shadow .16s;position:relative;overflow:hidden}
+.lg-card::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--gold)}
+.lg-card:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(4,14,33,.45)}
+.lg-ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:21px;margin-bottom:12px}
+.lg-card h3{font-size:16px;font-weight:700;margin-bottom:5px}
+.lg-card p{font-size:12.5px;color:var(--mut);min-height:56px}
+.lg-btn{margin-top:13px;width:100%;padding:9px;border:none;border-radius:8px;background:var(--navy);color:#fff;font-weight:600;font-size:13px}
+.lg-btn:hover{background:var(--navy3)}
+.lg-foot{margin-top:26px;text-align:center;color:#9FB4D6;font-size:11.5px}
+.lg-foot b{color:#D8E3F5}
+.lg-form{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.lg-field{display:flex;flex-direction:column;gap:4px}
+.lg-field label{font-size:11px;font-weight:700;color:#7A8FA8;letter-spacing:.06em;text-transform:uppercase}
+.lg-field input{border:1px solid #E2E8F0;border-radius:7px;padding:8px 11px;font-size:13px;
+  font-family:var(--sans);outline:none;transition:border .15s;background:#FAFBFD}
+.lg-field input:focus{border-color:var(--navy3);background:#fff;box-shadow:0 0 0 3px rgba(59,98,179,.12)}
+.lg-field input[type=password]{letter-spacing:.12em;font-size:14px}
+.lg-cred{font-size:11px;color:#A0AEC0;margin-top:3px;display:flex;align-items:center;gap:4px;cursor:pointer;user-select:none}
+.lg-cred:hover{color:var(--navy3)}
+.lg-sep{border:none;border-top:1px solid #EDF0F5;margin:4px 0}
+.lg-err{font-size:12px;color:var(--red);background:var(--red-bg);border-radius:6px;padding:6px 10px;display:none}
+.lg-card::after{content:"";position:absolute;top:0;left:0;right:0;height:4px}
+.lg-card.c-leader::after{background:#D4AA3D}
+.lg-card.c-so::after{background:var(--navy3)}
+.lg-card.c-cdt::after{background:var(--green)}
+.lg-card.c-nt::after{background:#7C5CBF}
+/* ── GANTT ── */
+.gt-scroll{overflow-x:auto}
+.gt-inner{min-width:860px}
+.gt-head{display:grid;grid-template-columns:300px 1fr;border-bottom:2px solid var(--line2);position:sticky;top:0;background:#fff;z-index:2}
+.gt-months{position:relative;height:30px}
+.gt-mtick{position:absolute;top:0;bottom:0;border-left:1px solid var(--line);font-size:10.5px;color:var(--mut);padding:8px 0 0 5px;white-space:nowrap}
+.gt-row{display:grid;grid-template-columns:300px 1fr;border-bottom:1px solid var(--line);min-height:30px;align-items:center}
+.gt-row:hover{background:#F7F9FC}
+.gt-row.gt-phase{background:var(--navy);color:#fff;font-weight:700;font-size:12px;min-height:26px}
+.gt-row.gt-phase>div{padding:4px 12px}
+.gt-row.gt-grp{background:#EDF0F6;font-weight:600;font-size:11.5px;min-height:24px}
+.gt-row.gt-grp>div{padding:3px 12px 3px 22px;color:var(--navy)}
+.gt-lbl{font-size:11.5px;padding:4px 10px 4px 32px;cursor:pointer;display:flex;gap:6px;align-items:baseline}
+.gt-lbl b{color:var(--mut);font-size:10.5px;flex:none}
+.gt-track{position:relative;height:30px;background:repeating-linear-gradient(90deg,transparent,transparent 59px,#F2F4F8 59px,#F2F4F8 60px)}
+.gt-bar{position:absolute;height:13px;top:8.5px;border-radius:4px;cursor:pointer;min-width:5px;transition:filter .12s}
+.gt-bar:hover{filter:brightness(1.18)}
+.gt-bar.done{background:var(--green)}
+.gt-bar.late{background:var(--red)}
+.gt-bar.soon{background:var(--amber)}
+.gt-bar.plan{background:#2A3242}
+.gt-bar.wait{background:#7C5CBF}
+.gt-act{position:absolute;top:6px;width:9px;height:9px;background:#fff;border:2.5px solid var(--green);border-radius:50%;transform:translateX(-50%);z-index:1}
+.gt-act.lateact{border-color:var(--red)}
+.gt-today{position:absolute;top:0;bottom:0;width:2px;background:var(--red);z-index:3}
+.gt-today::after{content:"Hôm nay";position:absolute;top:-1px;left:4px;font-size:9px;color:var(--red);font-weight:700;white-space:nowrap}
+.gt-legend{display:flex;gap:16px;font-size:11.5px;color:var(--mut);padding:10px 4px;flex-wrap:wrap}
+.gt-legend i{display:inline-block;width:14px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+/* ── SEARCH ── */
+.tb-search{position:relative;flex:none;width:230px}
+.tb-search input{width:100%;border:1px solid var(--line2);border-radius:8px;padding:7px 11px 7px 30px;font-size:12.5px;
+  background:#F6F8FB url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="%23667085" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>') no-repeat 9px center;outline:none}
+.tb-search input:focus{border-color:var(--navy3);background-color:#fff}
+.gs-dd{position:absolute;top:calc(100% + 5px);left:0;right:0;min-width:330px;background:#fff;border:1px solid var(--line2);
+  border-radius:10px;box-shadow:0 14px 38px rgba(10,22,44,.18);z-index:60;max-height:380px;overflow:auto;display:none}
+.gs-dd.on{display:block}
+.gs-it{display:flex;gap:9px;align-items:center;padding:9px 13px;cursor:pointer;border-bottom:1px solid var(--line);font-size:12.5px}
+.gs-it:hover{background:#F4F7FC}
+.gs-it .t{flex:1;min-width:0}
+.gs-it .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gs-it .t span{font-size:11px;color:var(--mut)}
+.gs-cat{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--mut2);padding:8px 13px 3px}
+@media(max-width:900px){.tb-search{display:none}}
+/* ── BASELINE COMPARE ── */
+.bc-row{display:grid;grid-template-columns:290px 1fr 110px;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:6px 0;font-size:12px}
+.bc-row:hover{background:#F7F9FC}
+.bc-track{position:relative;height:20px}
+.bc-line{position:absolute;top:9px;height:3px;border-radius:2px;background:var(--red);opacity:.55}
+.bc-dot{position:absolute;top:4.5px;width:11px;height:11px;border-radius:50%;transform:translateX(-50%)}
+.bc-dot.orig{background:#B9C2D4;border:2px solid #98A4BC}
+.bc-dot.cur{background:var(--navy3);border:2px solid var(--navy)}
+.bc-slip{text-align:right;font-weight:700}
+.bc-slip.pos{color:var(--red)}
+.bc-slip.zero{color:var(--mut2);font-weight:500}
+/* ── BÁO CÁO ── */
+.rp-head{text-align:center;margin-bottom:22px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.rp-head .qh{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.rp-head .tt{font-family:var(--serif);font-size:20px;font-weight:700;margin:8px 0 4px;color:var(--navy)}
+.rp-head .dt{font-size:12.5px;color:var(--mut);font-style:italic}
+.rp-sec{font-size:13.5px;font-weight:800;color:var(--navy);margin:22px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--gold)}
+.donut-wrap{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.donut{width:148px;height:148px;border-radius:50%;position:relative;flex:none}
+.donut::after{content:attr(data-c);position:absolute;inset:26px;background:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:800;color:var(--navy)}
+.dleg{display:flex;flex-direction:column;gap:7px;font-size:12.5px}
+.dleg span i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+.rp-sign{display:flex;justify-content:space-between;margin-top:30px;padding:0 40px}
+.rp-sign div{text-align:center;font-size:13px}
+.rp-sign b{display:block;margin-bottom:46px}
+@media print{
+  #sb,#topbar,.ph-acts,.lg-foot,#toasts{display:none!important}
+  #main{margin-left:0!important}
+  .pg{padding:10px!important}
+  body{background:#fff!important}
+  .card{box-shadow:none!important;border:1px solid #ccc!important;break-inside:avoid}
+}
+
+/* ── SHELL ── */
+#app{display:none;min-height:100vh}
+#app.on{display:block}
+#sb{position:fixed;top:0;left:0;bottom:0;width:248px;background:linear-gradient(180deg,var(--navy2),var(--navy) 30%);color:#D7E1F2;
+  display:flex;flex-direction:column;z-index:40}
+.sb-logo{padding:18px 18px 15px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;gap:11px;align-items:center}
+.sb-mark{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 32% 28%,#E54A50,#B01F26);border:1.5px solid var(--gold);color:#FFD64D;font-size:19px}
+.sb-org{font-size:9.5px;letter-spacing:.12em;font-weight:600;color:#9FB4D6;text-transform:uppercase}
+.sb-name{font-size:13.5px;font-weight:700;color:#fff;line-height:1.25}
+.sb-scroll{flex:1;overflow-y:auto;padding:10px 10px 16px}
+.sb-scroll::-webkit-scrollbar{width:8px}.sb-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+.sb-sec{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7E94BC;margin:16px 10px 6px}
+.ni{display:flex;align-items:center;gap:10px;padding:8.5px 11px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;
+  color:#C5D3EA;margin-bottom:2px;border-left:3px solid transparent}
+.ni:hover{background:rgba(255,255,255,.08);color:#fff}
+.ni.on{background:rgba(255,255,255,.13);color:#fff;border-left-color:var(--gold);font-weight:600}
+.ni .nico{width:19px;text-align:center;font-size:15px;flex:none}
+.ni .bdg{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:1px 7px}
+.sb-user{padding:13px 16px;border-top:1px solid rgba(255,255,255,.12);display:flex;gap:10px;align-items:center}
+.sb-ava{width:34px;height:34px;border-radius:50%;background:#2B5598;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex:none}
+.sb-uname{font-size:12.5px;font-weight:600;color:#fff;line-height:1.2}
+.sb-urole{font-size:11px;color:#9FB4D6}
+.sb-out{margin-left:auto;background:none;border:1px solid rgba(255,255,255,.25);color:#C5D3EA;border-radius:7px;padding:4px 8px;font-size:11px}
+.sb-out:hover{background:rgba(255,255,255,.1);color:#fff}
+
+#main{margin-left:248px;min-height:100vh;display:flex;flex-direction:column}
+#topbar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line);
+  padding:11px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.tb-proj{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600}
+.tb-proj .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px var(--green-bg)}
+.tb-legend{margin-left:auto;display:flex;gap:14px;font-size:11.5px;color:var(--mut);align-items:center;flex-wrap:wrap}
+.tb-legend i{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:-1px}
+.tb-date{font-size:12px;color:var(--mut);border-left:1px solid var(--line);padding-left:14px}
+.tb-role{font-size:11px;font-weight:700;letter-spacing:.04em;border-radius:20px;padding:4px 11px;text-transform:uppercase}
+.tb-role.leader{background:#F3EBD3;color:#8A6D0B}.tb-role.so{background:#E1EAF8;color:var(--navy)}.tb-role.nt{background:#E7F4EC;color:var(--green)}
+
+#pages{padding:24px 26px 56px;max-width:1340px;width:100%;margin:0 auto}
+.pg{display:none}.pg.on{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.ph{display:flex;align-items:flex-end;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.ph h1{font-size:21px;font-weight:800;letter-spacing:-.01em}
+.ph p{font-size:13px;color:var(--mut);margin-top:3px}
+.ph-acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.ro-note{font-size:11.5px;color:var(--amber);background:var(--amber-bg);border:1px solid #ECD9A8;border-radius:7px;padding:5px 11px;font-weight:600}
+
+.btn{border:none;border-radius:8px;padding:8.5px 15px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy3)}
+.btn-ghost{background:#fff;border:1px solid var(--line2);color:var(--ink)}.btn-ghost:hover{border-color:var(--navy);color:var(--navy)}
+.btn-green{background:var(--green);color:#fff}
+.btn-red-o{background:#fff;border:1px solid #E4B6B8;color:var(--red)}
+.btn-sm{padding:5.5px 11px;font-size:12px;border-radius:7px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--sh)}
+.card-h{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.card-h h3{font-size:14px;font-weight:700}
+.card-h .sub{font-size:12px;color:var(--mut)}
+.card-b{padding:16px 18px}
+
+/* stat cards */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:13px;margin-bottom:20px}
+.st{background:#fff;border:1px solid var(--line);border-radius:var(--rad);padding:14px 16px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.st::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,var(--navy))}
+.st .lb{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.st .vl{font-size:29px;font-weight:800;margin-top:4px;color:var(--c,var(--ink))}
+.st .sb2{font-size:11.5px;color:var(--mut2);margin-top:2px}
+
+/* progress */
+.prg{height:8px;background:#EAEDF2;border-radius:5px;overflow:hidden}
+.prg>i{display:block;height:100%;border-radius:5px;background:var(--navy);transition:width .5s}
+.prg>i.g{background:var(--green)}.prg>i.a{background:var(--amber)}.prg>i.r{background:var(--red)}
+
+/* status chips */
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;border-radius:14px;padding:3px 10px;white-space:nowrap}
+.chip i{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.chip.done{background:var(--green-bg);color:var(--green)}
+.chip.late{background:var(--red-bg);color:var(--red)}
+.chip.soon{background:var(--amber-bg);color:var(--amber)}
+.chip.plan{background:#EBEEF3;color:#2A3242}
+.chip.skip{background:#EEF0F3;color:var(--mut2)}
+.chip.wait{background:#E9E4F6;color:#5B3FA8}
+
+/* doc chip — kiểu số hiệu văn bản */
+.doc{font-family:var(--serif);font-size:12.5px;color:var(--navy);background:#FBFAF6;border:1px solid #E5DFC9;
+  border-left:3px solid var(--gold);border-radius:4px;padding:2px 8px;display:inline-block;white-space:nowrap}
+.doc.pending{color:var(--mut2);border-left-color:var(--line2);background:#F7F8FA;border-color:var(--line);font-style:italic}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);
+  text-align:left;padding:10px 12px;border-bottom:1.5px solid var(--line2);background:#F8F9FB;white-space:nowrap}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:hover td{background:#F7F9FD}
+.tbl-wrap{overflow-x:auto}
+
+/* checklist */
+.flt{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.flt select,.flt input{border:1px solid var(--line2);border-radius:8px;padding:7.5px 11px;background:#fff;min-width:150px}
+.flt input{min-width:230px;flex:1}
+.ck-phase td{background:linear-gradient(90deg,var(--navy),var(--navy3))!important;color:#fff;font-weight:700;font-size:13px;letter-spacing:.04em;padding:9px 12px}
+.ck-phase .rom{display:inline-flex;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);color:#FFD64D;
+  align-items:center;justify-content:center;font-family:var(--serif);font-size:12px;margin-right:10px;font-weight:700}
+.ck-grp td{background:#EDF1F8!important;font-weight:700;color:var(--navy2)}
+.ck-row{cursor:pointer}
+.ck-stt{font-family:var(--serif);font-weight:600;color:var(--mut);white-space:nowrap}
+.ck-name{min-width:300px;max-width:520px}
+.ck-late .ck-name,.ck-late .ck-stt{color:var(--red)}
+.ck-done .ck-name{color:var(--green)}
+.ck-skip td{color:var(--mut2)}
+.ck-skip .ck-name{text-decoration:line-through;text-decoration-color:#B9C0CC}
+td.num{text-align:center;white-space:nowrap}
+
+/* phase rail summary */
+.ph-rail{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-bottom:20px}
+@media(max-width:860px){.ph-rail{grid-template-columns:1fr}}
+.ph-cell{background:#fff;border:1px solid var(--line);border-radius:var(--rad);padding:14px 16px;box-shadow:var(--sh);display:flex;gap:13px;align-items:flex-start}
+.ph-cell .rom{width:36px;height:36px;flex:none;border-radius:50%;background:var(--navy);border:1.5px solid var(--gold);
+  color:#FFD64D;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;font-size:14px}
+.ph-cell h4{font-size:12.5px;font-weight:700;line-height:1.3}
+.ph-cell .mt{font-size:11.5px;color:var(--mut);margin:3px 0 7px}
+
+/* milestones */
+.ms{display:flex;gap:0;overflow-x:auto;padding:8px 2px 2px}
+.ms-it{flex:1;min-width:140px;position:relative;padding-top:24px;text-align:center}
+.ms-it::before{content:"";position:absolute;top:9px;left:0;right:0;height:3px;background:var(--line2)}
+.ms-it.done::before{background:var(--green)}
+.ms-it:first-child::before{left:50%}.ms-it:last-child::before{right:50%}
+.ms-dot{position:absolute;top:3px;left:50%;transform:translateX(-50%);width:15px;height:15px;border-radius:50%;
+  background:#fff;border:3px solid var(--line2)}
+.ms-it.done .ms-dot{border-color:var(--green);background:var(--green)}
+.ms-it.now .ms-dot{border-color:var(--amber);background:#fff;box-shadow:0 0 0 4px var(--amber-bg)}
+.ms-d{font-size:11px;font-weight:700;color:var(--mut)}
+.ms-t{font-size:12px;font-weight:600;margin-top:2px;padding:0 8px}
+.ms-it.done .ms-t{color:var(--green)}.ms-it.now .ms-t{color:var(--amber)}
+
+/* gantt */
+.gt-head,.gt-row{display:grid;grid-template-columns:280px 1fr}
+.gt-months{display:grid;grid-template-columns:repeat(8,1fr);border-left:1px solid var(--line)}
+.gt-months>div{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;
+  padding:8px 6px;border-right:1px dashed var(--line);text-align:center}
+.gt-label{font-size:12.5px;font-weight:600;padding:11px 12px;border-right:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.gt-label .rom2{font-family:var(--serif);font-size:11px;color:var(--gold);font-weight:700;flex:none}
+.gt-track{position:relative;border-left:1px solid var(--line);
+  background-image:repeating-linear-gradient(90deg,transparent 0,transparent calc(12.5% - 1px),var(--line) calc(12.5% - 1px),var(--line) 12.5%)}
+.gt-bar{position:absolute;top:50%;transform:translateY(-50%);height:18px;border-radius:5px;background:#C2CFE4;overflow:hidden;min-width:8px}
+.gt-bar>i{display:block;height:100%;background:var(--navy)}
+.gt-bar.g{background:#BFE3CE}.gt-bar.g>i{background:var(--green)}
+.gt-row{border-bottom:1px solid var(--line)}
+.gt-today{position:absolute;top:0;bottom:0;width:2px;background:var(--red);z-index:5}
+.gt-today::after{content:"Hôm nay";position:absolute;top:-1px;left:5px;font-size:9.5px;font-weight:700;color:var(--red);white-space:nowrap}
+
+/* modal */
+.mbd{position:fixed;inset:0;background:rgba(12,22,42,.5);z-index:80;display:none;align-items:flex-start;justify-content:center;padding:5vh 16px;overflow:auto}
+.mbd.on{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:640px;box-shadow:0 24px 70px rgba(8,18,38,.4);animation:up .2s ease}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.mh{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px}
+.mh h3{font-size:15.5px;font-weight:700;line-height:1.35}
+.mh .x{margin-left:auto;border:none;background:#F1F3F7;border-radius:7px;width:30px;height:30px;font-size:16px;color:var(--mut);flex:none}
+.mb{padding:18px 20px;max-height:62vh;overflow:auto}
+.mf{padding:13px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:7px 14px;font-size:13px;margin-bottom:14px}
+.kv dt{color:var(--mut);font-weight:600}.kv dd{font-weight:500}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:12px;font-weight:700;color:var(--mut);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.fg input,.fg select,.fg textarea{width:100%;border:1px solid var(--line2);border-radius:8px;padding:8.5px 11px}
+.fg input:focus,.fg textarea:focus,.fg select:focus{outline:2px solid #B9CDEE;border-color:var(--navy3)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* toast */
+#toasts{position:fixed;bottom:22px;right:22px;z-index:120;display:flex;flex-direction:column;gap:9px}
+.toast{background:var(--navy2);color:#fff;border-radius:9px;padding:11px 16px;font-size:13px;font-weight:500;
+  box-shadow:0 10px 30px rgba(8,18,38,.4);border-left:4px solid var(--gold);animation:up .25s ease;max-width:340px}
+.toast.ok{border-left-color:#3FBF7F}.toast.err{border-left-color:#F0696E}
+
+/* misc lists */
+.li-row{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+.li-row:last-child{border-bottom:none}
+.li-ic{width:34px;height:34px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px}
+.empty{padding:34px;text-align:center;color:var(--mut2);font-size:13px}
+.note-mh{font-size:11px;color:var(--mut2);font-style:italic}
+.kpi-flow{display:flex;gap:0;overflow-x:auto;margin-bottom:18px}
+.kf{flex:1;min-width:150px;position:relative;background:#fff;border:1px solid var(--line);padding:13px 14px 13px 22px;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%,12px 50%)}
+.kf:first-child{clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%)}
+.kf.done{background:var(--green-bg);border-color:#BFE3CE}
+.kf.now{background:var(--amber-bg);border-color:#ECD9A8}
+.kf .t{font-size:11.5px;font-weight:700}.kf .d{font-size:11px;color:var(--mut);margin-top:3px}
+@media(max-width:900px){
+  #sb{transform:translateX(-100%);transition:.2s}#sb.open{transform:none}
+  #main{margin-left:0}
+  #burger{display:inline-flex!important}
+}
+#burger{display:none;border:1px solid var(--line2);background:#fff;border-radius:8px;width:34px;height:34px;align-items:center;justify-content:center;font-size:16px}
+@media(max-width:980px){.dash2{grid-template-columns:1fr!important}}
+@media print{#sb,#topbar,.ph-acts{display:none}#main{margin-left:0}}
+
+/* ── PORTFOLIO ── */
+.crumb{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mut)}
+.crumb a{color:var(--navy);font-weight:600;text-decoration:none;cursor:pointer}
+.crumb a:hover{text-decoration:underline}
+.pj-banner{background:linear-gradient(120deg,var(--navy2),var(--navy3));color:#fff;border-radius:12px;padding:18px 22px;margin-bottom:20px;
+  display:flex;gap:18px;flex-wrap:wrap;align-items:center;box-shadow:var(--sh)}
+.pj-banner h2{font-size:17px;font-weight:800;line-height:1.3}
+.pj-banner .meta{font-size:12px;color:#C7D5EC;margin-top:5px;display:flex;gap:14px;flex-wrap:wrap}
+.pj-banner .meta b{color:#fff}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:#EDF1F8;color:var(--navy);
+  border-radius:5px;padding:2px 8px;text-transform:uppercase;white-space:nowrap}
+.tag.gold{background:#F6EFD8;color:#8A6D0B}.tag.gray{background:#EEF0F3;color:var(--mut)}
+.hdot{width:10px;height:10px;border-radius:50%;display:inline-block;vertical-align:-1px}
+.hdot.done{background:var(--green)}.hdot.plan{background:#2A3242}.hdot.soon{background:var(--amber)}.hdot.late{background:var(--red)}
+.pj-link{font-weight:700;color:var(--navy);cursor:pointer}
+.pj-link:hover{text-decoration:underline}
+.mtx th,.mtx td{text-align:center}
+.mtx td.big{font-size:17px;font-weight:800}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar-r{display:grid;grid-template-columns:190px 1fr 38px;gap:10px;align-items:center;font-size:12.5px}
+.bar-r .b{height:14px;border-radius:4px;background:#EAEDF2;overflow:hidden}
+.bar-r .b>i{display:block;height:100%;background:var(--navy3);border-radius:4px}
+.grade{display:inline-flex;width:30px;height:30px;border-radius:8px;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.grade.A{background:var(--green-bg);color:var(--green)}.grade.B{background:#E1EAF8;color:var(--navy)}
+.grade.C{background:var(--amber-bg);color:var(--amber)}.grade.D{background:var(--red-bg);color:var(--red)}
+.rank-n{font-family:var(--serif);font-weight:700;color:var(--mut);width:26px;display:inline-block}
+.sla-note{font-size:12px;color:var(--mut);background:#F6F8FB;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:7px;padding:9px 13px;margin-top:12px}
+.mini-gt{display:flex;height:26px;border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.mini-gt>div{display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#fff;min-width:34px}
+.pf-grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:16px}
+@media(max-width:980px){.pf-grid2{grid-template-columns:1fr}}
+.step-edit{display:flex;gap:8px;align-items:center}
+.step-edit input{width:74px;border:1px solid var(--line2);border-radius:7px;padding:6px 9px;text-align:center}
+.basev{border-left:3px solid var(--line2);padding:10px 0 10px 16px;position:relative;margin-left:8px}
+.basev::before{content:"";position:absolute;left:-7px;top:14px;width:11px;height:11px;border-radius:50%;background:#fff;border:3px solid var(--navy3)}
+.basev.cur::before{border-color:var(--green)}
+.ck-skip td{opacity:.55;background:#F8F8F8!important}
+.ck-skip .ck-name{text-decoration:none}
+
+</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- ════ ĐĂNG NHẬP ════ -->
+<div id="login">
+  <div class="lg-wrap" style="width:min(1060px,100%)">
+    <div class="lg-head">
+      <div class="lg-star">★</div>
+      <div class="lg-org">UBND tỉnh Lào Cai · Sở Khoa học và Công nghệ</div>
+      <div class="lg-title">Hệ thống Quản lý dự án công nghệ thông tin tỉnh Lào Cai</div>
+      <div class="lg-sub">Quản lý danh mục dự án đầu tư ứng dụng CNTT theo Nghị định 45/2026/NĐ-CP</div>
+    </div>
+    <div class="lg-cards" style="grid-template-columns:repeat(4,1fr)">
+
+      <!-- Lãnh đạo tỉnh -->
+      <div class="lg-card c-leader">
+        <div class="lg-ico" style="background:#F3EBD3">🏛️</div>
+        <h3>Lãnh đạo tỉnh</h3>
+        <p style="min-height:36px">Tổng quan danh mục, tiến độ, cảnh báo, giải ngân toàn tỉnh.</p>
+        <hr class="lg-sep">
+        <div class="lg-form">
+          <div class="lg-field">
+            <label>Tài khoản</label>
+            <input id="u-leader" value="lanhdao.laocai" autocomplete="username">
+          </div>
+          <div class="lg-field">
+            <label>Mật khẩu</label>
+            <input id="p-leader" type="password" value="Laocai@2026">
+            <span class="lg-cred" onclick="togglePwd('p-leader',this)">👁 Hiện mật khẩu</span>
+          </div>
+          <div class="lg-err" id="e-leader">Tài khoản hoặc mật khẩu không đúng</div>
+          <button class="lg-btn" onclick="doLogin('leader')">Đăng nhập</button>
+        </div>
+      </div>
+
+      <!-- Sở KHCN -->
+      <div class="lg-card c-so">
+        <div class="lg-ico" style="background:#E1EAF8">🏢</div>
+        <h3>Sở KH&CN</h3>
+        <p style="min-height:36px">Giám sát toàn tỉnh, quản trị quy trình, KPI đơn vị.</p>
+        <hr class="lg-sep">
+        <div class="lg-form">
+          <div class="lg-field">
+            <label>Tài khoản</label>
+            <input id="u-so" value="skhcn.laocai" autocomplete="username">
+          </div>
+          <div class="lg-field">
+            <label>Mật khẩu</label>
+            <input id="p-so" type="password" value="Skhcn@2026">
+            <span class="lg-cred" onclick="togglePwd('p-so',this)">👁 Hiện mật khẩu</span>
+          </div>
+          <div class="lg-err" id="e-so">Tài khoản hoặc mật khẩu không đúng</div>
+          <button class="lg-btn" onclick="doLogin('so')">Đăng nhập</button>
+        </div>
+      </div>
+
+      <!-- Chủ đầu tư -->
+      <div class="lg-card c-cdt">
+        <div class="lg-ico" style="background:#E7F4EC">🏥</div>
+        <h3>Chủ đầu tư</h3>
+        <p style="min-height:36px">Sở Y tế — lập kế hoạch, cập nhật và điều chỉnh tiến độ.</p>
+        <hr class="lg-sep">
+        <div class="lg-form">
+          <div class="lg-field">
+            <label>Tài khoản</label>
+            <input id="u-cdt" value="soyte.laocai" autocomplete="username">
+          </div>
+          <div class="lg-field">
+            <label>Mật khẩu</label>
+            <input id="p-cdt" type="password" value="Soyte@2026">
+            <span class="lg-cred" onclick="togglePwd('p-cdt',this)">👁 Hiện mật khẩu</span>
+          </div>
+          <div class="lg-err" id="e-cdt">Tài khoản hoặc mật khẩu không đúng</div>
+          <button class="lg-btn" onclick="doLogin('cdt')">Đăng nhập</button>
+        </div>
+      </div>
+
+      <!-- Nhà thầu -->
+      <div class="lg-card c-nt">
+        <div class="lg-ico" style="background:#EFEAF9">🤝</div>
+        <h3>Nhà thầu · Tư vấn</h3>
+        <p style="min-height:36px">FOXAI — cập nhật phần việc, chờ chủ đầu tư xác nhận.</p>
+        <hr class="lg-sep">
+        <div class="lg-form">
+          <div class="lg-field">
+            <label>Tài khoản</label>
+            <input id="u-nt" value="foxai.nt" autocomplete="username">
+          </div>
+          <div class="lg-field">
+            <label>Mật khẩu</label>
+            <input id="p-nt" type="password" value="Foxai@2026">
+            <span class="lg-cred" onclick="togglePwd('p-nt',this)">👁 Hiện mật khẩu</span>
+          </div>
+          <div class="lg-err" id="e-nt">Tài khoản hoặc mật khẩu không đúng</div>
+          <button class="lg-btn" onclick="doLogin('nt')">Đăng nhập</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="lg-foot">Triển khai theo Điều 6 NĐ 45/2026/NĐ-CP · Sở Khoa học và Công nghệ tỉnh Lào Cai</div>
+  </div>
+</div>
+
+<!-- ════ APP ════ -->
+<div id="app">
+<nav id="sb">
+  <div class="sb-logo">
+    <div class="sb-mark">★</div>
+    <div>
+      <div class="sb-org">Sở KH&CN Lào Cai</div>
+      <div class="sb-name">QLDA CNTT toàn tỉnh</div>
+    </div>
+  </div>
+  <div class="sb-scroll" id="sb-menu"></div>
+  <div class="sb-user">
+    <div class="sb-ava" id="u-ava">A</div>
+    <div><div class="sb-uname" id="u-name"></div><div class="sb-urole" id="u-role"></div></div>
+    <button class="sb-out" onclick="logout()">Thoát</button>
+  </div>
+</nav>
+
+<div id="main">
+  <div id="topbar">
+    <button id="burger" onclick="document.getElementById('sb').classList.toggle('open')">☰</button>
+    <div class="crumb" id="crumb"></div>
+    <div class="tb-search">
+      <input id="gsearch" placeholder="Tìm dự án, bước, văn bản…" autocomplete="off"
+        oninput="gSearch(this.value)" onfocus="gSearch(this.value)">
+      <div class="gs-dd" id="gs-dd"></div>
+    </div>
+    <div class="tb-legend">
+      <span><i style="background:var(--green)"></i>Hoàn thành</span>
+      <span><i style="background:#2A3242"></i>Trong hạn</span>
+      <span><i style="background:var(--amber)"></i>Sắp đến hạn</span>
+      <span><i style="background:var(--red)"></i>Quá hạn</span>
+      <span class="tb-role" id="tb-role"></span>
+      <span class="tb-date" id="tb-date"></span>
+    </div>
+  </div>
+
+  <div id="pages">
+    <!-- cấp danh mục -->
+    <div class="pg" id="pg-pf-dash"></div>
+    <div class="pg" id="pg-pf-list"></div>
+    <div class="pg" id="pg-pf-kpi"></div>
+    <div class="pg" id="pg-pf-alerts"></div>
+    <div class="pg" id="pg-pf-bc35"></div>
+    <div class="pg" id="pg-pf-admin"></div>
+    <div class="pg" id="pg-pf-report"></div>
+    <!-- cấp dự án -->
+    <div class="pg" id="pg-pj-overview"></div>
+    <div class="pg" id="pg-pj-checklist"></div>
+    <div class="pg" id="pg-pj-gantt"></div>
+    <div class="pg" id="pg-pj-baseline"></div>
+    <div class="pg" id="pg-pj-vanban"></div>
+    <div class="pg" id="pg-pj-kinhphi"></div>
+  </div>
+</div>
+</div>
+
+<!-- modal chi tiết bước -->
+<div class="mbd" id="m-step"><div class="modal">
+  <div class="mh"><h3 id="ms-title">Chi tiết bước</h3><button class="x" onclick="closeM('m-step')">×</button></div>
+  <div class="mb" id="ms-body"></div>
+  <div class="mf" id="ms-foot"></div>
+</div></div>
+
+<!-- modal cập nhật kết quả -->
+<div class="mbd" id="m-update"><div class="modal">
+  <div class="mh"><div><h3>Cập nhật kết quả thực hiện</h3><div class="note-mh" id="mu-name"></div></div><button class="x" onclick="closeM('m-update')">×</button></div>
+  <div class="mb">
+    <div class="fg"><label>Số, ký hiệu văn bản</label><input id="mu-doc" placeholder="VD: Quyết định số 145/QĐ-UBND"></div>
+    <div class="f2">
+      <div class="fg"><label>Ngày ban hành / hoàn thành</label><input id="mu-date" type="date" value="2026-06-11"></div>
+      <div class="fg"><label>Đơn vị thực hiện</label><input id="mu-unit"></div>
+    </div>
+    <div class="fg"><label>Ghi chú / kết quả triển khai</label><textarea id="mu-note" rows="2" placeholder="VD: Đã ban hành"></textarea></div>
+    <div class="fg"><label>Tệp văn bản đính kèm</label><input type="file" style="padding:7px"></div>
+  </div>
+  <div class="mf"><button class="btn btn-ghost" onclick="closeM('m-update')">Hủy</button><button class="btn btn-green" onclick="saveUpdate()">✓ Ghi nhận hoàn thành</button></div>
+</div></div>
+
+<!-- modal nhà thầu gửi cập nhật -->
+<div class="mbd" id="m-submit"><div class="modal">
+  <div class="mh"><div><h3>Gửi cập nhật tiến độ</h3><div class="note-mh" id="msb-name"></div></div><button class="x" onclick="closeM('m-submit')">×</button></div>
+  <div class="mb">
+    <div class="f2">
+      <div class="fg"><label>Tiến độ thực hiện (%)</label><input id="msb-pct" type="number" min="0" max="100" value="100"></div>
+      <div class="fg"><label>Ngày hoàn thành</label><input id="msb-date" type="date" value="2026-06-11"></div>
+    </div>
+    <div class="fg"><label>Mô tả kết quả / sản phẩm nộp</label><textarea id="msb-note" rows="3"></textarea></div>
+    <div style="font-size:12px;color:var(--mut);background:#F6F8FB;border:1px solid var(--line);border-radius:8px;padding:9px 12px">
+      ℹ️ Cập nhật chuyển sang trạng thái <b>Chờ xác nhận</b>; chủ đầu tư hoặc Sở KHCN xác nhận thì bước mới được ghi nhận hoàn thành.
+    </div>
+  </div>
+  <div class="mf"><button class="btn btn-ghost" onclick="closeM('m-submit')">Hủy</button><button class="btn btn-navy" onclick="submitUpdate()">Gửi xác nhận</button></div>
+</div></div>
+
+<!-- modal điều chỉnh kế hoạch -->
+<div class="mbd" id="m-rebase"><div class="modal">
+  <div class="mh"><div><h3>Điều chỉnh kế hoạch (lập baseline mới)</h3><div class="note-mh" id="mr-name"></div></div><button class="x" onclick="closeM('m-rebase')">×</button></div>
+  <div class="mb">
+    <div id="mr-info" style="font-size:13px;background:var(--amber-bg);border:1px solid #ECD9A8;border-radius:8px;padding:10px 13px;margin-bottom:13px"></div>
+    <div class="f2">
+      <div class="fg"><label>Mốc mới cho bước đang chờ</label><input id="mr-date" type="date"></div>
+      <div class="fg"><label>Cấp phê duyệt điều chỉnh</label><select id="mr-auth"><option>Giám đốc Sở (chủ đầu tư)</option><option>UBND tỉnh</option></select></div>
+    </div>
+    <div class="fg"><label>Lý do điều chỉnh *</label><textarea id="mr-reason" rows="2" placeholder="VD: Chờ Quyết định phân bổ kinh phí của UBND tỉnh"></textarea></div>
+    <div style="font-size:12px;color:var(--mut)">Các ngày dự kiến phía sau sẽ <b>tự tính lại theo công thức</b> (số ngày từng bước giữ nguyên). Kế hoạch cũ được lưu vào lịch sử để theo dõi số ngày trượt và chấm KPI.</div>
+  </div>
+  <div class="mf"><button class="btn btn-ghost" onclick="closeM('m-rebase')">Hủy</button><button class="btn btn-navy" onclick="saveRebase()">Áp dụng kế hoạch mới</button></div>
+</div></div>
+
+<!-- modal tạo dự án -->
+<div class="mbd" id="m-newproj"><div class="modal">
+  <div class="mh"><div><h3>Tạo dự án mới</h3><div class="note-mh">Checklist và timeline sinh tự động theo Nghị định 45/2026/NĐ-CP</div></div><button class="x" onclick="closeM('m-newproj')">×</button></div>
+  <div class="mb">
+    <div class="fg"><label>Tên dự án / nhiệm vụ *</label><input id="np-name" placeholder="VD: Thuê dịch vụ phần mềm quản lý tài sản công"></div>
+    <div class="f2">
+      <div class="fg"><label>Chủ đầu tư</label><select id="np-cdt"></select></div>
+      <div class="fg"><label>Quy trình (loại hình)</label><select id="np-type">
+        <option value="thue">Thuê dịch vụ CNTT không sẵn có — Điều 34</option>
+        <option value="hethong">Dự án đầu tư hệ thống — Điều 8, Chương II</option>
+        <option value="muasam">Dự án mua sắm — Điều 8</option>
+        <option value="ctx">Hoạt động chi thường xuyên — Điều 32</option>
+      </select></div>
+    </div>
+    <div class="f2">
+      <div class="fg"><label>Ngày bắt đầu</label><input id="np-start" type="date" value="2026-07-01"></div>
+      <div class="fg"><label>Dự toán (triệu đồng)</label><input id="np-budget" type="number" value="2000"></div>
+    </div>
+  </div>
+  <div class="mf"><button class="btn btn-ghost" onclick="closeM('m-newproj')">Hủy</button><button class="btn btn-navy" onclick="createProject()">Tạo dự án & sinh timeline</button></div>
+</div></div>
+
+
+<!-- modal thêm/sửa bước tùy biến -->
+<div class="mbd" id="m-addstep"><div class="modal">
+  <div class="mh"><div><h3 id="mas-title">Thêm bước tùy biến</h3>
+    <div class="note-mh">Bước do đơn vị bổ sung — không thuộc quy trình chuẩn NĐ 45</div></div>
+    <button class="x" onclick="closeM('m-addstep')">×</button></div>
+  <div class="mb">
+    <div class="f2">
+      <div class="fg"><label>Giai đoạn *</label>
+        <select id="mas-ph"><option value="I">I — Chuẩn bị đầu tư</option><option value="II">II — Thực hiện đầu tư</option><option value="III">III — Triển khai · Kết thúc</option></select></div>
+      <div class="fg"><label>Mã số bước *</label>
+        <input id="mas-stt" placeholder="VD: 2.5a"></div>
+    </div>
+    <div class="fg"><label>Tên công việc *</label>
+      <input id="mas-name" placeholder="VD: Họp thống nhất yêu cầu kỹ thuật nội bộ"></div>
+    <div class="f2">
+      <div class="fg"><label>Số ngày thực hiện</label>
+        <input id="mas-days" type="number" min="0" value="3"></div>
+      <div class="fg"><label>Đơn vị thực hiện</label>
+        <input id="mas-unit" placeholder="VD: Phòng CNTT"></div>
+    </div>
+    <div class="f2">
+      <div class="fg"><label>Số văn bản / sản phẩm đầu ra</label>
+        <input id="mas-doc" placeholder="VD: Biên bản họp số …"></div>
+      <div class="fg"><label>Người thực hiện</label>
+        <select id="mas-ow"><option value="so">Sở / Chủ đầu tư</option><option value="nt">Nhà thầu · FOXAI</option><option value="tv">Tư vấn</option></select></div>
+    </div>
+    <div class="fg"><label>Ghi chú / căn cứ bổ sung bước</label>
+      <textarea id="mas-note" rows="2" placeholder="VD: Yêu cầu của Ban giám đốc Sở về kiểm tra nội bộ trước khi trình"></textarea></div>
+    <div style="font-size:12px;color:var(--mut);background:#F6F8FB;border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin-top:2px">
+      ℹ️ Bước tùy biến được gắn nhãn <b style="color:#0F7B3C">Tùy biến</b> trong checklist. Khi đổi ngày, vẫn tham gia vào chuỗi tính ngày tự động.
+    </div>
+  </div>
+  <div class="mf">
+    <button class="btn btn-ghost" onclick="closeM('m-addstep')">Hủy</button>
+    <button id="mas-del" class="btn btn-red-o" style="display:none" onclick="deleteCustomStep()">🗑 Xóa bước</button>
+    <button class="btn btn-green" onclick="saveCustomStep()">+ Thêm vào checklist</button>
+  </div>
+</div></div>
+
+<!-- modal bỏ qua bước bắt buộc -->
+<div class="mbd" id="m-skip"><div class="modal" style="max-width:480px">
+  <div class="mh"><h3>Bỏ qua bước bắt buộc</h3><button class="x" onclick="closeM('m-skip')">×</button></div>
+  <div class="mb">
+    <div id="msk-name" style="font-weight:700;margin-bottom:10px"></div>
+    <div style="font-size:13px;color:var(--red);background:var(--red-bg);border:1px solid #F5BEBE;border-radius:8px;padding:10px 13px;margin-bottom:13px">
+      ⚠️ Bước này thuộc <b>quy trình chuẩn NĐ 45/2026/NĐ-CP</b>. Bỏ qua chỉ được phép khi có căn cứ pháp lý hoặc đặc thù của dự án (VD: dự án ≤ 20 tỷ không cần BQLDA — Điều 28).
+    </div>
+    <div class="fg"><label>Lý do bỏ qua / căn cứ pháp lý *</label>
+      <textarea id="msk-reason" rows="3" placeholder="VD: Dự án nhóm C ≤ 20 tỷ, không thành lập BQLDA riêng theo Điều 28 NĐ 45/2026/NĐ-CP"></textarea></div>
+  </div>
+  <div class="mf">
+    <button class="btn btn-ghost" onclick="closeM('m-skip')">Hủy</button>
+    <button class="btn btn-navy" onclick="confirmSkip()">Xác nhận bỏ qua</button>
+  </div>
+</div></div>
+
+
+<!-- modal gửi đôn đốc -->
+<div class="mbd" id="m-urge"><div class="modal" style="max-width:640px">
+  <div class="mh"><div><h3>Soạn văn bản đôn đốc</h3><div class="note-mh">Gửi đến các đơn vị có bước quá hạn — Điều 36 NĐ 45/2026/NĐ-CP</div></div>
+  <button class="x" onclick="closeM('m-urge')">×</button></div>
+  <div class="mb">
+    <div class="fg"><label>Đơn vị nhận (tự chọn từ danh sách dự án quá hạn)</label>
+      <div id="urge-list" style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:10px"></div></div>
+    <div class="fg"><label>Trích yếu văn bản</label>
+      <input id="urge-subject" value="V/v đôn đốc đẩy nhanh tiến độ thực hiện dự án ứng dụng CNTT"></div>
+    <div class="fg"><label>Nội dung</label><textarea id="urge-body" rows="5"></textarea></div>
+  </div>
+  <div class="mf">
+    <button class="btn btn-ghost" onclick="closeM('m-urge')">Hủy</button>
+    <button class="btn btn-ghost" onclick="downloadUrge()">⬇ Tải bản thảo (.txt)</button>
+    <button class="btn btn-navy" onclick="sendUrge()">📨 Ghi nhận đã gửi</button>
+  </div>
+</div></div>
+
+<!-- modal phiếu văn bản -->
+<div class="mbd" id="m-doc"><div class="modal" style="max-width:520px">
+  <div class="mh"><h3>Phiếu văn bản</h3><button class="x" onclick="closeM('m-doc')">×</button></div>
+  <div class="mb" id="doc-body"></div>
+  <div class="mf"><button class="btn btn-ghost" onclick="closeM('m-doc')">Đóng</button>
+  <button class="btn btn-navy" onclick="downloadDocTxt()">⬇ Tải phiếu (.txt)</button></div>
+</div></div>
+
+<!-- modal xem template -->
+<div class="mbd" id="m-tpl"><div class="modal" style="max-width:760px">
+  <div class="mh"><div><h3 id="tpl-title">Quy trình chuẩn</h3><div class="note-mh" id="tpl-sub"></div></div>
+  <button class="x" onclick="closeM('m-tpl')">×</button></div>
+  <div class="mb" id="tpl-body" style="max-height:60vh;overflow:auto"></div>
+  <div class="mf"><button class="btn btn-ghost" onclick="closeM('m-tpl')">Đóng</button></div>
+</div></div>
+
+<input type="file" id="vb-file" style="display:none" accept=".pdf,.doc,.docx,.jpg,.png" onchange="uploadDoc(this)">
+
+<div id="toasts"></div>
+<script>
+/* ════════ TIỆN ÍCH ════════ */
+const TODAY=new Date().toISOString().slice(0,10);
+const $=s=>document.querySelector(s);
+const fmt=d=>{if(!d)return'—';const[y,m,dd]=d.split('-');return`${+dd}/${+m}/${y}`};
+const addD=(d,n)=>{const t=new Date(d);t.setDate(t.getDate()+(n||0));return t.toISOString().slice(0,10)};
+const diffD=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
+const money=v=>v.toLocaleString('vi-VN');
+function downloadCSV(name,rows){
+  const csv='\ufeff'+rows.map(r=>r.map(c=>'"'+String(c??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download=name;document.body.appendChild(a);a.click();a.remove();
+  toast('Đã tải xuống '+name+' — mở được bằng Excel');
+}
+function toast(m,k='ok'){const t=document.createElement('div');t.className='toast '+k;t.textContent=m;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),3600)}
+function openM(id){$('#'+id).classList.add('on')}
+function closeM(id){$('#'+id).classList.remove('on')}
+document.querySelectorAll('.mbd').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on')}));
+const ST_LB={done:'Hoàn thành',late:'Quá hạn',soon:'Sắp đến hạn',plan:'Trong hạn',skip:'Bỏ bước',wait:'Chờ xác nhận'};
+const chip=k=>`<span class="chip ${k}"><i></i>${ST_LB[k]}</span>`;
+const TYPE_LB={thue:'Thuê dịch vụ CNTT',hethong:'Đầu tư hệ thống',muasam:'Mua sắm',ctx:'Chi thường xuyên (Đ32)'};
+const FUND_LB={dtc:'Đầu tư công',ctx:'Chi thường xuyên'};
+const PHASES={I:'Chuẩn bị đầu tư',II:'Thực hiện đầu tư / Lựa chọn nhà thầu',III:'Triển khai · Thực hiện thuê · Kết thúc'};
+
+/* ════════ ĐỘNG CƠ TIMELINE (kiểu công thức Excel) ════════
+   Mỗi bước: days = số ngày cộng dồn từ bước liền trước; ov = mốc ghi đè (neo điều chỉnh kế hoạch).
+   due[i] = ov[i] ?? (due[i-1] + days[i]) — sửa một mốc/số ngày là chuỗi sau tự tính lại. */
+function computeDue(p){
+  let cur=p.start;
+  p.steps.forEach(s=>{
+    s.due = (s.ov!==undefined)? s.ov : addD(cur, s.days||0);
+    cur = s.due;
+  });
+}
+function st(s){
+  if(s.skip)return'skip';
+  if(s.pend)return'wait';
+  if(s.actual)return'done';
+  if(s.due<TODAY)return'late';
+  if(diffD(TODAY,s.due)<=10)return'soon';
+  return'plan';
+}
+function pStats(p){
+  const real=p.steps.filter(s=>!s.grp&&!s.skip);
+  const c={done:0,late:0,soon:0,plan:0,wait:0};let maxLate=0;
+  real.forEach(s=>{const k=st(s);c[k]!==undefined&&c[k]++;if(k==='late')maxLate=Math.max(maxLate,diffD(s.due,TODAY))});
+  const pct=real.length?Math.round(c.done/real.length*100):0;
+  const health=c.late?'late':(c.done===real.length?'done':(c.soon?'soon':'plan'));
+  const firstPend=p.steps.find(s=>!s.grp&&!s.skip&&!s.actual);
+  return{total:real.length,...c,pct,health,maxLate,phase:firstPend?firstPend.ph:'✓',curStep:firstPend};
+}
+/* KPI chấm điểm (cấu hình được) */
+function kpi(p){
+  const real=p.steps.filter(s=>!s.grp&&!s.skip);
+  const done=real.filter(s=>s.actual), lateNow=real.filter(s=>st(s)==='late');
+  const onTime=done.filter(s=>s.actual<=s.due).length;
+  const r1=(done.length+lateNow.length)?onTime/(done.length+lateNow.length):1;
+  const delays=[...done.filter(s=>s.actual>s.due).map(s=>diffD(s.due,s.actual)),...lateNow.map(s=>diffD(s.due,TODAY))];
+  const avgDelay=delays.length?delays.reduce((a,b)=>a+b,0)/delays.length:0;
+  const r2=Math.max(0,1-avgDelay/30);
+  const r3=Math.max(0,1-0.25*(p.baselines||[]).length);
+  const r4=p.disbPlan?Math.min(1,(p.disb||0)/p.disbPlan):1;
+  const score=Math.round(40*r1+25*r2+15*r3+20*r4);
+  return{score,grade:score>=85?'A':score>=70?'B':score>=50?'C':'D',onTimeRate:Math.round(r1*100),avgDelay:Math.round(avgDelay),adj:(p.baselines||[]).length};
+}
+
+/* ════════ MẪU QUY TRÌNH (template theo NĐ 45) ════════
+   Tuple: [ph, stt, grp, tên, days, đơn vị, ow, văn bản] */
+const TPL={
+thue:[
+ ['I','1',1,'Nhiệm vụ, dự toán & phân bổ kinh phí',0,'',''],
+ ['I','1.1',0,'Lập, phê duyệt nhiệm vụ và dự toán (kèm tối thiểu 03 báo giá)',10,'Chủ đầu tư trình cấp thẩm quyền','so','Quyết định số …'],
+ ['I','1.2',0,'Phân bổ dự toán kinh phí chi thường xuyên (NĐ 98/2025)',15,'UBND tỉnh · Sở Tài chính','so','Quyết định số …'],
+ ['I','2',1,'Lập kế hoạch thuê dịch vụ CNTT (Điều 34)',0,'',''],
+ ['I','2.1',0,'Lựa chọn các đơn vị tư vấn (khảo sát, thẩm tra, thẩm định giá)',7,'Chủ trì thuê','so','Hợp đồng tư vấn'],
+ ['I','2.2',0,'Khảo sát, lập kế hoạch thuê dịch vụ CNTT',10,'Đơn vị tư vấn','tv','Dự thảo kế hoạch thuê'],
+ ['I','2.3',0,'Thẩm tra kế hoạch thuê; chứng thư thẩm định giá',10,'Đơn vị thẩm tra · TĐG','tv','Báo cáo, chứng thư'],
+ ['I','2.4',0,'Thẩm định kế hoạch thuê (tối đa 20 ngày làm việc — Đ34)',14,'Đầu mối thẩm định / HĐTĐ','so','Báo cáo thẩm định'],
+ ['I','2.5',0,'Phê duyệt kế hoạch thuê & KHLCNT (tối đa 03 ngày làm việc — Đ34)',3,'Cấp có thẩm quyền','so','Quyết định số …'],
+ ['II','3',1,'Lựa chọn nhà thầu cung cấp dịch vụ',0,'',''],
+ ['II','3.1',0,'Lập, thẩm định, phê duyệt HSMT; đăng tải',7,'Tư vấn & bên mời thầu','tv','Quyết định số …'],
+ ['II','3.2',0,'Mở thầu, đánh giá HSDT',18,'Tổ chuyên gia · tư vấn','tv','Biên bản, báo cáo'],
+ ['II','3.3',0,'Phê duyệt KQLCNT; ký hợp đồng thuê dịch vụ',7,'Chủ đầu tư & nhà thầu','so','Hợp đồng số …'],
+ ['III','4',1,'Thực hiện thuê dịch vụ theo giai đoạn',0,'',''],
+ ['III','4.1',0,'Thiết lập, cung cấp dịch vụ; đào tạo hướng dẫn sử dụng',30,'Nhà thầu','nt','Biên bản triển khai'],
+ ['III','4.2',0,'Giám sát chất lượng dịch vụ CNTT theo SLA',15,'Tư vấn giám sát','tv','Báo cáo giám sát'],
+ ['III','4.3',0,'Nghiệm thu theo giai đoạn; thanh toán',10,'Chủ đầu tư','so','Biên bản nghiệm thu'],
+ ['III','4.4',0,'Kết thúc thuê: bàn giao dữ liệu, hồ sơ hoàn thành (Đ35: báo cáo trong 20 ngày)',10,'Chủ đầu tư & nhà thầu','so','Hồ sơ hoàn thành'],
+],
+hethong:[
+ ['I','1',1,'Chủ trương đầu tư',0,'',''],
+ ['I','1.1',0,'Lập báo cáo đề xuất chủ trương đầu tư',15,'Chủ đầu tư','so','Báo cáo đề xuất'],
+ ['I','1.2',0,'Thẩm định báo cáo đề xuất chủ trương đầu tư',10,'Hội đồng thẩm định','so','Báo cáo thẩm định số …'],
+ ['I','1.3',0,'Quyết định chủ trương đầu tư',5,'Cấp quyết định đầu tư','so','Quyết định số …'],
+ ['I','2',1,'Quyết định đầu tư dự án',0,'',''],
+ ['I','2.1',0,'Lập BC nghiên cứu khả thi / BC kinh tế - kỹ thuật (kèm thiết kế cơ sở)',25,'Tư vấn lập BCNCKT','tv','Hồ sơ BCNCKT'],
+ ['I','2.2',0,'Thẩm định BCNCKT, tổng mức đầu tư (Điều 17)',15,'Đầu mối thẩm định','so','Báo cáo thẩm định số …'],
+ ['I','2.3',0,'Quyết định đầu tư dự án',5,'Cấp quyết định đầu tư','so','Quyết định số …'],
+ ['II','3',1,'Thiết kế chi tiết & kế hoạch lựa chọn nhà thầu',0,'',''],
+ ['II','3.1',0,'Lập hồ sơ thiết kế chi tiết, dự toán (Điều 18-19)',20,'Tư vấn thiết kế','tv','Hồ sơ TKCT'],
+ ['II','3.2',0,'Thẩm định, phê duyệt thiết kế chi tiết - dự toán',10,'Chủ đầu tư','so','Quyết định số …'],
+ ['II','3.3',0,'Phê duyệt kế hoạch lựa chọn nhà thầu',5,'Cấp thẩm quyền','so','Quyết định số …'],
+ ['II','4',1,'Lựa chọn nhà thầu',0,'',''],
+ ['II','4.1',0,'Lập, thẩm định, phê duyệt HSMT; đăng tải',10,'Bên mời thầu','so','Quyết định số …'],
+ ['II','4.2',0,'Mở thầu, đánh giá HSDT',20,'Tổ chuyên gia','tv','Biên bản, báo cáo'],
+ ['II','4.3',0,'Phê duyệt KQLCNT; ký hợp đồng',7,'Chủ đầu tư & nhà thầu','so','Hợp đồng số …'],
+ ['III','5',1,'Triển khai, nghiệm thu (Điều 22-25)',0,'',''],
+ ['III','5.1',0,'Triển khai lắp đặt, xây dựng phần mềm, CSDL',60,'Nhà thầu','nt','Nhật ký triển khai'],
+ ['III','5.2',0,'Giám sát công tác triển khai; kiểm thử',10,'Tư vấn giám sát','tv','Báo cáo kiểm thử'],
+ ['III','5.3',0,'Vận hành thử',20,'Nhà thầu & chủ đầu tư','nt','Báo cáo vận hành thử'],
+ ['III','5.4',0,'Đào tạo, hướng dẫn sử dụng',7,'Nhà thầu','nt','Tài liệu, danh sách'],
+ ['III','5.5',0,'Nghiệm thu, bàn giao đưa vào sử dụng',7,'Chủ đầu tư','so','Biên bản nghiệm thu'],
+ ['III','5.6',0,'Hồ sơ hoàn thành; cung cấp thông tin hoàn thành (Đ35: 20 ngày)',20,'Chủ đầu tư','so','Hồ sơ hoàn thành'],
+ ['III','6',1,'Kết thúc đầu tư',0,'',''],
+ ['III','6.1',0,'Bảo hành sản phẩm (Điều 26)',90,'Nhà thầu','nt',''],
+ ['III','6.2',0,'Quyết toán vốn; phê duyệt quyết toán',30,'Chủ đầu tư & cơ quan tài chính','so','Quyết định phê duyệt quyết toán'],
+],
+muasam:[
+ ['I','1',1,'Chuẩn bị mua sắm',0,'',''],
+ ['I','1.1',0,'Phê duyệt nhiệm vụ, dự toán mua sắm',7,'Cấp thẩm quyền','so','Quyết định số …'],
+ ['I','1.2',0,'Phê duyệt kế hoạch lựa chọn nhà thầu',5,'Cấp thẩm quyền','so','Quyết định số …'],
+ ['II','2',1,'Lựa chọn nhà thầu & thực hiện',0,'',''],
+ ['II','2.1',0,'Lập, phê duyệt HSMT / hồ sơ chào giá; đăng tải',7,'Bên mời thầu','so','Quyết định số …'],
+ ['II','2.2',0,'Mở thầu, đánh giá hồ sơ',15,'Tổ chuyên gia','tv','Biên bản, báo cáo'],
+ ['II','2.3',0,'Phê duyệt KQLCNT; ký hợp đồng',7,'Chủ đầu tư & nhà thầu','so','Hợp đồng số …'],
+ ['II','2.4',0,'Giao hàng, lắp đặt, cài đặt thiết bị, phần mềm',20,'Nhà thầu','nt','Biên bản giao nhận'],
+ ['II','2.5',0,'Vận hành thử',7,'Nhà thầu & chủ đầu tư','nt','Báo cáo vận hành thử'],
+ ['II','2.6',0,'Nghiệm thu, bàn giao',5,'Chủ đầu tư','so','Biên bản nghiệm thu'],
+ ['III','3',1,'Kết thúc',0,'',''],
+ ['III','3.1',0,'Bảo hành (Điều 26)',90,'Nhà thầu','nt',''],
+ ['III','3.2',0,'Thanh, quyết toán',20,'Chủ đầu tư','so','Hồ sơ quyết toán'],
+],
+ctx:[
+ ['I','1',1,'Hoạt động chi thường xuyên — không lập dự án (Đ32)',0,'',''],
+ ['I','1.1',0,'Phê duyệt nhiệm vụ và dự toán (NĐ 98/2025)',7,'Cấp thẩm quyền','so','Quyết định số …'],
+ ['II','1.2',0,'Lựa chọn nhà cung cấp theo pháp luật đấu thầu',10,'Đơn vị sử dụng ngân sách','so','Hợp đồng số …'],
+ ['III','1.3',0,'Thực hiện cung cấp hàng hóa / dịch vụ',30,'Nhà cung cấp','nt',''],
+ ['III','1.4',0,'Vận hành thử (nếu thuộc Đ32.7a)',5,'Đơn vị & nhà cung cấp','nt','Báo cáo vận hành thử'],
+ ['III','1.5',0,'Nghiệm thu, thanh toán',7,'Đơn vị sử dụng ngân sách','so','Biên bản nghiệm thu'],
+],
+};
+const TPL_META={
+ thue:{n:'Thuê dịch vụ CNTT không sẵn có',cc:'Điều 34 NĐ 45/2026/NĐ-CP'},
+ hethong:{n:'Dự án đầu tư hệ thống',cc:'Điều 8, Chương II NĐ 45/2026/NĐ-CP'},
+ muasam:{n:'Dự án mua sắm',cc:'Điều 7, 8 NĐ 45/2026/NĐ-CP'},
+ ctx:{n:'Hoạt động chi thường xuyên',cc:'Điều 32 NĐ 45/2026/NĐ-CP'},
+};
+
+/* ════════ DỰ ÁN ════════ */
+let PSEQ=0;
+function instSteps(pid,rows){return rows.map((r,i)=>({id:pid+'-'+i,ph:r[0],stt:r[1],grp:r[2],name:r[3],days:r[4],unit:r[5],ow:r[6]||'so',doc:r[7]||'',req:true}))}
+/* sinh dự án: hoàn thành k bước đầu với jitter thực tế */
+function mkP(o){
+  const p={id:'P'+(++PSEQ),baselines:[],docsExtra:[],...o};
+  p.steps=instSteps(p.id,TPL[p.type]);
+  computeDue(p);
+  let n=0;const J=[0,2,-1,4,0,1,3,0,2,1,0,5,1,0,2];
+  p.steps.forEach((s,i)=>{
+    if(s.grp)return;
+    if(n<(o.done||0)){s.actual=addD(s.due,J[n%J.length]);if(s.doc)s.doc=s.doc.replace('…',String(20+i*3)+'/'+(s.doc.includes('Quyết định')?'QĐ':'BC'));n++}
+  });
+  return p;
+}
+/* 2 dự án thật — bước khai theo NGÀY thật trong file Excel, builder tự quy đổi sang số ngày để chạy engine */
+function realSteps(pid,start,rows){
+  let prev=start;
+  return rows.map((r,i)=>{
+    const s={id:pid+'-'+i,ph:r.ph,stt:r.stt,grp:r.grp,name:r.n,unit:r.u||'',ow:r.ow||'so',doc:r.doc||'',actual:r.a,note:r.note,skip:r.skip,prod:r.prod};
+    s.req=true; s.days=r.d?diffD(prev,r.d):0; prev=r.d||prev;
+    return s;
+  });
+}
+/* ── P1: Hệ thống KPI công chức (dữ liệu thật, checklist 09/6/2026) ── */
+const P1_ROWS=[
+ {ph:'I',stt:'1',n:'Kế hoạch 60-KH/TU của Ban Thường vụ Tỉnh ủy về xây dựng, áp dụng chỉ số KPI',d:'2026-03-05',doc:'60-KH/TU',a:'2026-03-05',u:'Tỉnh ủy',note:'TVTU đã có văn bản cho lùi 1 tháng'},
+ {ph:'I',stt:'2',n:'Kế hoạch số 80/KH-UBND của UBND tỉnh về xây dựng, áp dụng chỉ số KPI',d:'2026-03-20',doc:'Công văn số 2032/UBND-NC',a:'2026-03-20',u:'UBND tỉnh'},
+ {ph:'I',stt:'3',grp:1,n:'Thành lập Tổ QLDA, Hội đồng thẩm định',d:'2026-03-20'},
+ {ph:'I',stt:'3.1',n:'Thành lập Tổ quản lý hoạt động thuê dịch vụ CNTT',d:'2026-03-25',doc:'Quyết định số 91/QĐ-SKHCN',a:'2026-03-26',u:'VPS'},
+ {ph:'I',stt:'3.2',n:'Quyết định thành lập HĐTĐ Kế hoạch thuê dịch vụ CNTT',d:'2026-03-25',u:'VPS',skip:1,note:'Đã báo cáo Tổ trưởng — bỏ bước này'},
+ {ph:'I',stt:'4',grp:1,n:'Phê duyệt nhiệm vụ, dự toán & phân bổ kinh phí',d:'2026-03-20'},
+ {ph:'I',stt:'4.1',n:'Văn bản đề nghị cung cấp báo giá 7 gói thầu tư vấn',d:'2026-04-01',doc:'Văn bản số 857/SKHCN-KHTC',a:'2026-04-01',u:'Phòng KHTC'},
+ {ph:'I',stt:'4.2',n:'Văn bản đề nghị cung cấp báo giá gói thầu thuê dịch vụ CNTT',d:'2026-04-01',doc:'Văn bản số 781/SKHCN-VPS',a:'2026-03-27',u:'Phòng KHTC',note:'Đã nhận 3 báo giá'},
+ {ph:'I',stt:'4.3',n:'Lập, trình phê duyệt nhiệm vụ, dự toán thuê dịch vụ CNTT',d:'2026-04-08',doc:'Quyết định số 122/QĐ-SKHCN',a:'2026-04-15',u:'KHTC trình PGĐ Sở'},
+ {ph:'I',stt:'4.4',n:'Tờ trình đề nghị phân bổ kinh phí gửi UBND tỉnh, Sở Tài chính',d:'2026-04-09',doc:'Tờ trình số 92/TTr-SKHCN',a:'2026-04-16',u:'Phòng KHTC'},
+ {ph:'I',stt:'4.5',n:'Báo cáo đánh giá đề xuất yêu cầu kỹ thuật hệ thống KPI',d:'2026-04-14',doc:'Báo cáo số 176/BC-SKHCN',a:'2026-04-13',u:'Sở KHCN'},
+ {ph:'I',stt:'4.6',n:'Tờ trình thẩm định, phê duyệt chủ trương & dự kiến kinh phí',d:'2026-04-24',doc:'Tờ trình số 101/TTr-SKHCN',a:'2026-04-25',u:'Sở KHCN'},
+ {ph:'I',stt:'4.7',n:'Tờ trình Sở Tài chính thẩm định, trình UBND tỉnh phê duyệt dự toán',d:'2026-05-14',doc:'Tờ trình số 391/TTr-STC',a:'2026-05-14',u:'Sở Tài chính'},
+ {ph:'I',stt:'4.8',n:'Tờ trình của UBND tỉnh trình Đảng ủy UBND tỉnh',d:'2026-05-25',doc:'Tờ trình số 554/TTr-UBND',a:'2026-05-25',u:'UBND tỉnh'},
+ {ph:'I',stt:'4.9',n:'Quyết định phân bổ kinh phí của UBND tỉnh',d:'2026-06-19',doc:'Quyết định số …/QĐ-UBND',u:'UBND tỉnh'},
+ {ph:'I',stt:'4.10',n:'Thông báo của Sở Tài chính; trình phân bổ; thẩm định; QĐ cấp kinh phí',d:'2026-07-01',doc:'Thông báo số …/TB-STC',u:'Sở Tài chính · UBND tỉnh'},
+ {ph:'I',stt:'4.11',n:'Phê duyệt KHLCNT các gói thầu tư vấn',d:'2026-07-02',doc:'Quyết định số …/QĐ-SKHCN',u:'KHTC trình PGĐ Sở'},
+ {ph:'I',stt:'5',grp:1,n:'Lựa chọn các đơn vị tư vấn (TĐG, thẩm tra, khảo sát, giám sát)',d:'2026-07-02'},
+ {ph:'I',stt:'5.1',n:'Thư mời, phúc đáp, hoàn thiện & ký hợp đồng tư vấn',d:'2026-07-09',doc:'Hợp đồng số …',u:'Tổ QLDA & đơn vị tư vấn'},
+ {ph:'I',stt:'6',grp:1,n:'Khảo sát, lập kế hoạch thuê dịch vụ CNTT',d:'2026-07-09'},
+ {ph:'I',stt:'6.1',n:'Khảo sát, báo cáo kỹ thuật, lập kế hoạch thuê',d:'2026-07-20',doc:'Báo cáo số …',u:'Đơn vị tư vấn',ow:'tv'},
+ {ph:'I',stt:'6.2',n:'Kế hoạch thuê (kèm báo giá tối thiểu 03 doanh nghiệp)',d:'2026-07-21',doc:'Dự thảo kế hoạch thuê',u:'Đơn vị tư vấn',ow:'tv'},
+ {ph:'I',stt:'7',grp:1,n:'Thẩm tra · Thẩm định giá',d:'2026-07-21'},
+ {ph:'I',stt:'7.1',n:'Báo cáo kết quả thẩm tra; kế hoạch thuê sau thẩm tra',d:'2026-07-29',doc:'Báo cáo số …',u:'Đơn vị thẩm tra',ow:'tv'},
+ {ph:'I',stt:'7.2',n:'Chứng thư thẩm định giá; kế hoạch thuê sau TĐG',d:'2026-08-04',doc:'Chứng thư số …',u:'Đơn vị TĐG',ow:'tv'},
+ {ph:'I',stt:'8',grp:1,n:'Thẩm định, phê duyệt kế hoạch thuê & KHLCNT',d:'2026-08-04'},
+ {ph:'I',stt:'8.1',n:'Thẩm định kế hoạch thuê (HĐTĐ / phòng chuyên môn)',d:'2026-08-10',doc:'Báo cáo số …/BC-HĐTĐ',u:'Hội đồng thẩm định'},
+ {ph:'I',stt:'8.2',n:'QĐ phê duyệt kế hoạch thuê; QĐ phê duyệt KHLCNT; đăng tải',d:'2026-08-11',doc:'Quyết định số …/QĐ-SKHCN',u:'GĐ Sở · PGĐ phụ trách'},
+ {ph:'I',stt:'9',grp:1,n:'Lựa chọn tư vấn lập HSMT, thẩm định HSDT',d:'2026-08-11'},
+ {ph:'I',stt:'9.1',n:'Thương thảo, chỉ định thầu, ký hợp đồng tư vấn',d:'2026-08-14',doc:'Hợp đồng số …',u:'Tổ QLDA & đơn vị tư vấn'},
+ {ph:'II',stt:'1',grp:1,n:'Phê duyệt hồ sơ mời thầu',d:'2026-08-14'},
+ {ph:'II',stt:'1.1',n:'Lập, thẩm định, phê duyệt HSMT; đăng tải lên mạng đấu thầu',d:'2026-08-19',doc:'Quyết định số …/QĐ-SKHCN',u:'Tư vấn · PGĐ phụ trách',ow:'tv'},
+ {ph:'II',stt:'2',grp:1,n:'Đánh giá HSDT & phê duyệt kết quả',d:'2026-08-19'},
+ {ph:'II',stt:'2.1',n:'Mở thầu',d:'2026-09-06',doc:'Biên bản mở thầu',u:'Tư vấn lập HSMT, ĐGHSDT',ow:'tv'},
+ {ph:'II',stt:'2.2',n:'Đánh giá HSDT; đối chiếu tài liệu; trình KQLCNT',d:'2026-09-10',doc:'Tờ trình số …',u:'Tổ chuyên gia · tư vấn',ow:'tv'},
+ {ph:'II',stt:'2.3',n:'Thẩm định, phê duyệt KQLCNT; thông báo trúng thầu',d:'2026-09-14',doc:'Quyết định số …/QĐ-SKHCN',u:'PGĐ phụ trách'},
+ {ph:'II',stt:'2.4',n:'Ký hợp đồng thuê dịch vụ CNTT (hợp đồng điện tử)',d:'2026-09-15',doc:'Hợp đồng số …',u:'GĐ Sở & nhà thầu'},
+ {ph:'III',stt:'1',grp:1,n:'Thực hiện thuê dịch vụ theo giai đoạn',d:'2026-09-15'},
+ {ph:'III',stt:'1.1',n:'Cài đặt, cấu hình; đào tạo; vận hành thử',d:'2026-10-12',u:'Nhà thầu & tư vấn giám sát',ow:'nt',prod:'Biên bản, báo cáo'},
+ {ph:'III',stt:'1.2',n:'Nghiệm thu dịch vụ và đưa vào sử dụng',d:'2026-10-15',u:'Phòng CĐS, tư vấn giám sát',prod:'Các biên bản nghiệm thu'},
+];
+/* ── P2: LaoCai-S (dữ liệu thật, timeline 16/4/2026) ── */
+const P2_ROWS=[
+ {ph:'I',stt:'1',grp:1,n:'Giao kinh phí thuê dịch vụ CNTT',d:'2025-12-09'},
+ {ph:'I',stt:'1.1',n:'Xây dựng nội dung, kinh phí thuê dịch vụ CNTT',d:'2025-12-09',a:'2025-12-09',u:'Phòng BCVT'},
+ {ph:'I',stt:'1.2',n:'Đề nghị HĐ tỉnh thẩm định, trình UBND tỉnh phê duyệt danh mục',d:'2025-12-09',doc:'Tờ trình số …',a:'2025-12-09',u:'Phòng KHTC'},
+ {ph:'I',stt:'1.3',n:'Quyết định phê duyệt danh mục của UBND tỉnh',d:'2026-03-01',doc:'Quyết định số 58/QĐ-UBND',a:'2026-03-05',u:'UBND tỉnh'},
+ {ph:'I',stt:'2',grp:1,n:'Thành lập Tổ QLDA, HĐTĐ',d:'2026-03-02'},
+ {ph:'I',stt:'2.1',n:'Thành lập Tổ quản lý hoạt động thuê dịch vụ CNTT',d:'2026-03-02',doc:'Quyết định số 71/QĐ-SKHCN',a:'2026-03-13',u:'KHTC trình GĐ Sở'},
+ {ph:'I',stt:'2.2',n:'Thành lập HĐTĐ Kế hoạch thuê dịch vụ CNTT',d:'2026-03-02',doc:'Quyết định số 68/QĐ-SKHCN',a:'2026-03-13',u:'KHTC trình GĐ Sở'},
+ {ph:'I',stt:'3',grp:1,n:'Phê duyệt nhiệm vụ, dự toán & phân bổ kinh phí',d:'2026-03-02'},
+ {ph:'I',stt:'3.1',n:'Lập nhiệm vụ, dự toán thuê dịch vụ CNTT (kèm báo giá 03 doanh nghiệp)',d:'2026-03-02',a:'2026-03-02',u:'Trung tâm CNTT'},
+ {ph:'I',stt:'3.2',n:'Phê duyệt nhiệm vụ, dự toán thuê dịch vụ CNTT',d:'2026-03-03',doc:'Quyết định số 85/QĐ-SKHCN',a:'2026-03-20',u:'KHTC trình PGĐ Sở'},
+ {ph:'I',stt:'3.3',n:'Tờ trình đề nghị phân bổ kinh phí gửi UBND tỉnh, Sở Tài chính',d:'2026-03-23',doc:'Tờ trình số 58/TTr-SKHCN',a:'2026-03-22',u:'Phòng KHTC'},
+ {ph:'I',stt:'3.4',n:'Quyết định phân bổ kinh phí của UBND tỉnh',d:'2026-04-17',doc:'Quyết định số …/QĐ-UBND',u:'UBND tỉnh',note:'Đang chờ — điểm nghẽn của dự án'},
+ {ph:'I',stt:'3.5',n:'Thông báo của Sở Tài chính',d:'2026-04-20',doc:'Thông báo số …/TB-STC',u:'Sở Tài chính'},
+ {ph:'I',stt:'3.6',n:'Phê duyệt KHLCNT các gói thầu tư vấn',d:'2026-04-20',doc:'Quyết định số …/QĐ-SKHCN',u:'KHTC trình PGĐ Sở'},
+ {ph:'I',stt:'4',grp:1,n:'Lựa chọn tư vấn: TĐG, thẩm tra, khảo sát lập kế hoạch thuê',d:'2026-04-20'},
+ {ph:'I',stt:'4.1',n:'Thư mời, phúc đáp, hoàn thiện hợp đồng, chỉ định thầu, đăng tải',d:'2026-04-22',doc:'Hợp đồng số …',u:'Tổ QLDA & đơn vị tư vấn'},
+ {ph:'I',stt:'5',grp:1,n:'Khảo sát, lập kế hoạch thuê dịch vụ CNTT',d:'2026-04-22'},
+ {ph:'I',stt:'5.1',n:'Khảo sát, báo cáo kết quả, lập kế hoạch thuê (kèm 03 báo giá)',d:'2026-04-27',doc:'Báo cáo số …',u:'Đơn vị tư vấn',ow:'tv'},
+ {ph:'I',stt:'6',grp:1,n:'Thẩm tra · Thẩm định giá',d:'2026-04-27'},
+ {ph:'I',stt:'6.1',n:'Báo cáo thẩm tra; kế hoạch thuê sau thẩm tra',d:'2026-05-05',doc:'Báo cáo số …',u:'Đơn vị thẩm tra',ow:'tv'},
+ {ph:'I',stt:'6.2',n:'Chứng thư thẩm định giá; kế hoạch thuê sau TĐG',d:'2026-05-12',doc:'Chứng thư số …',u:'Đơn vị TĐG',ow:'tv'},
+ {ph:'I',stt:'7',grp:1,n:'Thẩm định, phê duyệt kế hoạch thuê & KHLCNT',d:'2026-05-12'},
+ {ph:'I',stt:'7.1',n:'Báo cáo thẩm định của HĐTĐ; kế hoạch điều chỉnh',d:'2026-05-15',doc:'Báo cáo số …/BC-HĐTĐ',u:'HĐTĐ · Tổ QLDA'},
+ {ph:'I',stt:'7.2',n:'QĐ phê duyệt kế hoạch thuê; QĐ KHLCNT; đăng tải mạng đấu thầu',d:'2026-05-15',doc:'Quyết định số …/QĐ-SKHCN',u:'GĐ Sở · PGĐ phụ trách'},
+ {ph:'I',stt:'8',grp:1,n:'Lựa chọn tư vấn gói 01 (lập HSMT) & gói 02 (thẩm định HSDT)',d:'2026-05-15'},
+ {ph:'I',stt:'8.1',n:'Thương thảo, chỉ định thầu, ký hợp đồng tư vấn gói 01, 02',d:'2026-05-19',doc:'Hợp đồng số …',u:'Tổ QLDA & đơn vị tư vấn'},
+ {ph:'II',stt:'1',grp:1,n:'Phê duyệt HSMT (gói thầu số 03 — thuê dịch vụ)',d:'2026-05-19'},
+ {ph:'II',stt:'1.1',n:'Lập, thẩm định, phê duyệt HSMT; đăng tải lên mạng đấu thầu',d:'2026-05-25',doc:'Quyết định số …/QĐ-SKHCN',u:'Tư vấn · PGĐ phụ trách',ow:'tv'},
+ {ph:'II',stt:'2',grp:1,n:'Đánh giá HSDT & phê duyệt kết quả',d:'2026-05-25'},
+ {ph:'II',stt:'2.1',n:'Mở thầu',d:'2026-06-12',doc:'Biên bản mở thầu',u:'Tư vấn lập HSMT, ĐGHSDT',ow:'tv'},
+ {ph:'II',stt:'2.2',n:'Đánh giá HSDT; đối chiếu; trình KQLCNT',d:'2026-06-18',doc:'Tờ trình số …',u:'Tổ chuyên gia · tư vấn',ow:'tv'},
+ {ph:'II',stt:'2.3',n:'Thẩm định, phê duyệt KQLCNT; thông báo trúng thầu',d:'2026-06-22',doc:'Quyết định số …/QĐ-SKHCN',u:'PGĐ phụ trách'},
+ {ph:'II',stt:'2.4',n:'Ký hợp đồng thuê dịch vụ CNTT',d:'2026-06-23',doc:'Hợp đồng số …',u:'GĐ Sở & nhà thầu'},
+ {ph:'III',stt:'1',grp:1,n:'Thực hiện thuê dịch vụ theo giai đoạn',d:'2026-06-23'},
+ {ph:'III',stt:'1.1',n:'Nghiệm thu dịch vụ và đưa vào sử dụng',d:'2026-07-23',u:'Phòng BCVT',prod:'Các biên bản nghiệm thu'},
+];
+function mkReal(o,rows){
+  const p={id:'P'+(++PSEQ),baselines:[],docsExtra:[],...o};
+  p.steps=realSteps(p.id,p.start,rows);
+  computeDue(p);
+  return p;
+}
+
+/* ════════ DANH MỤC DỰ ÁN ════════ */
+const PROJECTS=[
+ mkReal({name:'Hệ thống phần mềm đánh giá KPI công chức tỉnh Lào Cai',cdt:'Sở Khoa học và Công nghệ',type:'thue',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:4860,disb:0,disbPlan:0,start:'2026-03-05',contractor:''},P1_ROWS),
+ mkReal({name:'Thuê dịch vụ CNTT: Hệ thống ứng dụng LaoCai-S',cdt:'Sở Khoa học và Công nghệ',type:'thue',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:8200,disb:0,disbPlan:10,start:'2025-12-09',contractor:''},P2_ROWS),
+ mkP({name:'Nâng cấp Trung tâm dữ liệu tỉnh (DC/DR)',cdt:'Văn phòng UBND tỉnh',type:'hethong',fund:'dtc',grp:'B',legal:'Chuyển tiếp NĐ 73/82',budget:45000,disb:86,disbPlan:90,start:'2025-06-02',done:19,contractor:'Viettel IDC'}),
+ mkP({name:'Nâng cấp Hệ thống thông tin giải quyết TTHC tỉnh',cdt:'Văn phòng UBND tỉnh',type:'hethong',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:9500,disb:5,disbPlan:10,start:'2026-03-02',done:7,contractor:'FOXAI'}),
+ mkP({name:'CSDL ngành y tế & hồ sơ sức khỏe điện tử',cdt:'Sở Y tế',type:'hethong',fund:'dtc',grp:'B',legal:'NĐ 45/2026/NĐ-CP',budget:28000,disb:12,disbPlan:25,start:'2026-01-05',done:9,contractor:'Liên danh FOXAI – FPT IS'}),
+ mkP({name:'Thuê dịch vụ tư vấn khám chữa bệnh từ xa (Telehealth)',cdt:'Sở Y tế',type:'thue',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:6400,disb:18,disbPlan:15,start:'2025-12-01',done:14,contractor:'FOXAI'}),
+ mkP({name:'Mua sắm máy tính, thiết bị số cho cán bộ cấp xã',cdt:'UBND xã Bát Xát',type:'muasam',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:3200,disb:0,disbPlan:0,start:'2026-05-11',done:3,contractor:'Công ty CP CMC Telecom'}),
+ mkP({name:'Mở rộng phần mềm quản lý văn bản và điều hành',cdt:'Sở Giáo dục và Đào tạo',type:'hethong',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:4100,disb:0,disbPlan:0,start:'2026-03-02',done:6,contractor:'FOXAI'}),
+ mkP({name:'Hệ thống camera giám sát đô thị thông minh',cdt:'Công an tỉnh',type:'hethong',fund:'dtc',grp:'B',legal:'Chuyển tiếp NĐ 73/82',budget:62000,disb:8,disbPlan:20,start:'2025-08-15',done:13,contractor:'Viettel Solutions'}),
+ mkP({name:'Thuê dịch vụ phần mềm quản lý cán bộ, công chức, viên chức',cdt:'Sở Nội vụ',type:'thue',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:5300,disb:0,disbPlan:0,start:'2026-02-02',done:10,contractor:'Công ty CP MISA'}),
+ mkP({name:'Số hóa tài liệu lưu trữ lịch sử tỉnh (tạo lập CSDL)',cdt:'Trung tâm Lưu trữ lịch sử',type:'ctx',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP — Đ32.1.c',budget:2800,disb:55,disbPlan:50,start:'2026-05-04',done:2,contractor:'FOXAI'}),
+ mkP({name:'Nền tảng du lịch thông minh tỉnh Lào Cai',cdt:'Sở Du lịch',type:'thue',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:7200,disb:0,disbPlan:5,start:'2026-03-23',done:7,contractor:'FOXAI'}),
+ mkP({name:'Mua sắm bản quyền phần mềm phòng chống mã độc tập trung',cdt:'Sở Khoa học và Công nghệ',type:'muasam',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP — Đ32.1.a',budget:1900,disb:100,disbPlan:100,start:'2026-01-05',done:9,contractor:'Công ty TNHH NCS'}),
+ mkP({name:'Trung tâm điều hành thông minh (IOC) tỉnh — giai đoạn 2',cdt:'Sở Khoa học và Công nghệ',type:'hethong',fund:'dtc',grp:'B',legal:'NĐ 45/2026/NĐ-CP',budget:38000,disb:0,disbPlan:0,start:'2026-05-04',done:2,contractor:''}),
+ mkP({name:'CSDL ngành giáo dục và học bạ số',cdt:'Sở Giáo dục và Đào tạo',type:'hethong',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:11500,disb:4,disbPlan:10,start:'2026-01-05',done:10,contractor:'Liên danh FOXAI – VNG Cloud'}),
+ mkP({name:'Thuê dịch vụ giám sát an toàn thông tin (SOC)',cdt:'Sở Khoa học và Công nghệ',type:'thue',fund:'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',budget:9800,disb:42,disbPlan:40,start:'2025-09-01',done:15,contractor:'Viettel Cyber Security'}),
+];
+/* dựng sẵn 2 baseline cho dự án đã điều chỉnh kế hoạch */
+PROJECTS[8].baselines.push({v:2,date:'2026-03-10',reason:'Chậm giải phóng vị trí lắp đặt camera; điều chỉnh mốc mở thầu',slip:24,auth:'UBND tỉnh'});
+PROJECTS[4].baselines.push({v:2,date:'2026-04-02',reason:'Bổ sung yêu cầu liên thông CSDL quốc gia về bảo hiểm',slip:15,auth:'Giám đốc Sở (chủ đầu tư)'});
+/* ════════ VAI TRÒ & ĐIỀU HƯỚNG ════════ */
+const ROLES={
+ leader:{name:'Lãnh đạo tỉnh',ava:'LT',cls:'leader',user:'Văn phòng UBND tỉnh',edit:0},
+ so:{name:'Sở KHCN — Giám sát',ava:'SK',cls:'so',user:'Phòng Bưu chính – Chuyển đổi số',edit:1},
+ cdt:{name:'Chủ đầu tư',ava:'YT',cls:'nt',user:'Sở Y tế tỉnh Lào Cai',edit:1,cdtName:'Sở Y tế'},
+ nt:{name:'Nhà thầu · Tư vấn',ava:'NT',cls:'leader',user:'FOXAI',edit:0,ntName:'FOXAI'},
+};
+let ROLE='so', VIEW='pf', PF='pf-dash', PJ='pj-overview', CURP=null, CUR_STEP=null;
+const visible=()=>PROJECTS.filter(p=>{
+  if(ROLE==='cdt')return p.cdt===ROLES.cdt.cdtName;
+  if(ROLE==='nt')return !!(p.contractor) && p.contractor.includes(ROLES.nt.ntName);
+  return true;
+});
+const canEdit=p=>ROLE==='so'||(ROLE==='cdt'&&p.cdt===ROLES.cdt.cdtName);
+
+/* ── xác thực tài khoản ── */
+const ACCOUNTS={
+  leader:{user:'lanhdao.laocai', pass:'Laocai@2026', role:'leader'},
+  so:    {user:'skhcn.laocai',   pass:'Skhcn@2026',  role:'so'},
+  cdt:   {user:'soyte.laocai',   pass:'Soyte@2026',  role:'cdt'},
+  nt:    {user:'foxai.nt',       pass:'Foxai@2026',  role:'nt'},
+};
+function doLogin(role){
+  const acc=ACCOUNTS[role];
+  const u=$('#u-'+role).value.trim(), p=$('#p-'+role).value;
+  const err=$('#e-'+role);
+  if(u===acc.user && p===acc.pass){
+    err.style.display='none';
+    loginAs(role);
+  } else {
+    err.style.display='block';
+    $('#p-'+role).value='';
+    $('#p-'+role).focus();
+  }
+}
+function togglePwd(id,el){
+  const inp=$('#'+id);
+  if(inp.type==='password'){inp.type='text';el.textContent='🙈 Ẩn mật khẩu'}
+  else{inp.type='password';el.textContent='👁 Hiện mật khẩu'}
+}
+// Enter key trên password field
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.type==='password'){
+    const m=e.target.id.match(/^p-(.+)$/);
+    if(m)doLogin(m[1]);
+  }
+});
+
+function loginAs(r){
+  ROLE=r;$('#login').style.display='none';$('#app').classList.add('on');
+  const R=ROLES[r];
+  $('#u-ava').textContent=R.ava;$('#u-name').textContent=R.user;$('#u-role').textContent=R.name;
+  $('#tb-role').textContent=R.name;$('#tb-role').className='tb-role '+R.cls;
+  CURP=null;goPF(r==='nt'?'pf-list':'pf-dash');
+  toast('Đăng nhập: '+R.name+(r==='cdt'?' ('+R.user+')':r==='nt'?' ('+R.user+')':''));
+}
+function logout(){$('#app').classList.remove('on');$('#login').style.display='flex'}
+function show(pg){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  $('#pg-'+pg).classList.add('on');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('on',n.dataset.pg===pg));
+  document.getElementById('sb').classList.remove('open');
+  window.scrollTo({top:0});
+}
+function goPF(pg){VIEW='pf';PF=pg;CURP=null;renderMenu();crumb();RENDER[pg]();show(pg)}
+function openProj(id,pg){CURP=PROJECTS.find(p=>p.id===id);VIEW='pj';PJ=pg||'pj-overview';renderMenu();crumb();RENDER[PJ]();show(PJ)}
+function goPJ(pg){PJ=pg;crumb();RENDER[pg]();show(pg)}
+function crumb(){
+  $('#crumb').innerHTML = VIEW==='pf'
+   ? `<b style="font-weight:700">Danh mục dự án CNTT toàn tỉnh</b>`
+   : `<a onclick="goPF('pf-list')">← Danh mục</a><span>/</span><b style="font-weight:700">${CURP.name.length>56?CURP.name.slice(0,56)+'…':CURP.name}</b>`;
+}
+function renderMenu(){
+  let html='';
+  if(VIEW==='pf'){
+    const items=[['pf-dash','📊','Dashboard tổng thể'],['pf-report','📈','Báo cáo tổng hợp'],['pf-list','🗃','Danh mục dự án'],['pf-kpi','🏅','KPI & xếp hạng'],['pf-alerts','🔔','Trung tâm cảnh báo'],['pf-bc35','📮','Nghĩa vụ báo cáo (Đ35)'],['pf-admin','⚙️','Quản trị & quy trình']];
+    const allow={leader:['pf-dash','pf-report','pf-list','pf-kpi','pf-alerts','pf-bc35'],so:items.map(i=>i[0]),cdt:['pf-dash','pf-list','pf-alerts','pf-bc35'],nt:['pf-list','pf-alerts']};
+    html+=`<div class="sb-sec">Cấp danh mục</div>`;
+    items.filter(i=>allow[ROLE].includes(i[0])).forEach(([pg,ic,lb])=>{
+      const bdg=pg==='pf-alerts'?countAlerts():0;
+      html+=`<div class="ni" data-pg="${pg}" onclick="goPF('${pg}')"><span class="nico">${ic}</span><span>${lb}</span>${bdg?`<span class="bdg">${bdg}</span>`:''}</div>`;
+    });
+    html+=`<div class="sb-sec">Dự án ${ROLE==='cdt'?'của đơn vị':ROLE==='nt'?'tham gia':'gần đây'}</div>`;
+    visible().slice(0,6).forEach(p=>{const s=pStats(p);
+      html+=`<div class="ni" onclick="openProj('${p.id}')"><span class="hdot ${s.health}" style="margin:0 4px"></span><span style="font-size:12px">${p.name.slice(0,30)}${p.name.length>30?'…':''}</span></div>`;});
+  }else{
+    html+=`<div class="ni" onclick="goPF('pf-list')"><span class="nico">←</span><span>Quay lại danh mục</span></div>`;
+    html+=`<div class="sb-sec">Không gian dự án</div>`;
+    [['pj-overview','📊','Tổng quan dự án'],['pj-checklist','📑','Checklist & timeline'],['pj-gantt','📅','Biểu đồ Gantt'],['pj-baseline','🕘','Kế hoạch & điều chỉnh'],['pj-vanban','📜','Văn bản dự án'],['pj-kinhphi','💰','Kinh phí & giải ngân']]
+    .forEach(([pg,ic,lb])=>{html+=`<div class="ni" data-pg="${pg}" onclick="goPJ('${pg}')"><span class="nico">${ic}</span><span>${lb}</span></div>`});
+  }
+  $('#sb-menu').innerHTML=html;
+}
+function countAlerts(){let n=0;visible().forEach(p=>p.steps.forEach(s=>{if(!s.grp&&!s.skip){const k=st(s);if(k==='late'||k==='soon')n++}}));return n}
+
+/* ════════ CẤP DANH MỤC ════════ */
+function rPfDash(){
+  const ps=visible();
+  const H={done:0,plan:0,soon:0,late:0};let bud=0,disb=0;
+  ps.forEach(p=>{const s=pStats(p);H[s.health]++;bud+=p.budget;disb+=p.budget*(p.disb||0)/100});
+  const lateList=ps.map(p=>({p,s:pStats(p)})).filter(x=>x.s.health==='late').sort((a,b)=>b.s.maxLate-a.s.maxLate);
+  const soonList=ps.flatMap(p=>p.steps.filter(s=>!s.grp&&!s.skip&&st(s)==='soon').map(s=>({p,s}))).sort((a,b)=>a.s.due<b.s.due?-1:1).slice(0,5);
+  const disbPct=bud?Math.round(disb/bud*100):0;
+
+  // Lãnh đạo tỉnh: view đơn giản, tập trung vào 3 câu hỏi chính
+  if(ROLE==='leader'){
+    $('#pg-pf-dash').innerHTML=`
+    <div class="ph"><div>
+      <h1>Tổng quan dự án CNTT tỉnh Lào Cai</h1>
+      <p>Tính đến ngày 11/6/2026 · ${ps.length} dự án đang triển khai</p>
+    </div></div>
+
+    <div class="stats" style="grid-template-columns:repeat(4,1fr)">
+      <div class="st" style="--c:var(--red)"><div class="lb">Cần xử lý ngay</div><div class="vl">${H.late}</div><div class="sb2">dự án đang chậm tiến độ</div></div>
+      <div class="st" style="--c:var(--amber)"><div class="lb">Cần theo dõi</div><div class="vl">${H.soon}</div><div class="sb2">dự án sắp đến hạn mốc</div></div>
+      <div class="st" style="--c:var(--green)"><div class="lb">Đúng tiến độ</div><div class="vl">${H.plan+H.done}</div><div class="sb2">đang triển khai tốt</div></div>
+      <div class="st" style="--c:var(--gold)"><div class="lb">Tỷ lệ giải ngân</div><div class="vl">${disbPct}%</div><div class="sb2">${money(Math.round(disb))} / ${money(bud)} tr.đ</div></div>
+    </div>
+
+    <div class="pf-grid2">
+      <div class="card">
+        <div class="card-h"><h3>⚠️ Dự án cần xử lý — xếp theo số ngày chậm</h3></div>
+        <div class="card-b" style="padding:6px 18px">
+        ${lateList.length?lateList.map(({p,s},i)=>`
+          <div class="li-row" style="cursor:pointer;padding:10px 0;border-bottom:1px solid var(--line)" onclick="openProj('${p.id}')">
+            <div style="font-size:22px;font-weight:800;color:var(--red);min-width:44px;text-align:center">${s.maxLate}<div style="font-size:10px;font-weight:500;color:var(--mut)">ngày</div></div>
+            <div style="flex:1">
+              <div style="font-weight:700;font-size:13.5px;margin-bottom:3px">${p.name}</div>
+              <div style="font-size:12px;color:var(--mut)">Chủ đầu tư: <b>${p.cdt}</b></div>
+              <div style="font-size:12px;color:var(--mut2);margin-top:2px">Tắc tại: ${s.curStep?s.curStep.name.slice(0,55)+'…':''}</div>
+            </div>
+            <div style="font-size:11px;color:var(--navy3);font-weight:600">Xem chi tiết →</div>
+          </div>`).join(''):'<div class="empty" style="padding:20px 0">✅ Không có dự án nào quá hạn.</div>'}
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-h"><h3>📌 Mốc quan trọng trong 10 ngày tới</h3></div>
+          <div class="card-b" style="padding:6px 18px">
+          ${soonList.map(({p,s})=>`
+            <div class="li-row" style="cursor:pointer;padding:9px 0;border-bottom:1px solid var(--line)" onclick="openProj('${p.id}','pj-checklist')">
+              <div style="min-width:54px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--amber)">${fmt(s.due).slice(0,5)}</div><div style="font-size:10px;color:var(--mut)">${fmt(s.due).slice(6)}</div></div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:12.5px">${s.name.slice(0,52)}</div>
+                <div style="font-size:11.5px;color:var(--mut)">${p.name.slice(0,42)}</div>
+              </div>
+            </div>`).join('')||'<div class="empty">Không có mốc sắp đến hạn.</div>'}
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>📊 Tiến độ theo giai đoạn</h3></div>
+          <div class="card-b">
+            ${['I','II','III'].map(ph=>{
+              const list=ps.filter(p=>{const s=pStats(p);return s.phase===ph});
+              const done=ps.filter(p=>pStats(p).phase==='✓').length;
+              if(ph==='I')return`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)"><span style="font-size:13px"><b>Giai đoạn I</b> — Chuẩn bị đầu tư</span><b style="color:var(--navy)">${list.length} dự án</b></div>`;
+              if(ph==='II')return`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)"><span style="font-size:13px"><b>Giai đoạn II</b> — Lựa chọn nhà thầu</span><b style="color:var(--navy)">${list.length} dự án</b></div>`;
+              return`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)"><span style="font-size:13px"><b>Giai đoạn III</b> — Đang triển khai</span><b style="color:var(--navy)">${list.length} dự án</b></div>`;
+            }).join('')}
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0"><span style="font-size:13px">✅ <b>Hoàn thành</b></span><b style="color:var(--green)">${ps.filter(p=>pStats(p).phase==='✓').length} dự án</b></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    return;
+  }
+
+  // Sở KHCN / CĐT: dashboard đầy đủ như cũ
+  const types={};ps.forEach(p=>types[p.type]=(types[p.type]||0)+1);
+  const mtx={};['I','II','III','✓'].forEach(ph=>mtx[ph]={late:0,soon:0,plan:0,done:0});
+  ps.forEach(p=>{const s=pStats(p);mtx[s.phase][s.health==='done'?'done':s.health]++});
+  $('#pg-pf-dash').innerHTML=`
+  <div class="ph"><div><h1>Dashboard điều hành danh mục dự án CNTT</h1>
+    <p>${ps.length} dự án đang theo dõi · Nghị định 45/2026/NĐ-CP</p></div>
+    <div class="ph-acts">${ROLE==='so'?`<button class="btn btn-navy" onclick="openNewProj()">+ Tạo dự án</button>`:''}</div></div>
+  <div class="stats">
+    <div class="st" style="--c:var(--navy)"><div class="lb">Tổng dự án</div><div class="vl">${ps.length}</div><div class="sb2">đang theo dõi</div></div>
+    <div class="st" style="--c:var(--red)"><div class="lb">Quá hạn</div><div class="vl">${H.late}</div><div class="sb2">cần đôn đốc ngay</div></div>
+    <div class="st" style="--c:var(--amber)"><div class="lb">Sắp đến hạn</div><div class="vl">${H.soon}</div><div class="sb2">trong 10 ngày tới</div></div>
+    <div class="st" style="--c:#2A3242"><div class="lb">Đúng tiến độ</div><div class="vl">${H.plan}</div><div class="sb2">đang triển khai trong hạn</div></div>
+    <div class="st" style="--c:var(--green)"><div class="lb">Hoàn thành</div><div class="vl">${H.done}</div><div class="sb2">chờ báo cáo Điều 35</div></div>
+    <div class="st" style="--c:var(--gold)"><div class="lb">Giải ngân</div><div class="vl">${disbPct}%</div><div class="sb2">${money(Math.round(disb))} / ${money(bud)} triệu</div></div>
+  </div>
+  <div class="pf-grid2">
+    <div>
+      <div class="card" style="margin-bottom:16px"><div class="card-h"><h3>Dự án đang quá hạn</h3><span class="sub">bấm để xem chi tiết</span></div>
+        <div class="card-b" style="padding:6px 18px">
+        ${lateList.length?lateList.map(({p,s})=>`<div class="li-row" style="cursor:pointer" onclick="openProj('${p.id}')">
+          <div class="li-ic" style="background:var(--red-bg)">⚠️</div>
+          <div style="flex:1"><div style="font-weight:700;font-size:13px">${p.name}</div>
+          <div style="font-size:12px;color:var(--mut);margin-top:2px">Tắc tại: <b>${s.curStep?s.curStep.stt+'. '+s.curStep.name.slice(0,55):''}</b></div></div>
+          <div style="text-align:right;flex:none"><div style="font-size:19px;font-weight:800;color:var(--red)">${s.maxLate}</div><div style="font-size:10.5px;color:var(--mut)">ngày chậm</div></div></div>`).join(''):'<div class="empty">Không có dự án quá hạn.</div>'}
+        </div></div>
+      <div class="card"><div class="card-h"><h3>Ma trận giai đoạn × trạng thái</h3><span class="sub">Điều 8 NĐ 45</span></div>
+        <div class="tbl-wrap"><table class="tbl mtx"><thead><tr><th style="text-align:left">Giai đoạn</th><th>🔴 Quá hạn</th><th>🟡 Sắp hạn</th><th>⚫ Trong hạn</th><th>🟢 Xong</th></tr></thead><tbody>
+        ${[['I','I — Chuẩn bị đầu tư'],['II','II — Thực hiện / Lựa chọn nhà thầu'],['III','III — Triển khai · Kết thúc'],['✓','Đã hoàn thành toàn bộ']].map(([k,lb])=>`
+          <tr><td style="text-align:left;font-weight:600">${lb}</td>
+          <td class="big" style="color:${mtx[k].late?'var(--red)':'var(--line2)'}">${mtx[k].late||'·'}</td>
+          <td class="big" style="color:${mtx[k].soon?'var(--amber)':'var(--line2)'}">${mtx[k].soon||'·'}</td>
+          <td class="big" style="color:${mtx[k].plan?'#2A3242':'var(--line2)'}">${mtx[k].plan||'·'}</td>
+          <td class="big" style="color:${mtx[k].done?'var(--green)':'var(--line2)'}">${mtx[k].done||'·'}</td></tr>`).join('')}
+        </tbody></table></div></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px"><div class="card-h"><h3>Phân loại theo NĐ 45</h3></div><div class="card-b"><div class="bars">
+        ${Object.entries(types).map(([t,n])=>`<div class="bar-r"><span>${TYPE_LB[t]}</span><div class="b"><i style="width:${n/ps.length*100}%"></i></div><b>${n}</b></div>`).join('')}
+        <div class="bar-r"><span style="color:var(--mut)">Nguồn đầu tư công</span><div class="b"><i style="width:${ps.filter(p=>p.fund==='dtc').length/ps.length*100}%;background:var(--gold)"></i></div><b>${ps.filter(p=>p.fund==='dtc').length}</b></div>
+      </div></div></div>
+      <div class="card"><div class="card-h"><h3>Mốc sắp đến hạn toàn danh mục</h3></div><div class="card-b" style="padding:6px 18px">
+      ${soonList.map(({p,s})=>`<div class="li-row" style="cursor:pointer" onclick="openProj('${p.id}','pj-checklist')">
+        <div class="li-ic" style="background:var(--amber-bg)">📌</div>
+        <div style="flex:1"><div style="font-weight:600;font-size:12.5px">${s.stt}. ${s.name.slice(0,58)}</div>
+        <div style="font-size:11.5px;color:var(--mut)">${p.name.slice(0,44)} · hạn <b>${fmt(s.due)}</b></div></div></div>`).join('')||'<div class="empty">Không có mốc trong 10 ngày tới.</div>'}
+      </div></div>
+    </div>
+  </div>`;
+}
+
+let LFLT={q:'',type:'',health:'',cdt:''};
+function rPfList(){
+  const cdts=[...new Set(PROJECTS.map(p=>p.cdt))];
+  $('#pg-pf-list').innerHTML=`
+  <div class="ph"><div><h1>Danh mục dự án CNTT</h1><p>${ROLE==='cdt'?'Các dự án do '+ROLES.cdt.user+' làm chủ đầu tư':ROLE==='nt'?'Các dự án '+ROLES.nt.user+' tham gia':'Toàn bộ dự án trong phạm vi quản lý của tỉnh'} · bấm vào dự án để kiểm tra tiến độ</p></div>
+    <div class="ph-acts">${ROLE==='so'||ROLE==='cdt'?`<button class="btn btn-navy" onclick="openNewProj()">+ Tạo dự án</button>`:''}
+    <button class="btn btn-ghost" onclick="exportListCSV()">⬇ Xuất Excel</button></div></div>
+  <div class="flt">
+    <select onchange="LFLT.type=this.value;rPfListTb()"><option value="">Tất cả loại hình</option>${Object.entries(TYPE_LB).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>
+    <select onchange="LFLT.health=this.value;rPfListTb()"><option value="">Tất cả trạng thái</option><option value="late">Quá hạn</option><option value="soon">Sắp đến hạn</option><option value="plan">Trong hạn</option><option value="done">Hoàn thành</option></select>
+    ${ROLE==='so'||ROLE==='leader'?`<select onchange="LFLT.cdt=this.value;rPfListTb()"><option value="">Tất cả chủ đầu tư</option>${cdts.map(c=>`<option>${c}</option>`).join('')}</select>`:''}
+    <input placeholder="Tìm theo tên dự án…" oninput="LFLT.q=this.value.toLowerCase();rPfListTb()">
+  </div>
+  <div class="card"><div class="tbl-wrap"><table class="tbl"><thead><tr>
+    <th>Dự án</th><th>Chủ đầu tư</th><th>Loại hình · nguồn vốn</th><th class="num">Nhóm</th><th>Giai đoạn</th><th class="num">Tiến độ</th><th class="num">Dự toán (tr.đ)</th><th>Trạng thái</th>
+  </tr></thead><tbody id="pf-list-tb"></tbody></table></div></div>`;
+  rPfListTb();
+}
+function rPfListTb(){
+  const rows=visible().map(p=>({p,s:pStats(p)})).filter(({p,s})=>{
+    if(LFLT.type&&p.type!==LFLT.type)return 0;
+    if(LFLT.health&&s.health!==LFLT.health)return 0;
+    if(LFLT.cdt&&p.cdt!==LFLT.cdt)return 0;
+    if(LFLT.q&&!p.name.toLowerCase().includes(LFLT.q))return 0;
+    return 1;
+  }).sort((a,b)=>({late:0,soon:1,plan:2,done:3}[a.s.health]-{late:0,soon:1,plan:2,done:3}[b.s.health]));
+  $('#pf-list-tb').innerHTML=rows.map(({p,s})=>`<tr style="cursor:pointer" onclick="openProj('${p.id}')">
+    <td><span class="pj-link">${p.name}</span><div style="font-size:11px;color:var(--mut2);margin-top:2px">${p.legal}${p.contractor?' · Nhà thầu: '+p.contractor:''}</div></td>
+    <td style="font-size:12.5px">${p.cdt}</td>
+    <td><span class="tag">${TYPE_LB[p.type]}</span> <span class="tag gray">${FUND_LB[p.fund]}</span></td>
+    <td class="num">${p.grp}</td>
+    <td style="font-size:12.5px">${s.phase==='✓'?'Hoàn thành':s.phase+' — '+PHASES[s.phase].split(' /')[0].split(' ·')[0]}</td>
+    <td class="num"><div style="display:flex;align-items:center;gap:7px;min-width:90px"><div class="prg" style="flex:1"><i class="${s.pct===100?'g':''}" style="width:${s.pct}%"></i></div><b style="font-size:11.5px">${s.pct}%</b></div></td>
+    <td class="num">${money(p.budget)}</td>
+    <td>${chip(s.health)}${s.health==='late'?`<div style="font-size:11px;color:var(--red);font-weight:700;margin-top:2px">chậm ${s.maxLate} ngày</div>`:''}</td></tr>`).join('')
+    ||'<tr><td colspan="8" class="empty">Không có dự án khớp bộ lọc.</td></tr>';
+}
+function rPfKpi(){
+  const rows=visible().map(p=>({p,s:pStats(p),k:kpi(p)})).sort((a,b)=>b.k.score-a.k.score);
+  const agg=(key)=>{const m={};rows.forEach(({p,s,k})=>{const g=p[key];if(!g)return;m[g]=m[g]||{n:0,sum:0,late:0};m[g].n++;m[g].sum+=k.score;m[g].late+=s.maxLate});
+    return Object.entries(m).map(([g,v])=>({g,avg:Math.round(v.sum/v.n),n:v.n,late:v.late})).sort((a,b)=>b.avg-a.avg).sort((a,b)=>a.g==='FOXAI'?-1:b.g==='FOXAI'?1:0)};
+  const byCdt=agg('cdt'),byNt=agg('contractor');
+  $('#pg-pf-kpi').innerHTML=`
+  <div class="ph"><div><h1>KPI & xếp hạng đơn vị</h1><p>Thang 100 điểm: đúng hạn 40 · độ trễ 25 · số lần điều chỉnh kế hoạch 15 · giải ngân 20 — trọng số cấu hình được</p></div>
+    <div class="ph-acts"><button class="btn btn-navy" onclick="exportKpiCSV()">📝 Xuất báo cáo KPI</button></div></div>
+  <div class="pf-grid2" style="margin-bottom:16px">
+    <div class="card"><div class="card-h"><h3>Xếp hạng chủ đầu tư</h3><span class="sub">điểm KPI bình quân</span></div>
+      <div class="card-b" style="padding:8px 18px">${byCdt.map((r,i)=>`<div class="li-row"><span class="rank-n">${i+1}.</span>
+        <div style="flex:1"><b style="font-size:13px">${r.g}</b><div style="font-size:11.5px;color:var(--mut)">${r.n} dự án · tổng ${r.late} ngày chậm</div></div>
+        <span class="grade ${r.avg>=85?'A':r.avg>=70?'B':r.avg>=50?'C':'D'}">${r.avg}</span></div>`).join('')}</div></div>
+    <div class="card"><div class="card-h"><h3>Xếp hạng nhà thầu</h3><span class="sub">các gói đã có nhà thầu</span></div>
+      <div class="card-b" style="padding:8px 18px">${byNt.map((r,i)=>`<div class="li-row"><span class="rank-n">${i+1}.</span>
+        <div style="flex:1"><b style="font-size:13px">${r.g}</b><div style="font-size:11.5px;color:var(--mut)">${r.n} dự án</div></div>
+        <span class="grade ${r.avg>=85?'A':r.avg>=70?'B':r.avg>=50?'C':'D'}">${r.avg}</span></div>`).join('')}</div></div>
+  </div>
+  <div class="card"><div class="card-h"><h3>Chấm điểm từng dự án</h3></div><div class="tbl-wrap"><table class="tbl"><thead><tr>
+    <th>Dự án</th><th>Chủ đầu tư</th><th class="num">Đúng hạn</th><th class="num">Trễ BQ (ngày)</th><th class="num">Điều chỉnh KH</th><th class="num">Giải ngân</th><th class="num">Điểm</th><th class="num">Xếp loại</th></tr></thead><tbody>
+    ${rows.map(({p,k})=>`<tr style="cursor:pointer" onclick="openProj('${p.id}')">
+      <td><span class="pj-link">${p.name.slice(0,52)}${p.name.length>52?'…':''}</span></td><td style="font-size:12px">${p.cdt}</td>
+      <td class="num">${k.onTimeRate}%</td><td class="num">${k.avgDelay}</td><td class="num">${k.adj} lần</td><td class="num">${p.disb||0}%</td>
+      <td class="num" style="font-weight:800">${k.score}</td><td class="num"><span class="grade ${k.grade}">${k.grade}</span></td></tr>`).join('')}
+  </tbody></table></div></div>
+  <div class="sla-note">Bộ trọng số KPI có thể điều chỉnh; khi Sở ban hành bộ tiêu chí chính thức (theo định hướng KPI của Chính phủ), hệ thống chỉ cần thay cấu hình trọng số.</div>`;
+}
+function rPfAlerts(){
+  const items=[];
+  visible().forEach(p=>p.steps.forEach(s=>{if(!s.grp&&!s.skip){const k=st(s);if(k==='late'||k==='soon')items.push({p,s,k})}}));
+  items.sort((a,b)=>(a.k==='late'?-1:1)-(b.k==='late'?-1:1)||((a.k==='late')?diffD(a.s.due,TODAY)<diffD(b.s.due,TODAY)?1:-1:(a.s.due<b.s.due?-1:1)));
+  $('#pg-pf-alerts').innerHTML=`
+  <div class="ph"><div><h1>Trung tâm cảnh báo</h1><p>Bước quá hạn & sắp đến hạn toàn danh mục · sau cảnh báo, chủ đầu tư có thể điều chỉnh kế hoạch và hệ thống giám sát theo kế hoạch mới</p></div>
+    <div class="ph-acts"><button class="btn btn-navy" onclick="openUrge()">📨 Gửi đôn đốc</button></div></div>
+  <div class="card"><div class="card-b" style="padding:6px 18px">
+  ${items.map(({p,s,k})=>`<div class="li-row" style="cursor:pointer" onclick="openProj('${p.id}','pj-checklist')">
+    <div class="li-ic" style="background:${k==='late'?'var(--red-bg)':'var(--amber-bg)'}">${k==='late'?'⚠️':'📌'}</div>
+    <div style="flex:1"><div style="font-weight:600;font-size:13px">${s.stt}. ${s.name}</div>
+      <div style="font-size:12px;color:var(--mut);margin-top:2px">${p.name.slice(0,58)} · Trách nhiệm: <b>${s.unit||p.cdt}</b> · Hạn ${fmt(s.due)}</div></div>
+    ${k==='late'?`<div style="text-align:right;flex:none"><div style="font-weight:800;color:var(--red)">+${diffD(s.due,TODAY)} ngày</div>${chip('late')}</div>`:chip('soon')}</div>`).join('')||'<div class="empty">Không có cảnh báo.</div>'}
+  </div></div>
+  ${URGE_LOG.length?`<div class="card" style="margin-top:14px"><div class="card-h"><h3>Nhật ký đôn đốc đã gửi</h3></div>
+  <div class="card-b" style="padding:8px 18px">${URGE_LOG.map(u=>`<div class="li-row"><div class="li-ic" style="background:#E1EAF8">📨</div>
+  <div style="flex:1"><b style="font-size:13px">${u.subject}</b><div style="font-size:11.5px;color:var(--mut)">${fmt(u.date)} · gửi ${u.n} đơn vị</div></div></div>`).join('')}</div></div>`:''}
+  <div class="sla-note"><b>SLA pháp định NĐ 45/2026:</b> thẩm định kế hoạch thuê ≤ 20 ngày làm việc, yêu cầu bổ sung hồ sơ trong 03 ngày, phê duyệt ≤ 03 ngày làm việc (Điều 34) · cung cấp thông tin hoàn thành dự án trong 20 ngày sau nghiệm thu, Sở tổng hợp gửi Bộ KHCN trong 30 ngày (Điều 35). Hệ thống tự đối chiếu các mốc này.</div>`;
+}
+function rPfBc35(){
+  const ps=visible();
+  const doneP=ps.map(p=>({p,s:pStats(p)})).filter(x=>x.s.health==='done');
+  const rows=doneP.map(({p})=>{
+    const last=p.steps.filter(s=>s.actual).map(s=>s.actual).sort().pop();
+    const d1=addD(last,20),d2=addD(d1,30);
+    return{p,last,d1,d2,k1:d1<TODAY?'late':(diffD(TODAY,d1)<=10?'soon':'plan')};
+  });
+  $('#pg-pf-bc35').innerHTML=`
+  <div class="ph"><div><h1>Nghĩa vụ báo cáo theo Điều 35 NĐ 45</h1><p>Theo dõi tự động các thời hạn cung cấp thông tin sau khi dự án hoàn thành</p></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-h"><h3>Dự án đã hoàn thành — thời hạn cung cấp thông tin</h3></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Dự án</th><th class="num">Nghiệm thu</th><th class="num">CĐT cung cấp TT hoàn thành (≤20 ngày)</th><th class="num">Sở tổng hợp gửi Bộ KHCN (≤30 ngày)</th><th>Trạng thái</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr><td><span class="pj-link" onclick="openProj('${r.p.id}')">${r.p.name}</span></td>
+      <td class="num">${fmt(r.last)}</td><td class="num"><b>${fmt(r.d1)}</b></td><td class="num">${fmt(r.d2)}</td><td>${chip(r.k1)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">Chưa có dự án hoàn thành trong phạm vi hiển thị.</td></tr>'}
+    </tbody></table></div></div>
+  <div class="card"><div class="card-b">
+    <div style="font-weight:700;margin-bottom:6px">📅 Báo cáo định kỳ hằng năm</div>
+    <div style="font-size:13px;color:var(--mut)">Định kỳ <b>tháng 01 hằng năm</b>, chủ sử dụng cung cấp thông tin đánh giá việc hoàn thành mục tiêu và hiệu quả kinh tế – xã hội của dự án, nhiệm vụ cho Sở KHCN (Điều 35.2). Kỳ tới: <b>tháng 01/2027</b> — hệ thống sẽ tự nhắc tất cả chủ sử dụng từ 15/12/2026.</div>
+  </div></div>`;
+}
+function rPfAdmin(){
+  $('#pg-pf-admin').innerHTML=`
+  <div class="ph"><div><h1>Quản trị & quy trình chuẩn</h1><p>Quy trình chuẩn sinh checklist tự động theo loại hình NĐ 45 · tài khoản 4 nhóm vai trò</p></div>
+    <div class="ph-acts"></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-h"><h3>Quy trình chuẩn</h3></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tên mẫu</th><th>Căn cứ pháp lý</th><th class="num">Số bước</th><th class="num">Thao tác</th></tr></thead><tbody>
+    ${Object.entries(TPL_META).map(([k,m])=>`<tr><td style="font-weight:600">${m.n}</td><td><span class="doc">${m.cc}</span></td>
+      <td class="num">${TPL[k].filter(r=>!r[2]).length}</td>
+      <td class="num"><button class="btn btn-ghost btn-sm" onclick="viewTpl('${k}')">Xem các bước</button></td></tr>`).join('')}
+    </tbody></table></div></div>
+  <div class="card"><div class="card-h"><h3>Tài khoản & phân quyền</h3></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tài khoản</th><th>Phạm vi</th><th>Nhóm</th></tr></thead><tbody>
+    ${[['VP UBND tỉnh / Lãnh đạo tỉnh','Xem toàn danh mục, KPI, cảnh báo','Lãnh đạo tỉnh','leader'],
+       ['Phòng BC–CĐS, Sở KHCN','Giám sát toàn tỉnh (Đ36), quản trị hệ thống','Sở KHCN','so'],
+       ['Sở Y tế ','Dự án của đơn vị: lập kế hoạch, cập nhật, điều chỉnh','Chủ đầu tư','nt'],
+       ['~77 tài khoản chủ đầu tư khác','Mỗi đơn vị tự nhập kế hoạch & báo cáo tiến độ','Chủ đầu tư','nt'],
+       ['FOXAI','Cập nhật phần việc, chờ xác nhận','Nhà thầu','leader']]
+      .map(u=>`<tr><td style="font-weight:600">${u[0]}</td><td style="font-size:12.5px;color:var(--mut)">${u[1]}</td><td><span class="tb-role ${u[3]}">${u[2]}</span></td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+/* ════════ KHÔNG GIAN DỰ ÁN ════════ */
+function pjBanner(){
+  const p=CURP,s=pStats(p),k=kpi(p);
+  return`<div class="pj-banner">
+    <div style="flex:1;min-width:260px"><h2>${p.name}</h2>
+      <div class="meta"><span>Chủ đầu tư: <b>${p.cdt}</b></span><span><b>${TYPE_LB[p.type]}</b> · ${FUND_LB[p.fund]} · nhóm ${p.grp}</span><span>${p.legal}</span>${p.contractor?`<span>Nhà thầu: <b>${p.contractor}</b></span>`:''}</div></div>
+    <div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+      <div style="text-align:center"><div style="font-size:24px;font-weight:800">${s.pct}%</div><div style="font-size:10.5px;color:#C7D5EC">tiến độ bước</div></div>
+      <div style="text-align:center"><div style="font-size:24px;font-weight:800;color:${s.health==='late'?'#FFB3B6':'#fff'}">${s.health==='late'?s.maxLate:0}</div><div style="font-size:10.5px;color:#C7D5EC">ngày chậm</div></div>
+      <div style="text-align:center"><span class="grade ${k.grade}" style="width:40px;height:40px;font-size:17px">${k.grade}</span><div style="font-size:10.5px;color:#C7D5EC;margin-top:3px">KPI ${k.score}đ</div></div>
+    </div></div>`;
+}
+function rPjOverview(){
+  const p=CURP,s=pStats(p);
+  const phs=['I','II','III'].map(ph=>{
+    const list=p.steps.filter(x=>x.ph===ph&&!x.grp&&!x.skip);
+    const done=list.filter(x=>x.actual).length;
+    return{ph,n:list.length,done,pct:list.length?Math.round(done/list.length*100):0};
+  });
+  const next=p.steps.filter(x=>!x.grp&&!x.skip&&!x.actual).slice(0,5);
+  $('#pg-pj-overview').innerHTML=`
+  <div class="ph"><div><h1>Tổng quan dự án</h1><p>Giai đoạn hiện tại: <b>${s.phase==='✓'?'Đã hoàn thành':s.phase+' — '+PHASES[s.phase]}</b></p></div>
+    <div class="ph-acts">${canEdit(p)?`<button class="btn btn-ghost" onclick="openRebase()">🕘 Điều chỉnh kế hoạch</button><button class="btn btn-navy" onclick="goPJ('pj-checklist')">Mở checklist</button>`:'<span class="ro-note">Chỉ xem</span>'}</div></div>
+  ${pjBanner()}
+  <div class="ph-rail">
+    ${phs.map(x=>`<div class="ph-cell"><div class="rom">${x.ph}</div><div style="flex:1">
+      <h4>${PHASES[x.ph]}</h4><div class="mt">${x.done}/${x.n} bước · ${x.pct}%</div>
+      <div class="prg"><i class="${x.pct===100?'g':''}" style="width:${x.pct}%"></i></div></div></div>`).join('')}
+  </div>
+  <div class="pf-grid2">
+    <div class="card"><div class="card-h"><h3>Các bước tiếp theo</h3><span class="sub">kế hoạch hiện hành v${(p.baselines.length||0)+1}</span></div>
+      <div class="card-b" style="padding:6px 18px">
+      ${next.map(x=>{const k=st(x);return`<div class="li-row" style="cursor:pointer" onclick="openStep('${x.id}')">
+        <div class="li-ic" style="background:${k==='late'?'var(--red-bg)':k==='soon'?'var(--amber-bg)':'#EDF1F8'}">${k==='late'?'⚠️':'📌'}</div>
+        <div style="flex:1"><div style="font-weight:600;font-size:13px">${x.stt}. ${x.name}</div>
+        <div style="font-size:12px;color:var(--mut)">Hạn ${fmt(x.due)} · ${x.unit}</div></div>${chip(k)}</div>`}).join('')||'<div class="empty">Dự án đã hoàn thành toàn bộ các bước.</div>'}
+      </div></div>
+    <div>
+      <div class="card" style="margin-bottom:16px"><div class="card-h"><h3>Kinh phí & giải ngân</h3></div><div class="card-b">
+        <div style="font-size:23px;font-weight:800">${money(p.budget)} <span style="font-size:12px;color:var(--mut);font-weight:600">triệu đồng</span></div>
+        <div class="prg" style="margin:10px 0 6px"><i class="g" style="width:${p.disb||0}%"></i></div>
+        <div style="font-size:12px;color:var(--mut)">Giải ngân ${p.disb||0}% · kế hoạch ${p.disbPlan||0}%</div></div></div>
+      <div class="card"><div class="card-h"><h3>Lịch sử điều chỉnh kế hoạch</h3></div><div class="card-b" style="font-size:12.5px">
+        ${p.baselines.length?p.baselines.map(b=>`<div style="margin-bottom:8px">• <b>v${b.v}</b> (${fmt(b.date)}): trượt <b style="color:var(--red)">${b.slip} ngày</b> — ${b.reason}</div>`).join(''):'<span style="color:var(--mut)">Chưa điều chỉnh — đang theo kế hoạch gốc v1.</span>'}
+        <div style="margin-top:8px"><a class="pj-link" onclick="goPJ('pj-baseline')">Xem chi tiết →</a></div></div></div>
+    </div>
+  </div>`;
+}
+let CFLT={ph:'',st:''};
+function rPjChecklist(){
+  const p=CURP;
+  $('#pg-pj-checklist').innerHTML=`
+  <div class="ph"><div><h1>Checklist & timeline</h1>
+    <p>Ngày dự kiến tính theo công thức chuỗi (số ngày × bước trước) — sửa số ngày hoặc điều chỉnh mốc là các bước sau <b>tự nhảy theo</b></p></div>
+    <div class="ph-acts">
+      ${canEdit(p)?`<button class="btn btn-ghost" onclick="openRebase()">🕘 Điều chỉnh kế hoạch</button>
+      <button class="btn btn-navy" onclick="openAddStep('I')">＋ Thêm bước</button>`:''}
+      <button class="btn btn-ghost" onclick="exportCkCSV()">⬇ Xuất Excel</button></div></div>
+  <div class="flt">
+    <select onchange="CFLT.ph=this.value;rCkTb()"><option value="">Tất cả giai đoạn</option><option value="I">I</option><option value="II">II</option><option value="III">III</option></select>
+    <select onchange="CFLT.st=this.value;rCkTb()"><option value="">Tất cả trạng thái</option><option value="done">Hoàn thành</option><option value="plan">Trong hạn</option><option value="soon">Sắp đến hạn</option><option value="late">Quá hạn</option><option value="wait">Chờ xác nhận</option></select>
+  </div>
+  <div class="card"><div class="tbl-wrap"><table class="tbl"><thead><tr>
+    <th style="width:52px">STT</th><th>Nội dung công việc</th><th class="num">Số ngày</th><th class="num">Dự kiến</th><th>Văn bản</th><th class="num">Thực tế</th><th>Đơn vị</th><th>Trạng thái</th>
+  </tr></thead><tbody id="ck-tb"></tbody></table></div></div>`;
+  rCkTb();
+}
+function rCkTb(){
+  const p=CURP,edit=canEdit(p);let html='',lastPh='',phList=[];
+  // thu gom phases xuất hiện
+  p.steps.forEach(s=>{if(!phList.includes(s.ph))phList.push(s.ph)});
+  p.steps.forEach(s=>{
+    const k=st(s);
+    if(CFLT.ph&&s.ph!==CFLT.ph)return;
+    if(!s.grp&&CFLT.st&&k!==CFLT.st)return;
+    if(s.grp&&CFLT.st)return;
+    // header giai đoạn + nút thêm bước tùy biến
+    if(s.ph!==lastPh){
+      // nút thêm bước cuối phase trước (nếu có)
+      if(lastPh&&edit&&!CFLT.st)html+=addStepRow(lastPh);
+      lastPh=s.ph;
+      const list=p.steps.filter(x=>x.ph===s.ph&&!x.grp&&!x.skip),done=list.filter(x=>x.actual).length;
+      const req=list.filter(x=>x.req).length,cust=list.filter(x=>!x.req).length;
+      html+=`<tr class="ck-phase"><td colspan="9"><span class="rom">${s.ph}</span>${PHASES[s.ph]}
+        <span style="float:right;display:flex;gap:8px;align-items:center">
+          <span style="font-size:11px;color:var(--mut)"><b style="color:var(--navy)">${req}</b> bắt buộc · <b style="color:#0F7B3C">${cust}</b> tùy biến</span>
+          <span style="font-weight:600;font-size:12px;opacity:.85">${done}/${list.length} hoàn thành</span>
+        </span></td></tr>`}
+    if(s.grp){html+=`<tr class="ck-grp"><td class="ck-stt">${s.stt}</td><td colspan="8">${s.name}</td></tr>`;return}
+    // badge loại bước
+    const badge=s.skip
+      ?`<span class="badge-req skipped">Bỏ qua${s.skipReason?` · ${s.skipReason.slice(0,30)}…`:''}</span>`
+      :s.req
+        ?`<span class="badge-req">⚖ NĐ 45</span>`
+        :`<span class="badge-req custom">✎ Tùy biến</span>`;
+    // nút skip (chỉ bước bắt buộc, chưa hoàn thành, có quyền)
+    const skipBtn=edit&&s.req&&!s.actual&&!s.skip
+      ?`<button class="btn btn-ghost btn-sm" style="margin-left:4px;font-size:10.5px;padding:2px 7px;color:var(--mut)" onclick="event.stopPropagation();openSkip('${s.id}')">Bỏ qua</button>`
+      :'';
+    // nút khôi phục nếu đã bỏ qua
+    const restoreBtn=edit&&s.skip
+      ?`<button class="btn btn-ghost btn-sm" style="font-size:10.5px;padding:2px 7px" onclick="event.stopPropagation();restoreStep('${s.id}')">↺ Khôi phục</button>`
+      :'';
+    // nút sửa bước tùy biến
+    const editCustomBtn=edit&&!s.req&&!s.skip
+      ?`<button class="btn btn-ghost btn-sm" style="font-size:10.5px;padding:2px 7px" onclick="event.stopPropagation();openEditCustom('${s.id}')">✎</button>`
+      :'';
+    html+=`<tr class="ck-row ck-${k}${s.skip?' ck-skip':''}" onclick="${s.skip?'':` openStep('${s.id}')`}">
+      <td class="ck-stt">${s.stt}</td>
+      <td class="ck-name">${badge}
+        <span style="margin-left:6px">${s.name}</span>
+        ${s.note&&!s.skip?`<div style="font-size:11.5px;color:var(--mut2);margin-top:3px">↳ ${s.note}</div>`:''}
+        ${s.skip?`<div class="skip-reason">Bỏ qua: ${s.skipReason||'không có lý do'}</div>`:''}
+        ${skipBtn}${restoreBtn}${editCustomBtn}
+      </td>
+      <td class="num">${s.skip?'—':s.days||''}</td>
+      <td class="num"><b>${s.skip?'—':fmt(s.due)}</b></td>
+      <td>${s.doc?`<span class="doc ${s.actual?'':'pending'}">${s.doc}</span>`:'—'}</td>
+      <td class="num">${fmt(s.actual)}</td>
+      <td style="font-size:12px">${s.unit||''}</td>
+      <td>${chip(k)}</td></tr>`;
+  });
+  // nút thêm bước sau phase cuối
+  if(lastPh&&edit&&!CFLT.st)html+=addStepRow(lastPh);
+  $('#ck-tb').innerHTML=html||'<tr><td colspan="9" class="empty">Không có bước khớp bộ lọc.</td></tr>';
+}
+function addStepRow(ph){
+  return `<tr class="add-step-row"><td colspan="9"><button class="add-step-btn" onclick="openAddStep('${ph}')">
+    <span style="font-size:17px;line-height:1">＋</span> Thêm bước tùy biến vào Giai đoạn ${ph}</button></td></tr>`;
+}
+function rPjBaseline(){
+  const p=CURP;
+  const first=p.steps.find(s=>!s.grp&&!s.skip&&!s.actual);
+  const orig=origDues(p);
+  // các bước có trượt (due hiện hành khác kế hoạch gốc)
+  const cmpSteps=p.steps.filter(s=>!s.grp&&!s.skip);
+  const slipped=cmpSteps.filter(s=>s.due!==orig[s.id]);
+  const totalSlip=cmpSteps.length?Math.max(0,diffD(orig[cmpSteps[cmpSteps.length-1].id],cmpSteps[cmpSteps.length-1].due)):0;
+  // thang thời gian chung cho phần so sánh
+  let mn=p.start,mx=p.start;
+  cmpSteps.forEach(s=>{if(orig[s.id]<mn)mn=orig[s.id];if(s.due>mx)mx=s.due;if(orig[s.id]>mx)mx=orig[s.id]});
+  mn=addD(mn,-3);mx=addD(mx,5);
+  const spn=diffD(mn,mx)||1;
+  const px=d=>Math.max(0,Math.min(100,diffD(mn,d)/spn*100));
+
+  $('#pg-pj-baseline').innerHTML=`
+  <div class="ph"><div><h1>Kế hoạch & lịch sử điều chỉnh</h1><p>Mỗi lần điều chỉnh tạo baseline mới; kế hoạch cũ được lưu để theo dõi số ngày trượt và tính KPI</p></div>
+    <div class="ph-acts">${canEdit(p)?`<button class="btn btn-navy" onclick="openRebase()">🕘 Điều chỉnh kế hoạch</button>`:''}</div></div>
+
+  ${slipped.length?`
+  <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
+    <div class="st" style="--c:var(--navy)"><div class="lb">Số lần điều chỉnh</div><div class="vl">${p.baselines.length}</div><div class="sb2">phiên bản hiện hành: v${p.baselines.length+1}</div></div>
+    <div class="st" style="--c:var(--red)"><div class="lb">Trượt mốc cuối</div><div class="vl">${totalSlip}</div><div class="sb2">ngày so với kế hoạch gốc</div></div>
+    <div class="st" style="--c:var(--amber)"><div class="lb">Bước bị ảnh hưởng</div><div class="vl">${slipped.length}</div><div class="sb2">/ ${cmpSteps.length} bước có mốc thay đổi</div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-h"><h3>So sánh kế hoạch gốc ↔ hiện hành</h3>
+    <span class="sub">chấm xám = kế hoạch gốc v1 · chấm xanh = kế hoạch hiện hành · vạch đỏ = độ trượt</span></div>
+    <div class="card-b" style="padding:8px 18px">
+    ${slipped.map(s=>{
+      const o=orig[s.id],c=s.due,slip=diffD(o,c);
+      const lo=px(Math.min(o,c)),hi=px(Math.max(o,c));
+      return`<div class="bc-row">
+        <div style="cursor:pointer" onclick="openStep('${s.id}')"><b style="color:var(--mut);font-size:10.5px">${s.stt}</b> ${s.name.length>38?s.name.slice(0,38)+'…':s.name}</div>
+        <div class="bc-track">
+          <div class="bc-line" style="left:${lo}%;width:${Math.max(0.5,hi-lo)}%"></div>
+          <div class="bc-dot orig" style="left:${px(o)}%" title="Kế hoạch gốc: ${fmt(o)}"></div>
+          <div class="bc-dot cur" style="left:${px(c)}%" title="Hiện hành: ${fmt(c)}"></div>
+        </div>
+        <div class="bc-slip ${slip>0?'pos':'zero'}">${slip>0?'+'+slip+' ngày':slip+' ngày'}</div>
+      </div>`}).join('')}
+    <div style="display:flex;gap:18px;font-size:11.5px;color:var(--mut);padding:10px 0 4px">
+      <span><span class="bc-dot orig" style="position:static;display:inline-block;transform:none;vertical-align:-2px;margin-right:5px"></span>Kế hoạch gốc (${fmt(p.start)})</span>
+      <span><span class="bc-dot cur" style="position:static;display:inline-block;transform:none;vertical-align:-2px;margin-right:5px"></span>Kế hoạch hiện hành v${p.baselines.length+1}</span>
+    </div>
+    </div></div>`
+  :`<div class="card" style="margin-bottom:16px"><div class="card-b" style="text-align:center;padding:28px;color:var(--mut)">
+    ✅ Dự án chưa điều chỉnh kế hoạch — toàn bộ mốc đang theo <b>kế hoạch gốc v1</b> (bắt đầu ${fmt(p.start)}).
+    ${canEdit(p)?'<br><span style="font-size:12px">Khi có bước quá hạn, dùng nút "Điều chỉnh kế hoạch" để lập baseline mới.</span>':''}
+  </div></div>`}
+
+  <div class="card"><div class="card-h"><h3>Dòng thời gian các phiên bản</h3></div><div class="card-b">
+    <div class="basev cur"><b>Kế hoạch hiện hành — v${p.baselines.length+1}</b>
+      <div style="font-size:12.5px;color:var(--mut);margin-top:3px">Bước đang chờ: ${first?`<b>${first.stt}. ${first.name.slice(0,70)}</b> — hạn ${fmt(first.due)}`:'đã hoàn thành toàn bộ'}</div></div>
+    ${[...p.baselines].reverse().map(b=>`<div class="basev"><b>Điều chỉnh lần ${b.v-1} → lập v${b.v}</b> <span class="tag gray">${fmt(b.date)}</span>
+      <div style="font-size:12.5px;color:var(--mut);margin-top:3px">Trượt <b style="color:var(--red)">${b.slip} ngày</b> · Cấp phê duyệt: ${b.auth||'Chủ đầu tư'} · Lý do: ${b.reason}</div></div>`).join('')}
+    <div class="basev"><b>Kế hoạch gốc — v1</b><div style="font-size:12.5px;color:var(--mut);margin-top:3px">Ngày bắt đầu ${fmt(p.start)} · sinh theo mẫu quy trình ${TPL_META[p.type]?TPL_META[p.type].n:"tùy biến"}</div></div>
+  </div></div>
+  <div class="sla-note">Số lần điều chỉnh và tổng số ngày trượt được tính vào điểm KPI của dự án (trừ 25 điểm thành phần cho mỗi 4 lần điều chỉnh).</div>`;
+}
+function rPjVanban(){
+  const p=CURP;
+  const list=p.steps.filter(s=>s.doc&&s.actual&&!s.skip);
+  $('#pg-pj-vanban').innerHTML=`
+  <div class="ph"><div><h1>Văn bản dự án</h1><p>${list.length} văn bản đã ban hành, gắn với từng bước quy trình · hồ sơ gửi bằng hình thức điện tử (Đ34 NĐ 45)</p></div>
+    <div class="ph-acts">${canEdit(p)?`<button class="btn btn-navy" onclick="$('#vb-file').click()">+ Tải lên văn bản</button>`:''}</div></div>
+  <div class="card"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Số, ký hiệu</th><th>Bước quy trình</th><th class="num">Ngày</th><th>Cơ quan</th><th class="num">Tệp</th></tr></thead><tbody>
+  ${(p.docsExtra||[]).map(d=>`<tr><td><span class="doc">📎 ${d.name}</span></td>
+    <td style="max-width:440px;font-size:12px;color:var(--mut)">Tệp do ${d.by} tải lên · ${d.size} KB</td><td class="num">${fmt(d.date)}</td><td style="font-size:12px">${d.by}</td>
+    <td class="num"><span style="font-size:11px;color:var(--green);font-weight:700">✓ Đã lưu</span></td></tr>`).join('')}
+  ${list.sort((a,b)=>a.actual<b.actual?1:-1).map(s=>`<tr><td><span class="doc">${s.doc}</span></td>
+    <td style="max-width:440px">${s.stt}. ${s.name}</td><td class="num">${fmt(s.actual)}</td><td style="font-size:12px">${s.unit}</td>
+    <td class="num"><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();viewDoc('${s.id}')">📄 Xem</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Chưa có văn bản.</td></tr>'}
+  </tbody></table></div></div>`;
+}
+function rPjKinhphi(){
+  const p=CURP,s=pStats(p);
+  $('#pg-pj-kinhphi').innerHTML=`
+  <div class="ph"><div><h1>Kinh phí & giải ngân</h1><p>Cơ cấu dự toán theo Điều 16 / Điều 34.2.h NĐ 45 · giải ngân theo đợt nghiệm thu</p></div>
+    <div class="ph-acts"></div></div>
+  <div class="kpi-flow">
+    ${[['Dự toán được duyệt',fmt(p.start),'done'],['Phân bổ kinh phí',s.phase==='I'?'đang thực hiện':'hoàn thành',s.phase==='I'?'now':'done'],
+       ['Ký hợp đồng',s.phase==='III'||s.phase==='✓'?'hoàn thành':'chưa đến','' ],['Giải ngân theo nghiệm thu',`${p.disb||0}% / KH ${p.disbPlan||0}%`,p.disb?'now':'']]
+      .map(f=>`<div class="kf ${f[2]}"><div class="t">${f[0]}</div><div class="d">${f[1]}</div></div>`).join('')}
+  </div>
+  <div class="stats">
+    <div class="st" style="--c:var(--navy)"><div class="lb">Tổng dự toán</div><div class="vl">${money(p.budget)}</div><div class="sb2">triệu đồng</div></div>
+    <div class="st" style="--c:var(--green)"><div class="lb">Đã giải ngân</div><div class="vl">${p.disb||0}%</div><div class="sb2">${money(Math.round(p.budget*(p.disb||0)/100))} triệu</div></div>
+    <div class="st" style="--c:var(--amber)"><div class="lb">Kế hoạch giải ngân</div><div class="vl">${p.disbPlan||0}%</div><div class="sb2">đến thời điểm hiện tại</div></div>
+  </div>
+  <div class="card"><div class="card-b" style="font-size:13px;color:var(--mut)">
+    Cơ cấu dự toán (Đ34.2.h): chi phí thuê dịch vụ · chi phí quản lý · chi phí tư vấn (khảo sát, lập kế hoạch thuê, thẩm tra, giám sát chất lượng…) · chi phí khác (kiểm toán, thẩm định giá, kiểm thử/vận hành thử) · chi phí dự phòng. ${canEdit(p)?'Bấm "Cập nhật giải ngân" sau mỗi đợt nghiệm thu để hệ thống tính KPI giải ngân.':''}
+    ${canEdit(p)?`<div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="updateDisbPrompt()">✎ Cập nhật giải ngân</button></div>`:''}
+  </div></div>`;
+}
+
+/* ════════ BƯỚC: CHI TIẾT / CẬP NHẬT / ENGINE ════════ */
+function openStep(id){
+  const s=CURP.steps.find(x=>x.id===id);if(!s)return;CUR_STEP=s;
+  const k=st(s),edit=canEdit(CURP);
+  const ntCan=ROLE==='nt'&&(s.ow==='nt'||s.ow==='tv')&&!s.actual&&!s.pend;
+  const badge=s.req
+    ?`<span class="badge-req">⚖ Bắt buộc — NĐ 45/2026</span>`
+    :`<span class="badge-req custom">✎ Bước tùy biến</span>`;
+  $('#ms-title').innerHTML=s.stt+'. '+s.name+' '+badge;
+  $('#ms-body').innerHTML=`
+    <div style="margin-bottom:13px">${chip(k)}${k==='late'?` <span style="font-size:12px;color:var(--red);font-weight:700">chậm ${diffD(s.due,TODAY)} ngày so kế hoạch</span>`:''}</div>
+    <dl class="kv">
+      <dt>Giai đoạn</dt><dd>${s.ph} — ${PHASES[s.ph]}</dd>
+      <dt>Hạn dự kiến (tự tính)</dt><dd><b>${fmt(s.due)}</b>${s.ov?' <span class="tag gold">mốc đã điều chỉnh</span>':''}</dd>
+      <dt>Ngày thực tế</dt><dd>${fmt(s.actual)}</dd>
+      <dt>Văn bản</dt><dd>${s.doc?`<span class="doc ${s.actual?'':'pending'}">${s.doc}</span>`:'—'}</dd>
+      <dt>Đơn vị thực hiện</dt><dd>${s.unit||'—'}</dd>
+      ${s.prod?`<dt>Sản phẩm</dt><dd>${s.prod}</dd>`:''}
+      ${s.note?`<dt>Ghi chú</dt><dd>${s.note}</dd>`:''}
+    </dl>
+    ${edit&&!s.actual?`<div class="fg"><label>Số ngày thực hiện (sửa là chuỗi sau tự tính lại)</label>
+      <div class="step-edit"><input type="number" id="ms-days" value="${s.days||0}" min="0">
+      <button class="btn btn-ghost btn-sm" onclick="applyDays()">↻ Tính lại chuỗi</button>
+      <span style="font-size:11.5px;color:var(--mut)">mô phỏng công thức Excel</span></div></div>`:''}
+    ${k==='wait'?'<div style="font-size:12.5px;background:#F2EEFB;border:1px solid #DDD2F2;border-radius:8px;padding:9px 12px;color:#5B3FA8">Nhà thầu đã gửi cập nhật — chờ chủ đầu tư / Sở xác nhận.</div>':''}`;
+  let foot=`<button class="btn btn-ghost" onclick="closeM('m-step')">Đóng</button>`;
+  if(k==='wait'&&edit)foot+=`<button class="btn btn-red-o" onclick="confirmPend(false)">Trả lại</button><button class="btn btn-green" onclick="confirmPend(true)">✓ Xác nhận của nhà thầu</button>`;
+  if(edit&&s.req&&!s.actual&&!s.skip&&k!=='wait')foot+=`<button class="btn btn-ghost" style="color:var(--mut)" onclick="closeM('m-step');openSkip('${s.id}')">Bỏ qua bước này</button>`;
+  if(edit&&!s.req&&!s.actual&&!s.skip)foot+=`<button class="btn btn-ghost" onclick="closeM('m-step');openEditCustom('${s.id}')">✎ Sửa bước</button>`;
+  else if(edit&&!s.actual&&!s.skip)foot+=`<button class="btn btn-green" onclick="closeM('m-step');openUpdate()">✓ Cập nhật kết quả</button>`;
+  if(ntCan)foot+=`<button class="btn btn-navy" onclick="closeM('m-step');openSubmit()">Gửi cập nhật tiến độ</button>`;
+  $('#ms-foot').innerHTML=foot;
+  openM('m-step');
+}
+function applyDays(){
+  CUR_STEP.days=+document.getElementById('ms-days').value||0;
+  computeDue(CURP);
+  toast('Đã tính lại toàn bộ chuỗi ngày dự kiến phía sau');
+  closeM('m-step');RENDER[PJ]();
+}
+function openUpdate(){const s=CUR_STEP;$('#mu-name').textContent=s.stt+'. '+s.name;$('#mu-doc').value=s.doc&&!s.doc.includes('…')?s.doc:'';$('#mu-unit').value=s.unit||'';$('#mu-note').value='Đã ban hành';openM('m-update')}
+function saveUpdate(){
+  const s=CUR_STEP;
+  s.doc=$('#mu-doc').value||s.doc;s.actual=$('#mu-date').value;s.unit=$('#mu-unit').value||s.unit;s.note=$('#mu-note').value;s.pend=0;
+  closeM('m-update');toast('Đã ghi nhận hoàn thành — văn bản lưu vào hồ sơ dự án');
+  RENDER[PJ]();renderMenu();
+}
+function openSubmit(){$('#msb-name').textContent=CUR_STEP.stt+'. '+CUR_STEP.name;openM('m-submit')}
+function submitUpdate(){
+  CUR_STEP.pend={date:$('#msb-date').value,note:$('#msb-note').value,pct:+$('#msb-pct').value};
+  closeM('m-submit');toast('Đã gửi — chờ chủ đầu tư xác nhận');
+  RENDER[PJ]();
+}
+function confirmPend(ok){
+  const s=CUR_STEP;
+  if(ok){s.actual=s.pend.date||TODAY;s.note=s.pend.note||s.note;toast('Đã xác nhận — bước ghi nhận hoàn thành')}
+  else toast('Đã trả lại nhà thầu kèm yêu cầu bổ sung','err');
+  s.pend=0;closeM('m-step');RENDER[PJ]();renderMenu();
+}
+/* điều chỉnh kế hoạch (rebaseline) */
+function openRebase(){
+  const p=CURP,first=p.steps.find(s=>!s.grp&&!s.skip&&!s.actual);
+  if(!first){toast('Dự án đã hoàn thành — không cần điều chỉnh','err');return}
+  CUR_STEP=first;
+  $('#mr-name').textContent=p.name;
+  const lateD=first.due<TODAY?diffD(first.due,TODAY):0;
+  $('#mr-info').innerHTML=`Bước đang chờ: <b>${first.stt}. ${first.name}</b><br>Hạn theo kế hoạch hiện hành: <b>${fmt(first.due)}</b>${lateD?` — đã chậm <b style="color:var(--red)">${lateD} ngày</b>`:''}`;
+  $('#mr-date').value=addD(TODAY,7);
+  openM('m-rebase');
+}
+function saveRebase(){
+  const p=CURP,s=CUR_STEP,nd=$('#mr-date').value,rs=$('#mr-reason').value.trim();
+  if(!rs){toast('Vui lòng nhập lý do điều chỉnh','err');return}
+  const slip=Math.max(0,diffD(s.due,nd));
+  s.ov=nd;computeDue(p);
+  p.baselines.push({v:p.baselines.length+2,date:TODAY,reason:rs,slip,auth:$('#mr-auth').value});
+  closeM('m-rebase');toast(`Đã lập kế hoạch v${p.baselines.length+1} — chuỗi ngày phía sau tự tính lại (trượt ${slip} ngày, đã lưu lịch sử)`);
+  RENDER[PJ]();renderMenu();
+}
+/* tạo dự án mới */
+function openNewProj(){
+  const cdts=[...new Set(PROJECTS.map(p=>p.cdt))];
+  const sel=$('#np-cdt');sel.innerHTML=cdts.map(c=>`<option>${c}</option>`).join('');
+  if(ROLE==='cdt'){sel.innerHTML=`<option>${ROLES.cdt.cdtName}</option>`;sel.disabled=true}else sel.disabled=false;
+  openM('m-newproj');
+}
+function createProject(){
+  const name=$('#np-name').value.trim();
+  if(!name){toast('Vui lòng nhập tên dự án','err');return}
+  const type=$('#np-type').value;
+  const p=mkP({name,cdt:$('#np-cdt').value,type,fund:type==='hethong'?'dtc':'ctx',grp:'C',legal:'NĐ 45/2026/NĐ-CP',
+    budget:+$('#np-budget').value||0,disb:0,disbPlan:0,start:$('#np-start').value||TODAY,done:0,contractor:''});
+  PROJECTS.unshift(p);
+  closeM('m-newproj');
+  toast('Đã tạo dự án — checklist '+TPL[type].filter(r=>!r[2]).length+' bước sinh tự động theo '+TPL_META[type].cc);
+  openProj(p.id,'pj-checklist');
+}
+
+/* ── Thêm / sửa / xóa bước tùy biến ── */
+let ADD_PH='I', EDIT_STEP_ID=null;
+function openAddStep(ph){
+  ADD_PH=ph; EDIT_STEP_ID=null;
+  $('#mas-title').textContent='Thêm bước tùy biến';
+  $('#mas-del').style.display='none';
+  $('#mas-ph').value=ph;
+  ['mas-stt','mas-name','mas-doc','mas-unit','mas-note'].forEach(id=>$('#'+id).value='');
+  $('#mas-days').value=3; $('#mas-ow').value='so';
+  // gợi ý stt: lấy stt lớn nhất trong phase + 'a'
+  const p=CURP,pSteps=p.steps.filter(s=>s.ph===ph&&!s.grp);
+  const lastStt=pSteps.length?pSteps[pSteps.length-1].stt:'0';
+  $('#mas-stt').value=lastStt+'a';
+  openM('m-addstep');
+}
+function openEditCustom(id){
+  const s=CURP.steps.find(x=>x.id===id);if(!s||s.req)return;
+  EDIT_STEP_ID=id;
+  $('#mas-title').textContent='Sửa bước tùy biến';
+  $('#mas-del').style.display='';
+  $('#mas-ph').value=s.ph; $('#mas-stt').value=s.stt;
+  $('#mas-name').value=s.name; $('#mas-days').value=s.days||0;
+  $('#mas-unit').value=s.unit||''; $('#mas-doc').value=s.doc||'';
+  $('#mas-note').value=s.note||''; $('#mas-ow').value=s.ow||'so';
+  openM('m-addstep');
+}
+function saveCustomStep(){
+  const name=$('#mas-name').value.trim();
+  if(!name){toast('Vui lòng nhập tên bước','err');return}
+  const ph=$('#mas-ph').value, p=CURP;
+  if(EDIT_STEP_ID){
+    const s=p.steps.find(x=>x.id===EDIT_STEP_ID);
+    s.ph=ph; s.stt=$('#mas-stt').value||s.stt; s.name=name;
+    s.days=+$('#mas-days').value||0; s.unit=$('#mas-unit').value;
+    s.doc=$('#mas-doc').value; s.note=$('#mas-note').value; s.ow=$('#mas-ow').value;
+    computeDue(p); closeM('m-addstep'); toast('Đã cập nhật bước tùy biến'); rCkTb();
+  } else {
+    // tìm vị trí chèn: sau bước cuối cùng của phase đó
+    const idx=p.steps.map((s,i)=>s.ph===ph?i:-1).filter(i=>i>=0).pop()??p.steps.length-1;
+    const newS={
+      id:p.id+'-c'+(Date.now()),ph,req:false,
+      stt:$('#mas-stt').value||ph+'.x',
+      grp:0, name,
+      days:+$('#mas-days').value||0,
+      unit:$('#mas-unit').value, ow:$('#mas-ow').value,
+      doc:$('#mas-doc').value, note:$('#mas-note').value,
+    };
+    p.steps.splice(idx+1,0,newS);
+    computeDue(p); closeM('m-addstep');
+    toast('Đã thêm bước tùy biến vào giai đoạn '+ph); rCkTb();
+  }
+}
+function deleteCustomStep(){
+  if(!EDIT_STEP_ID)return;
+  const p=CURP,idx=p.steps.findIndex(x=>x.id===EDIT_STEP_ID);
+  if(idx<0||p.steps[idx].req){toast('Không thể xóa bước bắt buộc','err');return}
+  p.steps.splice(idx,1); computeDue(p);
+  closeM('m-addstep'); toast('Đã xóa bước tùy biến'); rCkTb();
+}
+
+/* ── Bỏ qua / khôi phục bước bắt buộc ── */
+let SKIP_ID=null;
+function openSkip(id){
+  SKIP_ID=id;
+  const s=CURP.steps.find(x=>x.id===id);
+  $('#msk-name').textContent=s.stt+'. '+s.name;
+  $('#msk-reason').value='';
+  openM('m-skip');
+}
+function confirmSkip(){
+  const reason=$('#msk-reason').value.trim();
+  if(!reason){toast('Vui lòng nhập lý do / căn cứ pháp lý','err');return}
+  const s=CURP.steps.find(x=>x.id===SKIP_ID);
+  s.skip=true; s.skipReason=reason;
+  computeDue(CURP); closeM('m-skip');
+  toast('Đã đánh dấu bỏ qua — lưu lý do kèm hồ sơ dự án'); rCkTb();
+}
+function restoreStep(id){
+  const s=CURP.steps.find(x=>x.id===id);
+  s.skip=false; s.skipReason='';
+  computeDue(CURP); toast('Đã khôi phục bước vào checklist'); rCkTb();
+}
+
+/* ════ XUẤT CSV THẬT ════ */
+function exportListCSV(){exportListXLSX()}
+function exportListXLSX(){
+  if(!window.XLSX){toast('Đang tải thư viện Excel…','err');return}
+  const X=window.XLSX;
+  const aoa=[
+    ['DANH MỤC DỰ ÁN CNTT TỈNH LÀO CAI — Tình hình triển khai tính đến '+fmt(TODAY)],
+    ['Nghị định 45/2026/NĐ-CP · Sở Khoa học và Công nghệ tỉnh Lào Cai'],
+    [],
+    ['Tên dự án','Chủ đầu tư','Nhà thầu','Loại hình','Nguồn vốn','Nhóm','Giai đoạn HT','Tiến độ (%)','Dự toán (tr.đ)','Giải ngân (%)','Trạng thái','Số ngày chậm','KPI điểm','Xếp loại'],
+  ];
+  visible().forEach(p=>{const s=pStats(p),k=kpi(p);
+    aoa.push([p.name,p.cdt,p.contractor||'',TYPE_LB[p.type],FUND_LB[p.fund],p.grp,
+      s.phase==='✓'?'Hoàn thành':s.phase,s.pct,p.budget,p.disb||0,
+      ST_LB[s.health],s.maxLate||0,k.score,k.grade])});
+  // Dòng tổng
+  const dr=aoa.length;aoa.push([]);
+  const n=visible().length,dsRow=5;
+  aoa.push(['TỔNG KẾT','','','','','','',
+    {f:`AVERAGE(H${dsRow}:H${dr})`},{f:`SUM(I${dsRow}:I${dr})`},'','','','','']);
+  const ws=X.utils.aoa_to_sheet(aoa);
+  ws['!cols']=[{wch:52},{wch:26},{wch:22},{wch:20},{wch:15},{wch:7},{wch:18},{wch:11},{wch:14},{wch:12},{wch:14},{wch:13},{wch:11},{wch:9}];
+  ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:13}},{s:{r:1,c:0},e:{r:1,c:13}}];
+  ws['!freeze']={xSplit:0,ySplit:4};
+  const wb=X.utils.book_new();
+  X.utils.book_append_sheet(wb,ws,'Danh mục');
+  X.writeFile(wb,'Danh_muc_CNTT_LaoCai_'+TODAY+'.xlsx');
+  toast('Đã xuất danh mục ra Excel');
+}
+function exportKpiCSV(){exportKpiXLSX()}
+function exportKpiXLSX(){
+  if(!window.XLSX){toast('Đang tải…','err');return}
+  const X=window.XLSX;
+  const aoa=[
+    ['BÁO CÁO KPI ĐÁNH GIÁ TRIỂN KHAI DỰ ÁN CNTT — '+fmt(TODAY)],
+    ['Thang 100 điểm: Đúng hạn 40% · Độ trễ 25% · Điều chỉnh KH 15% · Giải ngân 20%'],
+    [],
+    ['Dự án','Chủ đầu tư','Nhà thầu','Đúng hạn (%)','Trễ BQ (ngày)','Điều chỉnh KH','Giải ngân (%)','Điểm KPI','Xếp loại'],
+  ];
+  visible().forEach(p=>{const k=kpi(p);
+    aoa.push([p.name,p.cdt,p.contractor||'',k.onTimeRate,k.avgDelay,k.adj,p.disb||0,k.score,k.grade])});
+  const ws=X.utils.aoa_to_sheet(aoa);
+  ws['!cols']=[{wch:52},{wch:26},{wch:22},{wch:13},{wch:14},{wch:14},{wch:12},{wch:11},{wch:9}];
+  ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:8}},{s:{r:1,c:0},e:{r:1,c:8}}];
+  ws['!freeze']={xSplit:0,ySplit:4};
+  const wb=X.utils.book_new();
+  X.utils.book_append_sheet(wb,ws,'KPI');
+  X.writeFile(wb,'Bao_cao_KPI_CNTT_'+TODAY+'.xlsx');
+  toast('Đã xuất báo cáo KPI ra Excel');
+}
+function exportCkCSV(){exportCkXLSX()}
+function exportCkXLSX(){
+  const p=CURP;
+  if(!window.XLSX){toast('Đang tải thư viện Excel…','err');return}
+  const X=window.XLSX;
+  // ─ Build worksheet data ─
+  const aoa=[];
+  // Header tiêu đề
+  aoa.push(['CHECKLIST TIẾN ĐỘ DỰ ÁN — '+p.name.toUpperCase()]);
+  aoa.push(['Chủ đầu tư: '+p.cdt+' | Loại: '+TYPE_LB[p.type]+' | Khởi đầu: '+fmt(p.start)+' | Xuất ngày: '+fmt(TODAY)]);
+  aoa.push(['Nghị định 45/2026/NĐ-CP · Sở Khoa học và Công nghệ tỉnh Lào Cai']);
+  aoa.push([]);
+  // Header cột
+  aoa.push(['STT','Loại','Nội dung công việc','Số ngày','Dự kiến\n(tự tính)','Văn bản / văn phòng','Ngày thực tế','Đơn vị thực hiện','Trạng thái','Ghi chú']);
+  // Dữ liệu bước
+  let prevDueCol = null; // địa chỉ cột E của bước trước (để công thức)
+  p.steps.forEach((s,idx)=>{
+    const excelRow = aoa.length+1;
+    if(s.grp){
+      aoa.push([s.stt,'Nhóm',s.name,'','','','','','','']);
+      return;
+    }
+    const typLbl = s.skip?'Bỏ qua':(s.req?'Bắt buộc NĐ45':'Tùy biến');
+    // Cột E: công thức nếu có số ngày và có bước trước
+    let dueVal;
+    if(s.due){
+      // Chuyển 'YYYY-MM-DD' → Excel date serial (số ngày từ 1/1/1900)
+      const [y,m,d]=s.due.split('-').map(Number);
+      const base=new Date(1900,0,1);
+      const target=new Date(y,m-1,d);
+      const serial=Math.round((target-base)/864e5)+2; // +2 vì Excel bug năm 1900
+      dueVal=serial;
+    }
+    const actualVal=s.actual?(() => {
+      const [y,m,d]=s.actual.split('-').map(Number);
+      const base=new Date(1900,0,1);
+      const target=new Date(y,m-1,d);
+      return Math.round((target-base)/864e5)+2;
+    })():'';
+    const stLbl=s.skip?'Bỏ qua':ST_LB[st(s)];
+    aoa.push([s.stt,typLbl,s.name,s.days||'',dueVal||'',s.doc||'',actualVal,s.unit||'',stLbl,s.note||'']);
+  });
+  aoa.push([]);
+  // Dòng tổng
+  const dataStart=6, dataEnd=aoa.length-1;
+  aoa.push(['TỔNG KẾT',
+    '','',
+    {f:`COUNTA(I${dataStart}:I${dataEnd})-COUNTIF(I${dataStart}:I${dataEnd},"Nhóm")`},
+    {f:`COUNTIF(I${dataStart}:I${dataEnd},"Hoàn thành")`},
+    {f:`COUNTIF(I${dataStart}:I${dataEnd},"Quá hạn")`},
+    {f:`COUNTIF(I${dataStart}:I${dataEnd},"Sắp đến hạn")`},
+    {f:`COUNTIF(I${dataStart}:I${dataEnd},"Trong hạn")`},
+    '','']);
+
+  const ws=X.utils.aoa_to_sheet(aoa);
+
+  // ─ Định dạng cột ngày: format 'dd/mm/yyyy' ─
+  const dateCols=['E','G'];
+  for(let r=dataStart;r<=dataEnd;r++){
+    dateCols.forEach(c=>{
+      const addr=c+r;
+      if(ws[addr]&&typeof ws[addr].v==='number'&&ws[addr].v>10000){
+        ws[addr].t='n';
+        ws[addr].z='DD/MM/YYYY';
+      }
+    });
+  }
+
+  // ─ Column widths ─
+  ws['!cols']=[{wch:8},{wch:15},{wch:56},{wch:9},{wch:14},{wch:28},{wch:13},{wch:26},{wch:16},{wch:24}];
+
+  // ─ Row heights ─
+  ws['!rows']=[{hpt:26},{hpt:16},{hpt:14},{hpt:4},{hpt:30}];
+
+  // ─ Merge tiêu đề ─
+  ws['!merges']=[
+    {s:{r:0,c:0},e:{r:0,c:9}},
+    {s:{r:1,c:0},e:{r:1,c:9}},
+    {s:{r:2,c:0},e:{r:2,c:9}},
+    {s:{r:aoa.length-1,c:0},e:{r:aoa.length-1,c:2}},
+  ];
+
+  // ─ Freeze panes ─
+  ws['!freeze']={xSplit:0,ySplit:5};
+
+  const wb=X.utils.book_new();
+  X.utils.book_append_sheet(wb,ws,'Checklist');
+  const fname='Checklist_'+p.name.slice(0,35).replace(/[^\wÀ-ỹ\s]/g,'').trim().replace(/\s+/g,'_')+'.xlsx';
+  X.writeFile(wb,fname);
+  toast('Đã xuất: '+fname);
+}
+function exportReportCSV(){exportReportXLSX()}
+function exportReportXLSX(){
+  if(!window.XLSX){toast('Đang tải…','err');return}
+  const X=window.XLSX,ps=visible();
+  const H={done:0,plan:0,soon:0,late:0};let bud=0,disb=0;
+  ps.forEach(p=>{const s=pStats(p);H[s.health]++;bud+=p.budget;disb+=p.budget*(p.disb||0)/100});
+  // Sheet 1: Tổng quan
+  const aoa1=[
+    ['BÁO CÁO TỔNG HỢP TÌNH HÌNH TRIỂN KHAI DỰ ÁN ỨNG DỤNG CNTT TỈNH LÀO CAI'],
+    ['Ngày trích xuất: '+fmt(TODAY)+' · Sở Khoa học và Công nghệ tỉnh Lào Cai'],
+    [],['Chỉ tiêu','Giá trị'],
+    ['Tổng số dự án theo dõi',ps.length],
+    ['Dự án quá hạn',H.late],['Dự án sắp đến hạn',H.soon],
+    ['Dự án trong hạn',H.plan],['Dự án hoàn thành',H.done],
+    ['Tổng dự toán (triệu đồng)',bud],
+    ['Đã giải ngân (triệu đồng)',Math.round(disb)],
+    ['Tỷ lệ giải ngân (%)',bud?+(disb/bud*100).toFixed(1):0],
+    [],['','',{f:'=B5/B4'},{f:'=B6/B4'}],
+    ['(Tỷ lệ)','','% hoàn thành','% quá hạn'],
+  ];
+  const ws1=X.utils.aoa_to_sheet(aoa1);
+  ws1['!cols']=[{wch:36},{wch:16},{wch:16},{wch:16}];
+  ws1['!merges']=[{s:{r:0,c:0},e:{r:0,c:3}},{s:{r:1,c:0},e:{r:1,c:3}}];
+  // Sheet 2: Chi tiết dự án chậm
+  const aoa2=[['DỰ ÁN QUÁ HẠN CẦN CHỈ ĐẠO'],[''],
+    ['Dự án','Chủ đầu tư','Nhà thầu','Số ngày chậm','Tắc tại bước','Đã đôn đốc']];
+  ps.map(p=>({p,s:pStats(p)})).filter(x=>x.s.health==='late').sort((a,b)=>b.s.maxLate-a.s.maxLate)
+    .forEach(({p,s})=>aoa2.push([p.name,p.cdt,p.contractor||'',s.maxLate,s.curStep?s.curStep.stt+'. '+s.curStep.name:'',p.urged?fmt(p.urged):'Chưa']));
+  const ws2=X.utils.aoa_to_sheet(aoa2);
+  ws2['!cols']=[{wch:52},{wch:26},{wch:22},{wch:13},{wch:50},{wch:16}];
+  ws2['!merges']=[{s:{r:0,c:0},e:{r:0,c:5}}];
+  // Sheet 3: KPI
+  const aoa3=[['ĐÁNH GIÁ KPI THEO DỰ ÁN'],[''],
+    ['Dự án','Chủ đầu tư','Nhà thầu','Đúng hạn%','Trễ BQ','Điều chỉnh KH','Giải ngân%','Điểm','Loại']];
+  visible().forEach(p=>{const k=kpi(p);aoa3.push([p.name,p.cdt,p.contractor||'',k.onTimeRate,k.avgDelay,k.adj,p.disb||0,k.score,k.grade])});
+  const ws3=X.utils.aoa_to_sheet(aoa3);
+  ws3['!cols']=[{wch:52},{wch:26},{wch:22},{wch:11},{wch:11},{wch:13},{wch:11},{wch:9},{wch:7}];
+  ws3['!merges']=[{s:{r:0,c:0},e:{r:0,c:8}}];
+  const wb=X.utils.book_new();
+  X.utils.book_append_sheet(wb,ws1,'Tổng quan');
+  X.utils.book_append_sheet(wb,ws2,'Dự án chậm');
+  X.utils.book_append_sheet(wb,ws3,'KPI');
+  X.writeFile(wb,'Bao_cao_CNTT_LaoCai_'+TODAY+'.xlsx');
+  toast('Đã xuất báo cáo Excel 3 sheet: Tổng quan · Dự án chậm · KPI');
+}
+
+/* ════ ĐÔN ĐỐC (Đ36) ════ */
+const URGE_LOG=[];
+function openUrge(){
+  const lates=visible().map(p=>({p,s:pStats(p)})).filter(x=>x.s.health==='late').sort((a,b)=>b.s.maxLate-a.s.maxLate);
+  if(!lates.length){toast('Không có dự án quá hạn cần đôn đốc');return}
+  $('#urge-list').innerHTML=lates.map(({p,s})=>`
+    <label style="display:flex;gap:8px;align-items:flex-start;font-size:12.5px;cursor:pointer">
+      <input type="checkbox" class="urge-cb" value="${p.id}" checked style="margin-top:2px">
+      <span><b>${p.cdt}</b> — ${p.name.slice(0,55)} <span style="color:var(--red);font-weight:700">(chậm ${s.maxLate} ngày)</span></span>
+    </label>`).join('');
+  $('#urge-body').value=
+`Kính gửi các đơn vị chủ đầu tư,
+
+Qua hệ thống quản lý dự án CNTT của tỉnh, Sở Khoa học và Công nghệ nhận thấy các dự án nêu trên đang chậm tiến độ so với kế hoạch được duyệt.
+
+Căn cứ Điều 36 Nghị định 45/2026/NĐ-CP, đề nghị các đơn vị:
+1. Khẩn trương rà soát, đẩy nhanh tiến độ các bước đang quá hạn;
+2. Trường hợp có vướng mắc, lập hồ sơ điều chỉnh kế hoạch trên hệ thống kèm lý do cụ thể;
+3. Báo cáo kết quả về Sở KHCN trước ngày ${fmt(addD(TODAY,7))}.
+
+Sở Khoa học và Công nghệ tỉnh Lào Cai`;
+  openM('m-urge');
+}
+function sendUrge(){
+  const ids=[...document.querySelectorAll('.urge-cb:checked')].map(c=>c.value);
+  if(!ids.length){toast('Chọn ít nhất một đơn vị','err');return}
+  ids.forEach(id=>{const p=PROJECTS.find(x=>x.id===id);if(p)p.urged=TODAY});
+  URGE_LOG.push({date:TODAY,n:ids.length,subject:$('#urge-subject').value});
+  closeM('m-urge');
+  toast(`Đã ghi nhận gửi đôn đốc ${ids.length} đơn vị — hệ thống lưu nhật ký`);
+  if(PF==='pf-alerts')rPfAlerts();
+}
+function downloadUrge(){
+  const txt='SỞ KHOA HỌC VÀ CÔNG NGHỆ TỈNH LÀO CAI\n\n'+$('#urge-subject').value+'\nNgày: '+fmt(TODAY)+'\n\n'+$('#urge-body').value;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));
+  a.download='Van_ban_don_doc_'+TODAY+'.txt';document.body.appendChild(a);a.click();a.remove();
+  toast('Đã tải bản thảo văn bản đôn đốc');
+}
+
+/* ════ PHIẾU VĂN BẢN & TẢI LÊN ════ */
+let CUR_DOC=null;
+function viewDoc(stepId){
+  const s=CURP.steps.find(x=>x.id===stepId);if(!s)return;CUR_DOC=s;
+  $('#doc-body').innerHTML=`<dl class="kv">
+    <dt>Số, ký hiệu</dt><dd><span class="doc">${s.doc}</span></dd>
+    <dt>Ngày ban hành</dt><dd>${fmt(s.actual)}</dd>
+    <dt>Cơ quan ban hành</dt><dd>${s.unit||'—'}</dd>
+    <dt>Thuộc bước</dt><dd>${s.stt}. ${s.name}</dd>
+    <dt>Dự án</dt><dd>${CURP.name}</dd>
+    <dt>Ghi chú</dt><dd>${s.note||'—'}</dd>
+  </dl>
+  <div style="font-size:12px;color:var(--mut);background:#F6F8FB;border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin-top:10px">
+  ℹ️ Khi triển khai chính thức, phiếu này liên kết trực tiếp đến tệp PDF lưu trên hệ thống quản lý văn bản của Sở.</div>`;
+  openM('m-doc');
+}
+function downloadDocTxt(){
+  const s=CUR_DOC;if(!s)return;
+  const txt=`PHIẾU VĂN BẢN\n\nSố, ký hiệu: ${s.doc}\nNgày ban hành: ${fmt(s.actual)}\nCơ quan: ${s.unit||''}\nThuộc bước: ${s.stt}. ${s.name}\nDự án: ${CURP.name}\nGhi chú: ${s.note||''}`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));
+  a.download='Phieu_van_ban.txt';document.body.appendChild(a);a.click();a.remove();
+}
+function uploadDoc(inp){
+  const f=inp.files[0];if(!f)return;
+  CURP.docsExtra.push({name:f.name,size:Math.round(f.size/1024),date:TODAY,by:ROLES[ROLE].user});
+  inp.value='';
+  toast('Đã tải lên: '+f.name);
+  rPjVanban();
+}
+
+/* ════ XEM TEMPLATE ════ */
+function viewTpl(k){
+  const m=TPL_META[k];
+  $('#tpl-title').textContent=m.n;
+  $('#tpl-sub').textContent='Căn cứ: '+m.cc+' · Các bước bắt buộc sinh tự động khi tạo dự án';
+  $('#tpl-body').innerHTML=`<table class="tbl"><thead><tr><th>STT</th><th>Nội dung</th><th class="num">Số ngày</th><th>Đơn vị</th></tr></thead><tbody>
+  ${TPL[k].map(r=>r[2]
+    ?`<tr class="ck-grp"><td>${r[1]}</td><td colspan="3">${r[3]}</td></tr>`
+    :`<tr><td>${r[1]}</td><td>${r[3]}</td><td class="num">${r[4]||''}</td><td style="font-size:12px">${r[5]||''}</td></tr>`).join('')}
+  </tbody></table>`;
+  openM('m-tpl');
+}
+
+/* ════ BÁO CÁO TỔNG HỢP TRỰC QUAN ════ */
+function donut(data,center){
+  // data: [[label,count,color],...]
+  const total=data.reduce((a,[,n])=>a+n,0)||1;
+  let acc=0,stops=[];
+  data.forEach(([,n,c])=>{const from=acc/total*360;acc+=n;const to=acc/total*360;stops.push(`${c} ${from}deg ${to}deg`)});
+  return`<div class="donut-wrap">
+    <div class="donut" data-c="${center}" style="background:conic-gradient(${stops.join(',')})"></div>
+    <div class="dleg">${data.map(([lb,n,c])=>`<span><i style="background:${c}"></i>${lb}: <b>${n}</b></span>`).join('')}</div>
+  </div>`;
+}
+function rPfReport(){
+  const ps=visible();
+  const H={done:0,plan:0,soon:0,late:0};let bud=0,disb=0;
+  ps.forEach(p=>{const s=pStats(p);H[s.health]++;bud+=p.budget;disb+=p.budget*(p.disb||0)/100});
+  const disbPct=bud?Math.round(disb/bud*100):0;
+  const types={};ps.forEach(p=>types[p.type]=(types[p.type]||0)+1);
+  const TYPE_CL={thue:'#3B62B3',hethong:'#C9A227',muasam:'#2E9E5B',ctx:'#7C5CBF'};
+  // theo chủ đầu tư: kinh phí & giải ngân
+  const byCdt={};ps.forEach(p=>{byCdt[p.cdt]=byCdt[p.cdt]||{bud:0,disb:0,n:0,late:0};
+    const b=byCdt[p.cdt];b.bud+=p.budget;b.disb+=p.budget*(p.disb||0)/100;b.n++;
+    const s=pStats(p);if(s.health==='late')b.late++});
+  const cdtRows=Object.entries(byCdt).sort((a,b)=>b[1].bud-a[1].bud);
+  const maxBud=Math.max(...cdtRows.map(([,v])=>v.bud));
+  // KPI theo đơn vị
+  const kAgg=(key)=>{const m={};ps.forEach(p=>{const g=p[key];if(!g)return;m[g]=m[g]||{n:0,sum:0};m[g].n++;m[g].sum+=kpi(p).score});
+    return Object.entries(m).map(([g,v])=>({g,avg:Math.round(v.sum/v.n),n:v.n})).sort((a,b)=>b.avg-a.avg)};
+  const kCdt=kAgg('cdt'),kNt=kAgg('contractor').sort((a,b)=>a.g==='FOXAI'?-1:b.g==='FOXAI'?1:b.avg-a.avg);
+  const lateList=ps.map(p=>({p,s:pStats(p)})).filter(x=>x.s.health==='late').sort((a,b)=>b.s.maxLate-a.s.maxLate);
+
+  $('#pg-pf-report').innerHTML=`
+  <div class="ph"><div><h1>Báo cáo tổng hợp</h1><p>Báo cáo trực quan tình hình triển khai dự án CNTT toàn tỉnh</p></div>
+    <div class="ph-acts">
+      <button class="btn btn-ghost" onclick="exportReportCSV()">⬇ Xuất số liệu (Excel)</button>
+      <button class="btn btn-navy" onclick="window.print()">🖨 In báo cáo</button>
+    </div></div>
+
+  <div class="rp-head">
+    <div class="qh">UBND tỉnh Lào Cai · Sở Khoa học và Công nghệ</div>
+    <div class="tt">BÁO CÁO TÌNH HÌNH TRIỂN KHAI DỰ ÁN ỨNG DỤNG CÔNG NGHỆ THÔNG TIN</div>
+    <div class="dt">Số liệu trích xuất tự động từ Hệ thống quản lý dự án CNTT · ngày ${fmt(TODAY)}</div>
+  </div>
+
+  <div class="rp-sec">1. Tổng quan danh mục</div>
+  <div class="stats" style="grid-template-columns:repeat(5,1fr)">
+    <div class="st" style="--c:var(--navy)"><div class="lb">Tổng dự án</div><div class="vl">${ps.length}</div></div>
+    <div class="st" style="--c:var(--red)"><div class="lb">Quá hạn</div><div class="vl">${H.late}</div></div>
+    <div class="st" style="--c:var(--amber)"><div class="lb">Sắp đến hạn</div><div class="vl">${H.soon}</div></div>
+    <div class="st" style="--c:var(--green)"><div class="lb">Hoàn thành</div><div class="vl">${H.done}</div></div>
+    <div class="st" style="--c:var(--gold)"><div class="lb">Giải ngân</div><div class="vl">${disbPct}%</div></div>
+  </div>
+
+  <div class="pf-grid2" style="margin-bottom:6px">
+    <div class="card"><div class="card-h"><h3>Cơ cấu trạng thái dự án</h3></div><div class="card-b">
+      ${donut([['Quá hạn',H.late,'#B23A48'],['Sắp đến hạn',H.soon,'#C9A227'],['Trong hạn',H.plan,'#2A3242'],['Hoàn thành',H.done,'#2E9E5B']],ps.length)}
+    </div></div>
+    <div class="card"><div class="card-h"><h3>Cơ cấu loại hình theo NĐ 45</h3></div><div class="card-b">
+      ${donut(Object.entries(types).map(([t,n])=>[TYPE_LB[t],n,TYPE_CL[t]]),ps.length)}
+    </div></div>
+  </div>
+
+  <div class="rp-sec">2. Kinh phí & giải ngân theo chủ đầu tư <span style="font-weight:400;font-size:11.5px;color:var(--mut)">(triệu đồng)</span></div>
+  <div class="card"><div class="card-b"><div class="bars">
+    ${cdtRows.map(([cdt,v])=>`<div class="bar-r" style="grid-template-columns:210px 1fr 130px">
+      <span>${cdt}${v.late?` <b style="color:var(--red);font-size:11px">(${v.late} DA chậm)</b>`:''}</span>
+      <div class="b" style="height:18px;position:relative">
+        <i style="width:${v.bud/maxBud*100}%;background:#D7DEEA;position:absolute;inset:0"></i>
+        <i style="width:${v.disb/maxBud*100}%;background:var(--navy3);position:absolute;inset:0"></i>
+      </div>
+      <b style="font-size:11.5px;text-align:right">${money(Math.round(v.disb))} / ${money(v.bud)}</b></div>`).join('')}
+    <div style="font-size:11.5px;color:var(--mut);display:flex;gap:16px;margin-top:4px">
+      <span><i style="display:inline-block;width:11px;height:11px;background:var(--navy3);border-radius:3px;vertical-align:-1px"></i> Đã giải ngân</span>
+      <span><i style="display:inline-block;width:11px;height:11px;background:#D7DEEA;border-radius:3px;vertical-align:-1px"></i> Tổng dự toán</span>
+    </div>
+  </div></div></div>
+
+  <div class="rp-sec">3. Dự án chậm tiến độ cần chỉ đạo</div>
+  <div class="card"><div class="tbl-wrap"><table class="tbl"><thead><tr>
+    <th>Dự án</th><th>Chủ đầu tư</th><th>Tắc tại bước</th><th class="num">Ngày chậm</th><th class="num">Đã đôn đốc</th></tr></thead><tbody>
+    ${lateList.map(({p,s})=>`<tr style="cursor:pointer" onclick="openProj('${p.id}')">
+      <td style="font-weight:600">${p.name.slice(0,46)}${p.name.length>46?'…':''}</td>
+      <td style="font-size:12px">${p.cdt}</td>
+      <td style="font-size:12px">${s.curStep?s.curStep.stt+'. '+s.curStep.name.slice(0,42):''}</td>
+      <td class="num" style="font-weight:800;color:var(--red)">${s.maxLate}</td>
+      <td class="num">${p.urged?'✓ '+fmt(p.urged):'—'}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">Không có dự án quá hạn.</td></tr>'}
+  </tbody></table></div></div>
+
+  <div class="rp-sec">4. Đánh giá KPI đơn vị</div>
+  <div class="pf-grid2">
+    <div class="card"><div class="card-h"><h3>Chủ đầu tư</h3><span class="sub">điểm bình quân</span></div>
+      <div class="card-b" style="padding:8px 18px">${kCdt.map((r,i)=>`<div class="li-row"><span class="rank-n">${i+1}.</span>
+        <div style="flex:1"><b style="font-size:13px">${r.g}</b><div style="font-size:11.5px;color:var(--mut)">${r.n} dự án</div></div>
+        <span class="grade ${r.avg>=85?'A':r.avg>=70?'B':r.avg>=50?'C':'D'}">${r.avg}</span></div>`).join('')}</div></div>
+    <div class="card"><div class="card-h"><h3>Nhà thầu</h3><span class="sub">điểm bình quân</span></div>
+      <div class="card-b" style="padding:8px 18px">${kNt.map((r,i)=>`<div class="li-row"><span class="rank-n">${i+1}.</span>
+        <div style="flex:1"><b style="font-size:13px">${r.g}</b><div style="font-size:11.5px;color:var(--mut)">${r.n} dự án</div></div>
+        <span class="grade ${r.avg>=85?'A':r.avg>=70?'B':r.avg>=50?'C':'D'}">${r.avg}</span></div>`).join('')}</div></div>
+  </div>
+
+  <div class="rp-sign">
+    <div><b>NGƯỜI LẬP BÁO CÁO</b>Hệ thống tự động trích xuất</div>
+    <div><b>GIÁM ĐỐC SỞ KH&CN</b>(Ký, đóng dấu)</div>
+  </div>`;
+}
+
+/* ════ BIỂU ĐỒ GANTT ════ */
+const VN_M=['Th1','Th2','Th3','Th4','Th5','Th6','Th7','Th8','Th9','Th10','Th11','Th12'];
+function rPjGantt(){
+  const p=CURP;
+  const real=p.steps.filter(s=>!s.skip);
+  // khoảng thời gian
+  let min=p.start,max=p.start;
+  real.forEach(s=>{if(s.grp)return;
+    const b=addD(s.due,-(s.days||0));
+    if(b<min)min=b; if(s.due>max)max=s.due;
+    if(s.actual&&s.actual>max)max=s.actual});
+  if(TODAY<min)min=TODAY; if(TODAY>max)max=TODAY;
+  min=addD(min,-4); max=addD(max,6);
+  const span=diffD(min,max)||1;
+  const pos=d=>Math.max(0,Math.min(100,diffD(min,d)/span*100));
+  // mốc tháng
+  let ticks=[],t=new Date(min);t.setDate(1);
+  if(t.toISOString().slice(0,10)<min){t.setMonth(t.getMonth()+1)}
+  while(t.toISOString().slice(0,10)<=max){
+    const ds=t.toISOString().slice(0,10);
+    ticks.push({d:ds,lb:VN_M[t.getMonth()]+'/'+String(t.getFullYear()).slice(2)});
+    t=new Date(t);t.setMonth(t.getMonth()+1);
+  }
+  let rows='',lastPh='';
+  p.steps.forEach(s=>{
+    if(s.skip)return;
+    if(s.ph!==lastPh){lastPh=s.ph;
+      rows+=`<div class="gt-row gt-phase"><div>GIAI ĐOẠN ${s.ph} — ${PHASES[s.ph]}</div><div></div></div>`}
+    if(s.grp){rows+=`<div class="gt-row gt-grp"><div>${s.stt}. ${s.name}</div><div class="gt-track" style="background:none"></div></div>`;return}
+    const k=st(s);
+    const barStart=addD(s.due,-(s.days||0));
+    const l=pos(barStart),w=Math.max(0.7,pos(s.due)-l);
+    const actMark=s.actual?`<div class="gt-act ${s.actual>s.due?'lateact':''}" style="left:${pos(s.actual)}%" title="Thực tế: ${fmt(s.actual)}"></div>`:'';
+    rows+=`<div class="gt-row">
+      <div class="gt-lbl" onclick="openStep('${s.id}')"><b>${s.stt}</b><span>${s.name.length>40?s.name.slice(0,40)+'…':s.name}</span></div>
+      <div class="gt-track">
+        ${ticks.map(tk=>`<div style="position:absolute;top:0;bottom:0;left:${pos(tk.d)}%;border-left:1px solid #EDF0F5"></div>`).join('')}
+        <div class="gt-bar ${k==='wait'?'wait':k}" style="left:${l}%;width:${w}%"
+          onclick="openStep('${s.id}')"
+          title="${s.stt}. ${s.name}&#10;Dự kiến: ${fmt(s.due)}${s.days?' ('+s.days+' ngày)':''}${s.actual?'&#10;Thực tế: '+fmt(s.actual):''}"></div>
+        ${actMark}
+        <div class="gt-today" style="left:${pos(TODAY)}%"></div>
+      </div>
+    </div>`;
+  });
+  $('#pg-pj-gantt').innerHTML=`
+  <div class="ph"><div><h1>Biểu đồ Gantt</h1>
+    <p>Mỗi thanh = một bước (độ dài theo số ngày) · vạch đỏ dọc = hôm nay · chấm tròn = ngày hoàn thành thực tế</p></div>
+    <div class="ph-acts">
+      ${canEdit(p)?`<button class="btn btn-ghost" onclick="openRebase()">🕘 Điều chỉnh kế hoạch</button>`:''}
+      <button class="btn btn-ghost" onclick="goPJ('pj-checklist')">📑 Xem dạng bảng</button></div></div>
+  ${pjBanner()}
+  <div class="card"><div class="gt-scroll"><div class="gt-inner">
+    <div class="gt-head"><div style="padding:8px 12px;font-size:11px;font-weight:700;color:var(--mut)">CÔNG VIỆC</div>
+      <div class="gt-months">${ticks.map(tk=>`<div class="gt-mtick" style="left:${pos(tk.d)}%">${tk.lb}</div>`).join('')}</div></div>
+    ${rows}
+  </div></div>
+  <div class="gt-legend" style="padding:10px 16px">
+    <span><i style="background:var(--green)"></i>Hoàn thành</span>
+    <span><i style="background:#2A3242"></i>Trong hạn</span>
+    <span><i style="background:var(--amber)"></i>Sắp đến hạn</span>
+    <span><i style="background:var(--red)"></i>Quá hạn</span>
+    <span><i style="background:#7C5CBF"></i>Chờ xác nhận</span>
+    <span><span style="display:inline-block;width:9px;height:9px;background:#fff;border:2.5px solid var(--green);border-radius:50%;vertical-align:-1px;margin-right:5px"></span>Ngày thực tế</span>
+  </div></div>`;
+}
+
+/* ════ TÌM KIẾM NHANH ════ */
+function gSearch(q){
+  const dd=$('#gs-dd');
+  q=(q||'').trim().toLowerCase();
+  if(q.length<2){dd.classList.remove('on');return}
+  const ps=visible();
+  // dự án khớp tên / cđt / nhà thầu
+  const pjHits=ps.filter(p=>p.name.toLowerCase().includes(q)||p.cdt.toLowerCase().includes(q)||(p.contractor||'').toLowerCase().includes(q)).slice(0,5);
+  // bước & văn bản khớp
+  const stHits=[];
+  for(const p of ps){
+    for(const s of p.steps){
+      if(s.grp)continue;
+      if(s.name.toLowerCase().includes(q)||(s.doc||'').toLowerCase().includes(q)){
+        stHits.push({p,s});
+        if(stHits.length>=5)break;
+      }
+    }
+    if(stHits.length>=5)break;
+  }
+  if(!pjHits.length&&!stHits.length){
+    dd.innerHTML='<div class="gs-it" style="cursor:default;color:var(--mut)">Không tìm thấy kết quả</div>';
+    dd.classList.add('on');return;
+  }
+  let html='';
+  if(pjHits.length){
+    html+='<div class="gs-cat">Dự án</div>';
+    pjHits.forEach(p=>{const s=pStats(p);
+      html+=`<div class="gs-it" onmousedown="gsGo('${p.id}')">
+        <span class="hdot ${s.health}"></span>
+        <div class="t"><b>${p.name}</b><span>${p.cdt}${p.contractor?' · NT: '+p.contractor:''}${s.health==='late'?' · chậm '+s.maxLate+' ngày':''}</span></div></div>`});
+  }
+  if(stHits.length){
+    html+='<div class="gs-cat">Bước · Văn bản</div>';
+    stHits.forEach(({p,s})=>{const k=st(s);
+      html+=`<div class="gs-it" onmousedown="gsGoStep('${p.id}','${s.id}')">
+        <span class="hdot ${k==='done'?'done':k==='late'?'late':k==='soon'?'soon':'plan'}"></span>
+        <div class="t"><b>${s.stt}. ${s.name}</b><span>${s.doc?s.doc+' · ':''}${p.name.slice(0,40)}</span></div></div>`});
+  }
+  dd.innerHTML=html;dd.classList.add('on');
+}
+function gsGo(id){$('#gs-dd').classList.remove('on');$('#gsearch').value='';openProj(id)}
+function gsGoStep(pid,sid){$('#gs-dd').classList.remove('on');$('#gsearch').value='';openProj(pid,'pj-checklist');setTimeout(()=>openStep(sid),60)}
+document.addEventListener('click',e=>{if(!e.target.closest('.tb-search'))$('#gs-dd')&&$('#gs-dd').classList.remove('on')});
+
+/* ════ SO SÁNH KẾ HOẠCH GỐC ↔ HIỆN HÀNH ════ */
+function origDues(p){
+  // replay chuỗi không có ov (mốc điều chỉnh) = kế hoạch gốc v1
+  let cur=p.start;const out={};
+  p.steps.forEach(s=>{const d=addD(cur,s.days||0);out[s.id]=d;cur=d});
+  return out;
+}
+
+const RENDER={'pf-dash':rPfDash,'pf-report':rPfReport,'pf-list':rPfList,'pf-kpi':rPfKpi,'pf-alerts':rPfAlerts,'pf-bc35':rPfBc35,'pf-admin':rPfAdmin,
+ 'pj-overview':rPjOverview,'pj-checklist':rPjChecklist,'pj-gantt':rPjGantt,'pj-baseline':rPjBaseline,'pj-vanban':rPjVanban,'pj-kinhphi':rPjKinhphi};
+</script>
+<script src="api.js"></script>
+</body>
+</html>

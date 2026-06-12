@@ -1,0 +1,23 @@
+# Dependencies (cài lại trong image bằng npm ci)
+**/node_modules
+
+# Môi trường & bí mật
+.env
+backend/.env
+frontend/.env
+
+# Git & IDE
+.git
+.gitignore
+.vscode
+.idea
+
+# Logs & tạm
+*.log
+npm-debug.log*
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Tài liệu / build artefacts không cần trong image
+*.md
+backup_*.sql

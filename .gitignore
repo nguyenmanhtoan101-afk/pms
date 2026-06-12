@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Môi trường & bí mật — KHÔNG commit
+.env
+backend/.env
+frontend/.env
+*.local
+
+# Uploads runtime & backup DB
+backend/uploads/*
+!backend/uploads/.gitkeep
+backup_*.sql
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE / OS / tooling
+.claude/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
