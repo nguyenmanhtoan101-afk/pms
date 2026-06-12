@@ -34,8 +34,10 @@ services:
       postgres:
         condition: service_healthy
     # Chỉ bind vào localhost — Nginx (host) reverse proxy + TLS đứng trước cổng này.
+    # Host port = 3100 (tránh xung đột: cổng 3000/3001 trên server đã bị chiếm).
+    # Container vẫn nghe 3000 nội bộ; chỉ ánh xạ ra 127.0.0.1:3100 của host.
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3100:3000"
     restart: unless-stopped
     volumes:
       - uploads:/app/uploads

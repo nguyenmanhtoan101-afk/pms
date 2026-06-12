@@ -56,7 +56,7 @@ Lần đầu sẽ tự: tạo schema PostgreSQL → seed dữ liệu → khởi 
 
 ```bash
 docker compose ps                       # cả 2 service phải "running"/"healthy"
-curl http://localhost:3000/api/health   # {"ok":true,"db":"connected"}
+curl http://localhost:3100/api/health   # {"ok":true,"db":"connected"}  (host map 127.0.0.1:3100)
 docker compose logs -f app              # xem log ứng dụng
 ```
 
@@ -77,20 +77,22 @@ A    pms    <IP-public-cua-server>
 
 Đợi DNS có hiệu lực, kiểm tra: `dig +short pms.foxai.com.vn` → ra đúng IP server.
 
-### 6.2. Cài Nginx + Certbot
+### 6.2. Cài Certbot
+> Server **đã có Nginx chạy sẵn** (đang phục vụ nhiều site khác trên cổng 80).
+> KHÔNG gỡ/đổi Nginx, chỉ **thêm 1 site mới** cho domain này. Chỉ cần cài thêm Certbot:
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y nginx certbot python3-certbot-nginx
+sudo apt-get install -y certbot python3-certbot-nginx
 ```
 
-### 6.3. Nạp cấu hình reverse proxy
-File mẫu có sẵn trong repo: `deploy/nginx/pms.foxai.com.vn.conf`
+### 6.3. Nạp cấu hình reverse proxy (thêm site mới, KHÔNG đụng site cũ)
+File mẫu có sẵn trong repo: `deploy/nginx/pms.foxai.com.vn.conf` (đã proxy tới cổng `3100`).
 
 ```bash
 sudo cp deploy/nginx/pms.foxai.com.vn.conf /etc/nginx/sites-available/pms.foxai.com.vn
 sudo ln -s /etc/nginx/sites-available/pms.foxai.com.vn /etc/nginx/sites-enabled/
-sudo rm -f /etc/nginx/sites-enabled/default      # bỏ trang mặc định (tuỳ chọn)
+# KHÔNG xoá default / các site khác — chỉ kiểm tra cú pháp rồi reload
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
