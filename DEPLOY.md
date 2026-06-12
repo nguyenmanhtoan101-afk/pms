@@ -60,15 +60,59 @@ curl http://localhost:3000/api/health   # {"ok":true,"db":"connected"}
 docker compose logs -f app              # xem log ứng dụng
 ```
 
-Mở `http://<IP-server>:3000`. Đăng nhập: `skhcn.laocai` / `Skhcn@2026` (đổi mật khẩu ngay sau khi vào).
+Lúc này app chỉ chạy nội bộ trên server (`127.0.0.1:3000`) — truy cập qua domain sau bước 6.
+Đăng nhập: `skhcn.laocai` / `Skhcn@2026` (đổi mật khẩu ngay sau khi vào).
 
-## 6. Mở firewall (nếu dùng ufw)
+> App đã được cấu hình **chỉ bind `127.0.0.1:3000`** (không expose trực tiếp ra Internet).
+> PostgreSQL **không mở cổng** ra ngoài. Việc truy cập public đi qua Nginx ở mục 6.
 
-```bash
-sudo ufw allow 3000/tcp
+## 6. Cấu hình domain pms.foxai.com.vn + HTTPS (Nginx + Let's Encrypt)
+
+### 6.1. Trỏ DNS (làm trước)
+Tại nhà cung cấp DNS của `foxai.com.vn`, tạo bản ghi:
+
+```
+A    pms    <IP-public-cua-server>
 ```
 
-> **Khuyến nghị production:** không expose cổng PostgreSQL ra ngoài. Trong `docker-compose.yml`, xoá khối `ports: ["5432:5432"]` của service `postgres` (các container vẫn nối nhau qua mạng nội bộ). Nên đặt Nginx reverse proxy + HTTPS (Let's Encrypt) trước cổng 3000.
+Đợi DNS có hiệu lực, kiểm tra: `dig +short pms.foxai.com.vn` → ra đúng IP server.
+
+### 6.2. Cài Nginx + Certbot
+
+```bash
+sudo apt-get update
+sudo apt-get install -y nginx certbot python3-certbot-nginx
+```
+
+### 6.3. Nạp cấu hình reverse proxy
+File mẫu có sẵn trong repo: `deploy/nginx/pms.foxai.com.vn.conf`
+
+```bash
+sudo cp deploy/nginx/pms.foxai.com.vn.conf /etc/nginx/sites-available/pms.foxai.com.vn
+sudo ln -s /etc/nginx/sites-available/pms.foxai.com.vn /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default      # bỏ trang mặc định (tuỳ chọn)
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### 6.4. Cấp chứng chỉ SSL (tự động cấu hình HTTPS)
+
+```bash
+sudo certbot --nginx -d pms.foxai.com.vn --agree-tos -m admin@foxai.com.vn --redirect
+```
+
+Certbot tự chèn khối SSL cổng 443 + chuyển hướng 80→443 vào file cấu hình, và tự gia hạn
+(qua systemd timer `certbot.timer`). Kiểm tra gia hạn: `sudo certbot renew --dry-run`.
+
+### 6.5. Mở firewall (nếu dùng ufw)
+
+```bash
+sudo ufw allow 'Nginx Full'      # mở cổng 80 + 443
+sudo ufw enable
+```
+
+> Không cần mở cổng 3000 ra ngoài — Nginx proxy nội bộ tới `127.0.0.1:3000`.
+
+Xong: truy cập **https://pms.foxai.com.vn**.
 
 ## Vận hành
 

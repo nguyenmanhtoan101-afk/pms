@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_USER: pms
       POSTGRES_PASSWORD: ${PGPASSWORD:-pms2026}
@@ -13,8 +14,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-    ports:
-      - "5432:5432"
+    # Không expose PostgreSQL ra ngoài — chỉ các container trong mạng nội bộ truy cập.
+    # Khi cần debug từ host, mở tạm: ports: ["127.0.0.1:5432:5432"]
 
   app:
     build:
@@ -32,8 +33,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    # Chỉ bind vào localhost — Nginx (host) reverse proxy + TLS đứng trước cổng này.
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
     volumes:
       - uploads:/app/uploads
     command: sh -c "node src/db/seed.js && node src/index.js"
