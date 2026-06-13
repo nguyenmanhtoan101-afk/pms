@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Danh mục dự án CNTT, Chuyển đổi số & Đề án 06 — Lào Cai 2026 (Prototype)</title>
+<style>
+  :root{
+    --bg:#0f1729;--panel:#fff;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;
+    --brand:#1e3a8a;--brand2:#2563eb;--gold:#b45309;--green:#15803d;--red:#b91c1c;
+    --amber:#b45309;--soft:#f1f5f9;--A:#7c3aed;--B:#0891b2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#f8fafc;color:var(--ink);font-size:14px;line-height:1.5}
+  .top{background:linear-gradient(110deg,#0f1729,#1e3a8a 60%,#2563eb);color:#fff;padding:18px 26px}
+  .top .org{font-size:12.5px;opacity:.85;letter-spacing:.3px;text-transform:uppercase}
+  .top h1{margin:4px 0 3px;font-size:21px;font-weight:700;letter-spacing:-.2px}
+  .top .sub{font-size:13px;opacity:.9}
+  .top .cc{margin-top:7px;font-size:12px;background:rgba(255,255,255,.13);display:inline-block;padding:3px 11px;border-radius:20px}
+  .proto{background:#fef3c7;color:#92400e;text-align:center;padding:7px;font-size:12.5px;border-bottom:1px solid #fcd34d}
+  .wrap{max-width:1240px;margin:0 auto;padding:18px}
+  .tabs{display:flex;gap:6px;border-bottom:2px solid var(--line);margin-bottom:18px;flex-wrap:wrap}
+  .tab{padding:10px 18px;cursor:pointer;border:none;background:none;font-size:14px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px}
+  .tab.on{color:var(--brand2);border-bottom-color:var(--brand2)}
+  .pg{display:none}.pg.on{display:block}
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+  .st{background:#fff;border:1px solid var(--line);border-left:4px solid var(--c,var(--brand2));border-radius:10px;padding:13px 15px}
+  .st .lb{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+  .st .vl{font-size:23px;font-weight:700;margin-top:3px;color:var(--ink)}
+  .st .s2{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+  .toolbar input,.toolbar select{padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13px}
+  .toolbar input[type=search]{min-width:280px}
+  .btn{padding:8px 15px;border:none;border-radius:8px;background:var(--brand2);color:#fff;font-weight:600;cursor:pointer;font-size:13px}
+  .btn.ghost{background:#fff;color:var(--brand2);border:1px solid var(--brand2)}
+  .btn.sm{padding:5px 11px;font-size:12px}
+  /* tree */
+  .nhom{border:1px solid var(--line);border-radius:12px;margin-bottom:16px;overflow:hidden;background:#fff}
+  .nhom-h{padding:13px 17px;cursor:pointer;display:flex;align-items:center;gap:11px;font-weight:700;font-size:15px;color:#fff}
+  .nhom-h.A{background:linear-gradient(90deg,#6d28d9,#7c3aed)}
+  .nhom-h.B{background:linear-gradient(90deg,#0e7490,#0891b2)}
+  .nhom-h .cnt{margin-left:auto;font-size:12px;font-weight:600;background:rgba(255,255,255,.2);padding:2px 11px;border-radius:20px}
+  .nhom-h .tot{font-size:12.5px;font-weight:600;opacity:.92}
+  .khoi{border-top:1px solid var(--line)}
+  .khoi-h{padding:9px 17px 9px 26px;background:var(--soft);font-weight:700;font-size:13px;color:var(--brand);cursor:pointer;display:flex;align-items:center;gap:8px}
+  .khoi-h .cnt{margin-left:auto;font-weight:600;color:var(--muted);font-size:12px}
+  .donvi{padding:7px 17px 7px 34px;background:#fbfdff;font-weight:600;font-size:12.5px;color:#334155;border-top:1px dashed var(--line);display:flex;align-items:center;gap:8px}
+  .donvi .rn{display:inline-flex;width:24px;height:20px;align-items:center;justify-content:center;background:#e0e7ff;color:var(--brand);border-radius:5px;font-size:11px;font-weight:700}
+  table{width:100%;border-collapse:collapse}
+  .dt th{background:#f8fafc;font-size:11px;text-transform:uppercase;letter-spacing:.2px;color:var(--muted);text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);font-weight:600}
+  .dt td{padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:13px;vertical-align:top}
+  .dt tr:hover td{background:#f8fbff}
+  .dt .stt{width:34px;color:var(--muted);font-weight:700;text-align:center}
+  .dt .num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .dt .nm{font-weight:500}
+  .pill{display:inline-block;font-size:11px;padding:1px 8px;border-radius:20px;font-weight:600;white-space:nowrap}
+  .pill.thue{background:#dbeafe;color:#1e40af}
+  .pill.dautu{background:#dcfce7;color:#166534}
+  .pill.hh{background:#fef3c7;color:#92400e}
+  .tag{font-size:11px;color:var(--muted)}
+  .warn-row td{background:#fffbeb!important}
+  .flag{font-size:10.5px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:5px;font-weight:600}
+  .note{font-size:11.5px;color:var(--muted)}
+  /* admin */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px}
+  .card h3{margin:0 0 4px;font-size:15px}
+  .card .desc{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+  .fld{margin-bottom:11px}
+  .fld label{display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:4px}
+  .fld input,.fld select,.fld textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .list{margin-top:8px}
+  .item{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;margin-bottom:7px;font-size:13px}
+  .item .av{width:30px;height:30px;border-radius:7px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+  .item .meta{font-size:11.5px;color:var(--muted)}
+  .item .del{margin-left:auto;color:var(--red);cursor:pointer;border:none;background:none;font-size:16px}
+  .steps-mini{margin-top:6px;border-left:2px solid var(--line);padding-left:12px}
+  .steps-mini .s{font-size:12px;padding:3px 0;color:#475569}
+  .empty{color:var(--muted);font-size:12.5px;text-align:center;padding:18px}
+  details summary{cursor:pointer;font-weight:600;font-size:12.5px;color:var(--brand2);padding:5px 0}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="org">UBND tỉnh Lào Cai · Sở Khoa học và Công nghệ</div>
+  <h1>Hệ thống Quản lý dự án CNTT, Chuyển đổi số &amp; Đề án 06 tỉnh Lào Cai</h1>
+  <div class="sub">Quản lý danh mục dự án/hoạt động ứng dụng CNTT, chuyển đổi số và thực hiện Đề án 06 theo Nghị định 45/2026/NĐ-CP</div>
+  <div class="cc" id="cc-line"></div>
+</div>
+<div class="proto">⚙️ Bản HTML prototype để rà soát — dữ liệu nhập từ Phụ lục QĐ 580/QĐ-UBND. Số liệu kinh phí cần đối chiếu lại với file Excel gốc trước khi vào full-stack.</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab on" data-pg="catalog">🗂️ Danh mục 77 dự án 2026</button>
+    <button class="tab" data-pg="quytrinh">⚙️ Khai báo quy trình</button>
+    <button class="tab" data-pg="taikhoan">👤 Khai báo tài khoản</button>
+    <button class="tab" data-pg="design">🧭 Thiết kế phân cấp</button>
+  </div>
+
+  <!-- ══ DANH MỤC ══ -->
+  <div class="pg on" id="pg-catalog">
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <select id="f-year"><option value="2026">Năm kế hoạch: 2026</option></select>
+      <input type="search" id="q" placeholder="🔍 Tìm theo tên dự án, đơn vị…">
+      <select id="f-form">
+        <option value="">— Mọi hình thức —</option>
+        <option value="thue">Thuê dịch vụ</option>
+        <option value="dautu">Đầu tư</option>
+        <option value="hh">Đầu tư/Thuê</option>
+      </select>
+      <button class="btn ghost sm" onclick="toggleAll(true)">Mở tất cả</button>
+      <button class="btn ghost sm" onclick="toggleAll(false)">Thu gọn</button>
+    </div>
+    <div id="tree"></div>
+  </div>
+
+  <!-- ══ QUY TRÌNH ══ -->
+  <div class="pg" id="pg-quytrinh">
+    <div class="grid2">
+      <div class="card">
+        <h3>Khai báo quy trình chuẩn mới</h3>
+        <div class="desc">Mỗi quy trình là một mẫu các bước (checklist + timeline) áp cho dự án. Hệ thống đã có 4 mẫu chuẩn theo NĐ 45; thêm mẫu mới ở đây.</div>
+        <div class="fld"><label>Mã quy trình (không dấu, viết liền)</label><input id="qt-ma" placeholder="vd: caidat_phancung"></div>
+        <div class="fld"><label>Tên quy trình</label><input id="qt-ten" placeholder="vd: Lắp đặt hạ tầng phần cứng"></div>
+        <div class="fld"><label>Căn cứ pháp lý</label><input id="qt-cc" placeholder="vd: Điều 8 NĐ 45/2026/NĐ-CP"></div>
+        <div class="fld"><label>Các bước (mỗi dòng 1 bước, dạng: <i>Tên bước | số ngày | đơn vị thực hiện</i>)</label>
+          <textarea id="qt-steps" rows="5" placeholder="Khảo sát hiện trạng | 7 | Đơn vị tư vấn
+Lập kế hoạch lắp đặt | 10 | Chủ đầu tư
+Nghiệm thu, bàn giao | 5 | Chủ đầu tư"></textarea></div>
+        <button class="btn" onclick="addQT()">+ Thêm quy trình</button>
+      </div>
+      <div class="card">
+        <h3>Danh sách quy trình</h3>
+        <div class="desc">Mẫu chuẩn (khóa) + mẫu do đơn vị khai báo.</div>
+        <div class="list" id="qt-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TÀI KHOẢN ══ -->
+  <div class="pg" id="pg-taikhoan">
+    <div class="grid2">
+      <div class="card">
+        <h3>Khai báo tài khoản mới</h3>
+        <div class="desc">Phân quyền theo vai trò: Lãnh đạo tỉnh (xem toàn bộ), Sở KH&CN (toàn quyền — Điều 36), Chủ đầu tư (dự án của đơn vị), Nhà thầu (gói tham gia).</div>
+        <div class="fld"><label>Tên đăng nhập</label><input id="tk-user" placeholder="vd: sonongnghiep.laocai"></div>
+        <div class="row2">
+          <div class="fld"><label>Họ tên / Đơn vị</label><input id="tk-name" placeholder="vd: Sở Nông nghiệp và Môi trường"></div>
+          <div class="fld"><label>Vai trò</label><select id="tk-role">
+            <option value="leader">Lãnh đạo tỉnh</option>
+            <option value="so">Sở KH&CN — Giám sát</option>
+            <option value="cdt" selected>Chủ đầu tư</option>
+            <option value="nt">Nhà thầu · Tư vấn</option>
+          </select></div>
+        </div>
+        <div class="fld"><label>Mật khẩu khởi tạo</label><input id="tk-pass" placeholder="vd: Laocai@2026"></div>
+        <button class="btn" onclick="addTK()">+ Thêm tài khoản</button>
+      </div>
+      <div class="card">
+        <h3>Danh sách tài khoản</h3>
+        <div class="desc">Đổi toàn bộ mật khẩu mặc định trước khi vận hành thật.</div>
+        <div class="list" id="tk-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ THIẾT KẾ ══ -->
+  <div class="pg" id="pg-design">
+    <div class="card">
+      <h3>Phương án phân cấp danh mục (tái dùng cho các năm sau)</h3>
+      <div class="desc">Mỗi năm là một "kỳ kế hoạch" độc lập, gắn với một quyết định ban hành. Cây 4 tầng bên dưới giữ nguyên cho mọi năm — năm sau chỉ tạo kỳ mới và nhập dự án vào đúng nhánh.</div>
+      <pre style="background:var(--soft);padding:16px;border-radius:10px;font-size:13px;overflow:auto;line-height:1.7">Năm kế hoạch (2026, 2027…)         ← gắn QĐ ban hành, đơn vị tính, tổng kinh phí
+└─ Nhóm                            ← A: Chuyển tiếp · B: Mới · (mở rộng tùy năm)
+   └─ Khối                         ← Khởi động (khối Đảng) · Các sở ngành · Các xã/phường
+      └─ Đơn vị chủ trì            ← Sở/ngành/UBND xã (DỮ LIỆU DÙNG CHUNG giữa các năm)
+         └─ Dự án / hoạt động      ← bản ghi lá: hình thức, thời gian, kinh phí, ghi chú
+                                      → gắn 1 quy trình chuẩn → sinh checklist + timeline</pre>
+      <div style="font-size:13px;line-height:1.8">
+        <b>Vì sao chọn phương án này:</b><br>
+        • <b>Đơn vị chủ trì</b> tách thành danh mục dùng chung → năm sau không nhập lại, thống kê nhiều năm theo đơn vị dễ dàng.<br>
+        • <b>Nhóm/Khối</b> linh hoạt: năm nào không có nhóm "Chuyển tiếp" thì bỏ trống, thêm nhóm mới không phá vỡ cấu trúc.<br>
+        • Mỗi dự án vẫn gắn <b>1 quy trình chuẩn</b> (Thuê/Đầu tư/Mua sắm/Chi thường xuyên) để chạy engine checklist &amp; KPI như hiện tại.<br>
+        • So sánh giữa các năm: cùng một cây, chỉ đổi "kỳ kế hoạch".
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════ DỮ LIỆU 77 DỰ ÁN — Phụ lục QĐ 580/QĐ-UBND ngày 05/3/2026 ════════
+   Đơn vị tính: Triệu đồng. f: hình thức (thue|dautu|hh). t: thời gian.
+   g: kinh phí GĐ 2026-2030. k: dự kiến năm 2026. ns: ngân sách tỉnh. x: nguồn hợp pháp khác.
+   Số null = chưa đọc chắc chắn từ bản PDF (xô cột) → cần đối chiếu Excel gốc. */
+const KH215='Thực hiện theo Kế hoạch 215/KH-UBND ngày 31/12/2025 của UBND tỉnh';
+const CATALOG={
+  nam:2026, canCu:'Quyết định số 580/QĐ-UBND ngày 05/3/2026 của Chủ tịch UBND tỉnh Lào Cai',
+  dvt:'Triệu đồng', tongGD:1211056, tongNam:433608,
+  nhom:[
+   {ma:'A', ten:'Dự án chuyển tiếp', khoi:[
+     {ma:'A1', ten:'Khởi động (khối Đảng)', dv:[
+       {rn:'I', ten:'Báo và Phát thanh truyền hình tỉnh', da:[
+         {s:1, n:'Thuê dịch vụ CNTT phần mềm quản trị nội dung, hosting hệ thống CMS và bảo trì Báo Lào Cai điện tử, báo in', f:'thue', t:'2026-2027', g:806, k:403, ns:403, x:0, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'II', ten:'Trường Chính trị', da:[
+         {s:2, n:'Hệ thống thông tin quản lý nhà trường', f:'thue', t:'2026-2027', g:640, k:320, ns:320},
+         {s:3, n:'Hệ thống trộn đề thi trắc nghiệm và thi trắc nghiệm trực tuyến', f:'thue', t:'2026-2027', g:140, k:70, ns:70},
+       ]},
+     ]},
+     {ma:'A2', ten:'Các sở ngành', dv:[
+       {rn:'I', ten:'Trung tâm Phục vụ hành chính công tỉnh', da:[
+         {s:4, n:'Thuê dịch vụ CNTT: Hệ thống thông tin giải quyết thủ tục hành chính', f:'thue', t:'5/2024-4/2026', g:609, k:609, ns:609},
+         {s:5, n:'Thuê dịch vụ CNTT: Hệ thống thông tin giải quyết TTHC tỉnh Lào Cai, giai đoạn 2026-2030', f:'thue', t:'2026-2030', g:32426, k:5970, ns:5970, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'II', ten:'Cổng Thông tin điện tử tỉnh', da:[
+         {s:6, n:'Thuê dịch vụ CNTT: Hệ thống Cổng thông tin điện tử tỉnh Lào Cai giai đoạn 2026-2029 (36 tháng)', f:'thue', t:'2026-2029', g:null, k:null},
+         {s:7, n:'Thuê dịch vụ CNTT: Hệ thống Cổng thông tin điện tử tỉnh Lào Cai giai đoạn 2026-2030', f:'thue', t:'2026-2030', g:7714, k:1206, ns:1206},
+         {s:8, n:'Thuê phần mềm điểm tin, giám sát và lắng nghe mạng xã hội giai đoạn 2026-2030', f:'thue', t:'2026-2030', g:3732, k:712, ns:712},
+       ]},
+       {rn:'III', ten:'Sở Khoa học và Công nghệ', da:[
+         {s:9, n:'Hệ thống thông tin kho dữ liệu, dữ liệu mở tỉnh Lào Cai', f:'thue', t:'2026-2030', g:null, k:null},
+         {s:10, n:'Thuê thiết bị Hệ thống phòng Hội nghị truyền hình trực tuyến', f:'thue', t:'2026-2030', g:122053, k:25801, ns:25801},
+         {s:11, n:'Phần mềm quản lý văn bản điều hành', f:'thue', t:'2026', g:464, k:464, ns:464},
+         {s:12, n:'Thuê dịch vụ CNTT Hệ thống thông tin nguồn tỉnh Lào Cai (cũ) và HT thông tin nguồn tỉnh Yên Bái (cũ) giai đoạn 2025-2027', f:'thue', t:'2026-2027', g:7092, k:2850, ns:2850},
+         {s:13, n:'Hệ thống giám sát, đảm bảo an toàn thông tin (SOC) tỉnh Lào Cai', f:'thue', t:'2026-2027', g:9346, k:5500, ns:5500, gc:'KH 215/KH-UBND'},
+         {s:14, n:'Thuê dịch vụ CNTT: Trung tâm dữ liệu tỉnh Lào Cai', f:'thue', t:'2026', g:null, k:895, ns:895},
+         {s:15, n:'Thuê dịch vụ CNTT: Hệ thống thông tin Phản ánh hiện trường (tương tác số) tỉnh Lào Cai', f:'thue', t:'2026-2030', g:null, k:null},
+         {s:16, n:'Thuê dịch vụ CNTT Mạng truyền số liệu chuyên dùng trên địa bàn tỉnh Lào Cai giai đoạn 2026-2028', f:'thue', t:'2026-2028', g:75220, k:25726, ns:25726},
+         {s:17, n:'Thuê dịch vụ CNTT Nền tảng chính quyền số tỉnh Lào Cai', f:'thue', t:'2026-2030', g:11120, k:13145, ns:11173, x:1972},
+       ]},
+       {rn:'IV', ten:'Sở Y tế', da:[
+         {s:18, n:'Thuê dịch vụ CNTT: phần mềm HIS, LIS, PACs, EMR tại 17/17 đơn vị (16 bệnh viện đa khoa, chuyên khoa toàn tỉnh và TTYT khu vực Văn Yên)', f:'thue', t:'2026-2030', g:18320, k:3664, ns:3664, gc:'KH 215; hằng năm tối thiểu 15% từ nguồn thu hợp pháp của đơn vị'},
+       ]},
+       {rn:'V', ten:'Sở Nội vụ', da:[
+         {s:19, n:'Thuê dịch vụ CNTT "Hệ thống thông tin quản lý cán bộ, công chức, viên chức tỉnh Lào Cai"', f:'thue', t:'2026-2030', g:null, k:null, gc:'QĐ 893/QĐ-TTg ngày 25/6/2020 — CSDLQG về CBCCVC'},
+       ]},
+       {rn:'VI', ten:'Sở Giáo dục và Đào tạo', da:[
+         {s:20, n:'Thuê dịch vụ CNTT đối với phần mềm Học bạ số', f:'thue', t:'2026-2030', g:18320, k:3664, ns:3664, gc:'VB 1458/BGDĐT-GDTH ngày 02/4/2025 về học bạ số'},
+       ]},
+       {rn:'VII', ten:'Ban Quản lý Khu kinh tế', da:[
+         {s:21, n:'Nền tảng ứng dụng cửa khẩu số - cửa khẩu Quốc tế đường bộ số II Kim Thành', f:'thue', t:'2026-2028', g:4500, k:1500, ns:1500, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'VIII', ten:'Trường Cao đẳng Lào Cai', da:[
+         {s:22, n:'Thuê hệ thống phần mềm quản lý các hoạt động của Trường Cao đẳng Lào Cai', f:'thue', t:'2026-2028', g:4500, k:1500, ns:1500, gc:'KH 215/KH-UBND'},
+       ]},
+     ]},
+   ]},
+   {ma:'B', ten:'Dự án mới 2026', khoi:[
+     {ma:'B1', ten:'Khởi động (khối Đảng)', dv:[
+       {rn:'I', ten:'Văn phòng Tỉnh ủy', da:[
+         {s:1, n:'Nâng cấp, bổ sung thiết bị cho Trung tâm dữ liệu phục vụ các cơ quan đảng, bảo đảm ATTT, kết nối, chia sẻ dữ liệu với Trung ương và chính quyền các cấp', f:'dautu', t:'2026-2030', g:40000, k:20000, ns:20000},
+         {s:2, n:'Xây dựng, triển khai dự án đầu tư bổ sung trang thiết bị, hạ tầng kỹ thuật phục vụ chuyển đổi số cho các cơ quan khối đảng, đảng ủy xã, phường', f:'dautu', t:'2026', g:38500, k:38500, ns:38500},
+         {s:3, n:'Đầu tư Tường lửa Mạng nội bộ Khối Đảng cho đảng ủy xã, phường (truyền tải, lưu trữ văn bản mật: Thường, Mật, Tối mật)', f:'dautu', t:'2026', g:9500, k:9500, ns:9500, gc:'KL 92-KL/BCĐ; KH 34-KH/TU & 36-KH/TU của Tỉnh ủy'},
+         {s:4, n:'Nâng cấp hạ tầng thiết bị CNTT đảng ủy cấp xã đáp ứng tiêu chuẩn hồ sơ đề xuất cấp độ 2 về ATTT theo cấp độ', f:'dautu', t:'2026-2028', g:15000, k:15000, ns:15000},
+         {s:5, n:'Ứng dụng AI nội bộ phục vụ giám sát thực hiện nhiệm vụ của Tỉnh ủy, Ban Thường vụ, Thường trực Tỉnh ủy giao', f:'hh', t:'2026-2030', g:20050, k:14950, ns:14950},
+         {s:6, n:'Thuê dịch vụ CNTT: máy chủ GPU chuyên dụng vật lý phục vụ Hệ thống giám sát, giao việc thông minh Tỉnh ủy trên nền tảng AI', f:'thue', t:'2026-2027', g:1016, k:500, ns:500},
+         {s:7, n:'Xây dựng hệ thống chuẩn hóa và kết nối dữ liệu các cơ quan đảng tỉnh', f:'dautu', t:'2026-2030', g:8000, k:8000, ns:8000},
+       ]},
+       {rn:'II', ten:'Đảng ủy các cơ quan đảng tỉnh', da:[
+         {s:8, n:'Triển khai ứng dụng hỗ trợ công tác tham mưu tổng hợp của cán bộ, công chức trong đảng bộ các cơ quan đảng tỉnh', f:'thue', t:'2026-2027', g:3500, k:2000, ns:2000, gc:'KH 34-KH/TU & 36-KH/TU'},
+       ]},
+       {rn:'III', ten:'Ban Tổ chức Tỉnh ủy', da:[
+         {s:9, n:'Ứng dụng AI hỗ trợ cán bộ, công chức ngành Tổ chức xây dựng đảng triển khai nhiệm vụ chuyên môn', f:'thue', t:'2026-2027', g:3500, k:2000, ns:2000, gc:'KH 34-KH/TU & 36-KH/TU'},
+         {s:10, n:'Ứng dụng AI trong đánh giá hồ sơ cán bộ, công chức khi thực hiện công tác cán bộ của tỉnh', f:'thue', t:'2026-2027', g:4500, k:2000, ns:2000, gc:'KH 34-KH/TU & 36-KH/TU'},
+       ]},
+       {rn:'IV', ten:'Ban Nội chính Tỉnh ủy', da:[
+         {s:11, n:'Hệ thống theo dõi tiếp công dân của Bí thư các đảng ủy trực thuộc Tỉnh ủy Lào Cai', f:'thue', t:'2026', g:1500, k:1500, ns:1500},
+       ]},
+       {rn:'V', ten:'Ủy ban Kiểm tra Tỉnh ủy', da:[
+         {s:12, n:'Thuê dịch vụ CNTT phục vụ hoạt động kiểm tra, giám sát (quản lý chương trình/kế hoạch, tiến độ, thông báo kết luận, kỷ luật đảng; hồ sơ địa bàn; xin ý kiến thành viên UBKT)', f:'thue', t:'2026-2030', g:4805, k:925, ns:925, gc:'KH 34-KH/TU & 36-KH/TU'},
+         {s:13, n:'Thuê dịch vụ CNTT: Trợ lý ảo hỏi đáp nghiệp vụ kiểm tra, giám sát; tiếp nhận phản ánh vi phạm của tổ chức đảng, đảng viên trên cổng TTĐT UBKT Tỉnh ủy', f:'thue', t:'2026-2030', g:1140, k:300, ns:300, gc:'KH 34-KH/TU & 36-KH/TU'},
+       ]},
+       {rn:'VI', ten:'Trường Chính trị', da:[
+         {s:14, n:'Xây dựng mô hình đào tạo lý luận chính trị ứng dụng AI, microlearning trên nền tảng số', f:'thue', t:'2026-2030', g:2600, k:1600, ns:1600},
+       ]},
+       {rn:'VII', ten:'Báo và Phát thanh truyền hình tỉnh', da:[
+         {s:15, n:'Hoàn thiện tòa soạn hội tụ và hệ sinh thái số Báo và Phát thanh, Truyền hình Lào Cai', f:'dautu', t:'2026-2030', g:16582, k:3316, ns:2955, x:361, gc:'KH 215; hằng năm dùng nguồn thu hợp pháp 361 tr.đ/năm'},
+       ]},
+       {rn:'VIII', ten:'Ban Tuyên giáo và Dân vận Tỉnh ủy', da:[
+         {s:16, n:'Xây dựng chuyên trang, app điện tử "Người bạn số Lào Cai" tích hợp học liệu, dữ liệu, chatbot hỗ trợ', f:'thue', t:'2026-2030', g:2800, k:2800, ns:2800, gc:'KH 09-KH/BCĐ ngày 22/7/2025 — "Bình dân học vụ số"'},
+       ]},
+     ]},
+     {ma:'B2', ten:'Các sở ngành', dv:[
+       {rn:'I', ten:'Công an tỉnh', da:[
+         {s:17, n:'Nâng cấp hạ tầng mạng các trụ sở, hệ thống QLVB điều hành, Kho số hóa - lưu trữ - khai thác hồ sơ và Kho dữ liệu nghiệp vụ số hóa ứng dụng AI cho các phòng nghiệp vụ Công an tỉnh, bảo đảm ATTT theo cấp độ', f:'dautu', t:'2026', g:12875, k:12875, ns:10500, x:2375, gc:'KH 310/KH-BCA-V01 ngày 26/5/2025; NSách Bộ Công an 2.375 tr.đ'},
+         {s:18, n:'Triển khai dịch vụ điện thoại IP nội bộ đến trụ sở làm việc Công an các đơn vị, địa phương', f:'dautu', t:'2026', g:5800, k:5800, ns:5800},
+       ]},
+       {rn:'II', ten:'Sở Khoa học và Công nghệ', da:[
+         {s:19, n:'Thuê dịch vụ CNTT Nền tảng công dân số LaoCai-S giai đoạn 2026-2030', f:'thue', t:'2026-2030', g:21060, k:7660, ns:7660},
+         {s:20, n:'Thuê Sàn giao dịch khoa học, công nghệ', f:'dautu', t:'2026', g:960, k:960, ns:960},
+         {s:21, n:'Nâng cấp Nền tảng tích hợp, chia sẻ dữ liệu cấp tỉnh (LGSP) - Mô hình 26 - A6', f:'dautu', t:'2026-2030', g:9300, k:2100, ns:2100},
+         {s:22, n:'Dự án: Nâng cấp hệ thống báo cáo trực tuyến', f:'dautu', t:'2026-2027', g:5800, k:2600, ns:2600},
+       ]},
+       {rn:'III', ten:'Sở Y tế', da:[
+         {s:23, n:'Thuê hạ tầng và phần mềm triển khai Bệnh án điện tử tại 99 Trạm Y tế xã', f:'thue', t:'2026-2030', g:null, k:null, gc:'KH 215/KH-UBND'},
+         {s:24, n:'Thuê dịch vụ CNTT, chuyển đổi số tại 07 TTYT khu vực Yên Bái (cũ) và Cơ sở 2 của Bệnh viện đa khoa số 1', f:'thue', t:'2026-2030', g:55963, k:12543, ns:10855, x:1688, gc:'KH 215; nguồn tài chính hợp pháp của đơn vị 1.688 tr.đ'},
+       ]},
+       {rn:'IV', ten:'Sở Công Thương', da:[
+         {s:25, n:'Thuê dịch vụ Hệ thống Thông tin ngành Công Thương (dữ liệu công nghiệp, hạ tầng năng lượng, tài nguyên khoáng sản, hạ tầng thương mại…)', f:'thue', t:'2026-2030', g:9250, k:2050, ns:2050, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'V', ten:'Sở Giáo dục và Đào tạo', da:[
+         {s:26, n:'Đầu tư hạ tầng số, chuyển đổi số toàn diện trong Giáo dục nghề nghiệp và giáo dục thường xuyên (Thí điểm 01 trung tâm)', f:'dautu', t:'2026', g:10000, k:10000, ns:10000, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'VI', ten:'Bộ Chỉ huy Quân sự tỉnh', da:[
+         {s:27, n:'Hệ thống quản lý phương tiện ra vào và Hệ thống Camera giám sát an ninh tại BCH QS và 08 đơn vị trực thuộc', f:'dautu', t:'2026', g:21480, k:21480, ns:21480, gc:'KH 700/KH-BCH ngày 10/2/2026 BCHQS tỉnh'},
+       ]},
+       {rn:'VII', ten:'Ban Quản lý Khu kinh tế', da:[
+         {s:28, n:'Hệ thống phần mềm Quản trị và điều hành dùng chung cho Ban Quản lý Khu kinh tế và Ban Quản lý các khu công nghiệp Lào Cai', f:'thue', t:'2026-2030', g:8171, k:1271, ns:1271, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'VIII', ten:'Sở Văn hóa, Thể thao và Du lịch', da:[
+         {s:29, n:'Xây dựng Thư viện số tỉnh Lào Cai', f:'thue', t:'2026-2030', g:10000, k:2000, ns:2000, gc:'KH 215/KH-UBND'},
+         {s:30, n:'Xây dựng sản phẩm thử nghiệm bảo tồn, diễn giải giá trị di sản tỉnh Lào Cai ứng dụng công nghệ 3D, AR/VR', f:'thue', t:'2026-2030', g:7500, k:2000, ns:2000, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'IX', ten:'Trường Cao đẳng Lào Cai', da:[
+         {s:31, n:'Dự án: Hệ thống mô phỏng thực tế ảo - Nghề công nghệ ô tô, Trường Cao đẳng Lào Cai', f:'dautu', t:'2026', g:5485, k:5485, ns:4937, x:549, gc:'KH 215/KH-UBND'},
+         {s:32, n:'Dự án: Hệ thống mô phỏng thực tế ảo - Nghề điện công nghiệp, Trường Cao đẳng Lào Cai', f:'dautu', t:'2026', g:5304, k:5304, ns:4774, x:530, gc:'KH 215/KH-UBND'},
+         {s:33, n:'Dự án: Xây dựng Phòng học mô phỏng thực hành nghề Y, Trường Cao đẳng Lào Cai', f:'dautu', t:'2026-2028', g:40000, k:8500, ns:7650, x:850, gc:'KH 215; hằng năm 10% nguồn thu hợp pháp đơn vị'},
+         {s:34, n:'Dự án: Xây dựng phòng học mô phỏng - Trung tâm Giáo dục quốc phòng và an ninh, Trường Cao đẳng Lào Cai', f:'dautu', t:'2026', g:1934, k:1934, ns:1741, x:193, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'X', ten:'Sở Nông nghiệp và Môi trường', da:[
+         {s:35, n:'Hệ thống thông tin quản lý số lượng thiệt hại và dịch bệnh trên động thực vật và an toàn sinh học ngành Nông nghiệp', f:'thue', t:'2026-2030', g:null, k:null},
+         {s:36, n:'Hệ thống thông tin và nền tảng số quản lý vùng trồng, cây đầu dòng và chuỗi giá trị nông sản xuất khẩu chủ lực (Quế, Chè, Chuối, Dứa…) tỉnh Lào Cai', f:'thue', t:'2026-2030', g:14500, k:2890, ns:2890},
+         {s:37, n:'Phần mềm ứng dụng xây dựng, quản lý, vận hành CSDL đất đai đáp ứng công tác quản lý nhà nước về đất đai ở địa phương', f:'thue', t:'2026-2030', g:17000, k:6000, ns:6000},
+         {s:38, n:'Thuê dịch vụ CNTT: Hệ thống CSDL và phần mềm quản lý dữ liệu giảm nghèo các cấp (Tiểu DA2 thuộc DA7 — QĐ 90/QĐ-TTg ngày 18/01/2022, CTMTQG giảm nghèo bền vững 2021-2025)', f:'thue', t:'2026-2030', g:5000, k:1000, ns:1000},
+       ]},
+       {rn:'XI', ten:'Văn phòng Đoàn ĐBQH và HĐND tỉnh', da:[
+         {s:39, n:'Hệ thống phần mềm phục vụ Hội đồng nhân dân điện tử', f:'thue', t:'2026-2030', g:13340, k:4000, ns:4000, gc:'KH 215/KH-UBND'},
+         {s:40, n:'Nâng cấp hệ thống mạng LAN, Wifi nội bộ tại Văn phòng Đoàn ĐBQH và HĐND tỉnh', f:'dautu', t:'2026', g:500, k:500, ns:500},
+       ]},
+       {rn:'XII', ten:'Mặt trận Tổ quốc tỉnh', da:[
+         {s:41, n:'Nền tảng số chỉ đạo, điều hành của MTTQ Việt Nam tỉnh', f:'thue', t:'2026-2030', g:6800, k:2000, ns:2000, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'XIII', ten:'Trung tâm hành chính công', da:[
+         {s:42, n:'Thuê dịch vụ CNTT phục vụ hoạt động các Trung tâm Phục vụ hành chính công xã, phường trên địa bàn tỉnh Lào Cai', f:'thue', t:'2026-2030', g:127200, k:28000, ns:28000, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'XIV', ten:'Sở Ngoại vụ', da:[
+         {s:43, n:'Thuê dịch vụ CNTT: Hệ thống nền tảng quản lý cán bộ công chức, viên chức, đảng viên; quản lý đoàn ra, đoàn vào và nghiệp vụ hành chính thuộc quản lý trên địa bàn tỉnh', f:'thue', t:'2026-2030', g:4200, k:1000, ns:1000, gc:'KH 215/KH-UBND'},
+       ]},
+       {rn:'XV', ten:'Sở Tư pháp', da:[
+         {s:44, n:'Thuê dịch vụ CNTT: Hệ thống ứng dụng phổ biến pháp luật trực quan trên nền tảng số của tỉnh Lào Cai (5 năm)', f:'thue', t:'2026-2030', g:6000, k:1600, ns:1600, gc:'KH 215/KH-UBND'},
+       ]},
+     ]},
+     {ma:'B3', ten:'Các xã, phường', dv:[
+       {rn:'I', ten:'UBND xã Mù Cang Chải', da:[
+         {s:45, n:'Triển khai xây dựng thí điểm 01 khu phố thông minh', f:'hh', t:'2026', g:1100, k:1100, ns:1100, gc:'Mô hình kinh tế số thí điểm; xã bản số — KH 215'},
+         {s:46, n:'Lựa chọn đầu tư thí điểm 01 nhãn hiệu sản phẩm OCOP ứng dụng công nghệ số trong quản lý sản xuất và truy xuất nguồn gốc sản phẩm, dịch vụ', f:'hh', t:'2026', g:100, k:100, ns:100},
+       ]},
+       {rn:'II', ten:'UBND xã Yên Bình', da:[
+         {s:47, n:'Triển khai Hệ sinh thái công nghệ IoT cho phát triển kinh tế nông nghiệp, thủy sản xã Yên Bình', f:'hh', t:'2026-2030', g:10000, k:4000, ns:4000},
+       ]},
+       {rn:'III', ten:'UBND xã Trấn Yên', da:[
+         {s:48, n:'Triển khai thôn thông minh trên địa bàn', f:'hh', t:'2026', g:1500, k:1500, ns:1500},
+       ]},
+       {rn:'IV', ten:'UBND xã Mường Bo', da:[
+         {s:49, n:'Hệ thống quản lý nông nghiệp thông minh (Smart Agriculture)', f:'thue', t:'2026', g:5000, k:5000, ns:5000},
+       ]},
+       {rn:'V', ten:'UBND phường Lào Cai', da:[
+         {s:50, n:'Thuê dịch vụ CNTT: Quản lý, điều hành khu dân cư cho phường Lào Cai', f:'thue', t:'2026', g:781, k:209, ns:209},
+       ]},
+       {rn:'VI', ten:'UBND xã Bắc Hà', da:[
+         {s:51, n:'Xây dựng hệ thống Quản lý chợ thông minh "Smart Chợ Bắc Hà" ứng dụng công nghệ số và AI tại Chợ Bắc Hà', f:'hh', t:'2026', g:2000, k:2000, ns:2000},
+       ]},
+       {rn:'VII', ten:'UBND xã Hạnh Phúc', da:[
+         {s:52, n:'Ứng dụng quản lý điều hành, tương tác chính quyền với tổ, thôn bản, người dân trên địa bàn xã Hạnh Phúc', f:'hh', t:'2026-2030', g:5300, k:2500, ns:2500},
+         {s:53, n:'Triển khai hệ sinh thái công tác quản lý và ứng dụng công nghệ cao trong nông nghiệp xã Hạnh Phúc', f:'hh', t:'2026-2030', g:1300, k:500, ns:500},
+       ]},
+       {rn:'VIII', ten:'UBND phường Sa Pa', da:[
+         {s:54, n:'Đầu tư bổ sung hệ thống camera và tích hợp AI vào hệ thống Camera thuộc Trung tâm Giám sát điều hành thông minh phường Sa Pa', f:'dautu', t:'2026-2030', g:1370, k:850, ns:850},
+       ]},
+       {rn:'IX', ten:'UBND phường Cam Đường', da:[
+         {s:55, n:'Hệ thống đánh giá, xếp loại tổ chức đảng và tập thể, cá nhân cán bộ lãnh đạo, quản lý', f:'thue', t:'2026-2030', g:1500, k:300, ns:300},
+       ]},
+     ]},
+   ]},
+  ],
+};
+/* Dòng nhiễu trong PDF gốc — KHÔNG tính vào 77, chờ đối chiếu */
+const FLAGGED=[{dv:'Sở Tài chính', n:'Thuê dịch vụ CNTT: phần mềm quản lý điều hành dự toán ngân sách địa phương và đầu tư công trên địa bàn tỉnh Lào Cai', note:'Bản PDF gốc ghi số thứ tự "16" và giá trị #VALUE! (g≈52.723, k≈21.223). Cần xác nhận đây có phải dự án thứ 78 hay là dòng lỗi.'}];
+
+/* ════════ QUY TRÌNH (mẫu chuẩn + khai báo thêm) ════════ */
+const TPL_LOCKED=[
+ {ma:'thue', ten:'Thuê dịch vụ CNTT không sẵn có', cc:'Điều 34 NĐ 45/2026/NĐ-CP', steps:17, locked:1},
+ {ma:'hethong', ten:'Dự án đầu tư hệ thống', cc:'Điều 8, Chương II NĐ 45/2026/NĐ-CP', steps:23, locked:1},
+ {ma:'muasam', ten:'Dự án mua sắm', cc:'Điều 7, 8 NĐ 45/2026/NĐ-CP', steps:11, locked:1},
+ {ma:'ctx', ten:'Hoạt động chi thường xuyên', cc:'Điều 32 NĐ 45/2026/NĐ-CP', steps:6, locked:1},
+];
+let TPL_CUSTOM=[];
+
+/* ════════ TÀI KHOẢN (mặc định + khai báo thêm) ════════ */
+const ROLE_LB={leader:'Lãnh đạo tỉnh', so:'Sở KH&CN — Giám sát', cdt:'Chủ đầu tư', nt:'Nhà thầu · Tư vấn'};
+let ACCOUNTS=[
+ {user:'lanhdao.laocai', name:'Văn phòng UBND tỉnh', role:'leader', locked:1},
+ {user:'skhcn.laocai', name:'Sở Khoa học và Công nghệ', role:'so', locked:1},
+ {user:'soyte.laocai', name:'Sở Y tế', role:'cdt', locked:1},
+ {user:'foxai.nt', name:'FOXAI', role:'nt', locked:1},
+];
+
+/* ════════ TIỆN ÍCH ════════ */
+const $=s=>document.querySelector(s);
+const money=v=>v==null?'—':v.toLocaleString('vi-VN');
+const FORM_LB={thue:'Thuê dịch vụ', dautu:'Đầu tư', hh:'Đầu tư/Thuê'};
+function allDA(){const r=[];CATALOG.nhom.forEach(nh=>nh.khoi.forEach(k=>k.dv.forEach(dv=>dv.da.forEach(d=>r.push({...d,nhom:nh.ma,khoi:k.ma,dv:dv.ten})))));return r}
+
+/* ════════ RENDER DANH MỤC ════════ */
+function renderStats(){
+  const all=allDA();
+  const A=CATALOG.nhom[0], B=CATALOG.nhom[1];
+  const cntA=A.khoi.reduce((s,k)=>s+k.dv.reduce((t,d)=>t+d.da.length,0),0);
+  const cntB=B.khoi.reduce((s,k)=>s+k.dv.reduce((t,d)=>t+d.da.length,0),0);
+  const sum2026=all.reduce((s,d)=>s+(d.k||0),0);
+  $('#stats').innerHTML=`
+   <div class="st" style="--c:var(--brand2)"><div class="lb">Tổng dự án</div><div class="vl">${all.length}</div><div class="s2">trong danh mục 2026</div></div>
+   <div class="st" style="--c:var(--A)"><div class="lb">Nhóm A · Chuyển tiếp</div><div class="vl">${cntA}</div><div class="s2">dự án</div></div>
+   <div class="st" style="--c:var(--B)"><div class="lb">Nhóm B · Mới 2026</div><div class="vl">${cntB}</div><div class="s2">dự án</div></div>
+   <div class="st" style="--c:var(--gold)"><div class="lb">KP giai đoạn 26-30</div><div class="vl">${(CATALOG.tongGD/1000).toFixed(0)}K</div><div class="s2">${money(CATALOG.tongGD)} tr.đ</div></div>
+   <div class="st" style="--c:var(--green)"><div class="lb">Dự kiến năm 2026</div><div class="vl">${(CATALOG.tongNam/1000).toFixed(0)}K</div><div class="s2">${money(CATALOG.tongNam)} tr.đ (NSNN)</div></div>`;
+}
+function pill(f){return `<span class="pill ${f}">${FORM_LB[f]||f}</span>`}
+function daRow(d){
+  const warn=(d.g==null||d.k==null)?' warn-row':'';
+  return `<tr class="${warn}">
+    <td class="stt">${d.s}</td>
+    <td class="nm">${d.n}${(d.g==null)?' <span class="flag">cần đối chiếu KP</span>':''}${d.gc?`<div class="note">› ${d.gc}</div>`:''}</td>
+    <td>${pill(d.f)}</td>
+    <td class="tag">${d.t||'—'}</td>
+    <td class="num">${money(d.g)}</td>
+    <td class="num">${money(d.k)}</td>
+    <td class="num">${money(d.ns)}</td>
+    <td class="num">${d.x?money(d.x):'—'}</td>
+  </tr>`;
+}
+function renderTree(){
+  const q=($('#q').value||'').toLowerCase().trim();
+  const ff=$('#f-form').value;
+  let html='';
+  CATALOG.nhom.forEach((nh,ni)=>{
+    const cnt=nh.khoi.reduce((s,k)=>s+k.dv.reduce((t,d)=>t+d.da.length,0),0);
+    let inner='';
+    nh.khoi.forEach(k=>{
+      let kInner='';
+      k.dv.forEach(dv=>{
+        const rows=dv.da.filter(d=>{
+          const okq=!q || d.n.toLowerCase().includes(q) || dv.ten.toLowerCase().includes(q);
+          const okf=!ff || d.f===ff;
+          return okq&&okf;
+        });
+        if(!rows.length)return;
+        kInner+=`<div class="donvi"><span class="rn">${dv.rn}</span> ${dv.ten} <span class="cnt" style="margin-left:auto;color:var(--muted);font-weight:600">${rows.length} DA</span></div>
+          <table class="dt"><thead><tr><th class="stt">STT</th><th>Tên dự án / hoạt động</th><th>Hình thức</th><th>Thời gian</th><th class="num">KP 26-30</th><th class="num">Năm 2026</th><th class="num">NS tỉnh</th><th class="num">Nguồn khác</th></tr></thead><tbody>${rows.map(daRow).join('')}</tbody></table>`;
+      });
+      if(!kInner)return;
+      const kc=k.dv.reduce((t,d)=>t+d.da.length,0);
+      inner+=`<div class="khoi"><div class="khoi-h">▸ ${k.ma}. ${k.ten}<span class="cnt">${kc} dự án</span></div>${kInner}</div>`;
+    });
+    if(!inner && q)return;
+    html+=`<div class="nhom"><div class="nhom-h ${nh.ma}" onclick="this.parentNode.classList.toggle('collapsed');this.parentNode.querySelectorAll('.khoi').forEach(e=>e.style.display=this.parentNode.classList.contains('collapsed')?'none':'')">
+      ${nh.ma}. ${nh.ten}<span class="tot"></span><span class="cnt">${cnt} dự án</span></div>${inner}</div>`;
+  });
+  // dòng nhiễu
+  html+=`<div class="card" style="border:1px dashed #f59e0b;background:#fffbeb;margin-top:6px">
+    <h3 style="color:#92400e">⚠️ Dòng cần đối chiếu (chưa tính vào 77)</h3>
+    ${FLAGGED.map(f=>`<div style="font-size:13px"><b>${f.dv}:</b> ${f.n}<div class="note">› ${f.note}</div></div>`).join('')}
+  </div>`;
+  $('#tree').innerHTML=html;
+}
+function toggleAll(open){
+  document.querySelectorAll('.nhom').forEach(n=>{
+    n.classList.toggle('collapsed',!open);
+    n.querySelectorAll('.khoi').forEach(e=>e.style.display=open?'':'none');
+  });
+}
+
+/* ════════ RENDER QUY TRÌNH ════════ */
+function renderQT(){
+  let html='';
+  TPL_LOCKED.forEach(t=>html+=`<div class="item"><div class="av">QT</div><div><div><b>${t.ten}</b></div><div class="meta">mã: ${t.ma} · ${t.steps} bước · ${t.cc}</div></div><span class="flag" style="margin-left:auto">chuẩn</span></div>`);
+  TPL_CUSTOM.forEach((t,i)=>html+=`<div class="item"><div class="av" style="background:var(--green)">QT</div><div style="flex:1"><div><b>${t.ten}</b></div><div class="meta">mã: ${t.ma} · ${t.steps.length} bước${t.cc?' · '+t.cc:''}</div>
+    <details><summary>Xem ${t.steps.length} bước</summary><div class="steps-mini">${t.steps.map((s,j)=>`<div class="s">${j+1}. ${s.n} <span class="tag">(${s.d} ngày · ${s.u||'—'})</span></div>`).join('')}</div></details>
+    </div><button class="del" onclick="delQT(${i})">×</button></div>`);
+  $('#qt-list').innerHTML=html;
+}
+function addQT(){
+  const ma=$('#qt-ma').value.trim(), ten=$('#qt-ten').value.trim(), cc=$('#qt-cc').value.trim();
+  const raw=$('#qt-steps').value.trim();
+  if(!ma||!ten||!raw){alert('Nhập mã, tên và ít nhất 1 bước.');return}
+  const steps=raw.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(p=>p[0]).map(p=>({n:p[0], d:+(p[1]||0), u:p[2]||''}));
+  TPL_CUSTOM.push({ma,ten,cc,steps});
+  $('#qt-ma').value=$('#qt-ten').value=$('#qt-cc').value=$('#qt-steps').value='';
+  renderQT();
+}
+function delQT(i){TPL_CUSTOM.splice(i,1);renderQT()}
+
+/* ════════ RENDER TÀI KHOẢN ════════ */
+function renderTK(){
+  $('#tk-list').innerHTML=ACCOUNTS.map((a,i)=>{
+    const av=a.name.split(' ').slice(-2).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    return `<div class="item"><div class="av">${av}</div><div style="flex:1"><div><b>${a.user}</b></div><div class="meta">${a.name} · ${ROLE_LB[a.role]}</div></div>
+      ${a.locked?'<span class="flag">mặc định</span>':`<button class="del" onclick="delTK(${i})">×</button>`}</div>`;
+  }).join('');
+}
+function addTK(){
+  const user=$('#tk-user').value.trim(), name=$('#tk-name').value.trim(), role=$('#tk-role').value, pass=$('#tk-pass').value.trim();
+  if(!user||!name||!pass){alert('Nhập tên đăng nhập, đơn vị và mật khẩu.');return}
+  if(ACCOUNTS.some(a=>a.user===user)){alert('Tên đăng nhập đã tồn tại.');return}
+  ACCOUNTS.push({user,name,role});
+  $('#tk-user').value=$('#tk-name').value=$('#tk-pass').value='';
+  renderTK();
+}
+function delTK(i){ACCOUNTS.splice(i,1);renderTK()}
+
+/* ════════ TABS ════════ */
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');$('#pg-'+t.dataset.pg).classList.add('on');
+});
+$('#q').oninput=renderTree; $('#f-form').onchange=renderTree;
+
+/* ════════ INIT ════════ */
+$('#cc-line').textContent='📋 '+CATALOG.canCu+' · Đơn vị tính: '+CATALOG.dvt;
+renderStats(); renderTree(); renderQT(); renderTK();
+</script>
+</body>
+</html>
